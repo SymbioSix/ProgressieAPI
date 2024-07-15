@@ -11,13 +11,16 @@ type Config struct {
 	DBUserName string `mapstructure:"SUPA_DATABASE_USER"`
 	DBPassword string `mapstructure:"SUPA_DATABASE_PASSWORD"`
 
-	ServerPort string `mapstructure:"SERVER_PORT"`
+	ServerAddr string `mapstructure:"SERVER_ADDR"`
+
+	APIRef string `mapstructure:"SUPA_API_REF"`
+	APIKey string `mapstructure:"SUPA_API_ANON_KEY"`
 }
 
 func LoadConfig(path string) (config Config, err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigType("env")
-	viper.SetConfigName("")
+	viper.SetConfigName("app")
 
 	viper.AutomaticEnv()
 
