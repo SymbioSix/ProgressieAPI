@@ -11,7 +11,7 @@ Simply fork this repository. Then follow these steps :
   1. cmd: cd ProgressieAPI || cd <your-project>
   2. cmd: go get -u
   3. copy the app.env.example file and paste + rename it into app.env
-  4. open the app.env and fill the corresponding environment variables (the value will be shared only)
+  4. open the app.env and fill the corresponding environment variables (the values will be shared only among owners)
   5. do your assigned job properly
   6. cmd: go run main.go
   7. make sure that firewall allow access popped up + allowed and no errors/conflicts (bugs are tolerated, but beware).
