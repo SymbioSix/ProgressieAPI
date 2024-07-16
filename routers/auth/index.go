@@ -18,7 +18,5 @@ func (ar *AuthRouter) AuthRoutes(rg *fiber.Group) {
 
 	router.Post("/loginemailpassword", ar.authRouter.SignInWithEmailPassword)
 	router.Post("/signupemailpassword", ar.authRouter.SignUpWithEmailPassword)
-	router.Post("/logingoogle", ar.authRouter.SignInWithGoogle)
-	router.Post("/signupgoogle", ar.authRouter.SignUpWithGoogle)
 	router.Post("/signout", ar.authRouter.SignOut)
 }
