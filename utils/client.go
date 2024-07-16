@@ -14,7 +14,7 @@ import (
 
 const (
 	REST_ENDPOINT      = "/rest/v1"
-	STORAGE_ENDPOINT   = "storage/v1"
+	STORAGE_ENDPOINT   = "/storage/v1"
 	AUTH_ENDPOINT      = "/auth/v1"
 	FUNCTIONS_ENDPOINT = "/functions/v1"
 )
