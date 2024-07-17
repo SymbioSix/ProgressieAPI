@@ -13,7 +13,7 @@ func NewRouteAuthController(authRouter auth.AuthController) AuthRouter {
 	return AuthRouter{authRouter}
 }
 
-func (ar *AuthRouter) AuthRoutes(rg *fiber.Group) {
+func (ar *AuthRouter) AuthRoutes(rg fiber.Router) {
 	router := rg.Group("auth")
 
 	router.Post("/loginemailpassword", ar.authRouter.SignInWithEmailPassword)
