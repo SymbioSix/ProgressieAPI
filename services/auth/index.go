@@ -20,20 +20,6 @@ func NewAuthController(DB *gorm.DB, API *utils.Client) AuthController {
 	return AuthController{DB, API}
 }
 
-func (au *AuthController) VerifySignUp(c fiber.Ctx) error {
-	// TODO: Find out how to invoke send email confirmation signup!
-	var confirm *models.ConfirmationSignup
-	if err := c.Bind().Query(&confirm); err != nil {
-		return c.JSON(fiber.Map{"status": "fail", "message": err.Error()})
-	}
-	_, err := au.API.Auth.Verify(types.VerifyRequest{Type: types.VerificationType(confirm.Type), Token: confirm.TokenHash, RedirectTo: confirm.RedirectTo})
-	if err != nil {
-		c.JSON(fiber.Map{"status": "fail", "message": err.Error()})
-		return c.Redirect().Status(fiber.StatusConflict).To("/v1/auth-failed")
-	}
-	return c.Redirect().Status(fiber.StatusOK).To(confirm.RedirectTo)
-}
-
 func (au *AuthController) SignUpWithEmailPassword(c fiber.Ctx) error {
 	var signup *models.SignUpRequest
 
@@ -60,12 +46,12 @@ func (au *AuthController) SignUpWithEmailPassword(c fiber.Ctx) error {
 
 	result, err := au.API.Auth.Signup(types.SignupRequest{Email: signup.Email, Password: signup.Password, Data: data})
 	if err != nil {
-		return c.JSON(fiber.Map{"status": "fail", "message": err.Error()})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": err.Error()})
 	}
 
 	var role *models.RoleModel
 	if fetchRole := au.DB.Table("usr_role").First(&role, "role_name = ?", "BasicUser"); fetchRole.Error != nil {
-		return c.JSON(fiber.Map{"status": "fail", "message": fetchRole.Error.Error()})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": fetchRole.Error.Error()})
 	}
 
 	insertRole := models.InsertUserRole{
@@ -75,12 +61,12 @@ func (au *AuthController) SignUpWithEmailPassword(c fiber.Ctx) error {
 	}
 
 	if assignRole := au.DB.Table("usr_roleuser").Create(&insertRole); assignRole.Error != nil {
-		return c.JSON(fiber.Map{"status": "fail", "message": assignRole.Error.Error()})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": assignRole.Error.Error()})
 	}
 
 	var userRoleResponse *models.UserRoleResponse
 	if getUserRole := au.DB.Table("usr_roleuser").Preload(clause.Associations).Find(&userRoleResponse, "user_id = ?", result.User.ID); getUserRole.Error != nil {
-		return c.JSON(fiber.Map{"status": "fail", "message": getUserRole.Error.Error()})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getUserRole.Error.Error()})
 	}
 
 	json := fiber.Map{
@@ -108,7 +94,7 @@ func (au *AuthController) SignInWithEmailPassword(c fiber.Ctx) error {
 
 	var userRoleResponse *models.UserRoleResponse
 	if getUserRole := au.DB.Table("usr_roleuser").Preload(clause.Associations).Find(&userRoleResponse, "user_id = ?", result.User.ID); getUserRole.Error != nil {
-		return c.JSON(fiber.Map{"status": "fail", "message": getUserRole.Error.Error()})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getUserRole.Error.Error()})
 	}
 
 	json := fiber.Map{
@@ -124,6 +110,27 @@ func (au *AuthController) SignInWithEmailPassword(c fiber.Ctx) error {
 }
 
 func (au *AuthController) SignOut(c fiber.Ctx) error {
-	//TODO: Do Something
-	return nil
+	result, err := au.API.Auth.GetUser()
+	if result == nil || err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": "User was not logged in at first"})
+	}
+	if err := au.API.Auth.Logout(); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Logged Out Successfully"})
+}
+
+/// [ THE CONFIRMATION EMAIL SEND SYSTEM WILL BE AUTOMATICALLY INVOKED WHEN CONFIRM EMAIL IN SUPABASE DASHBOARD CONFIGURATION IS ENABLED ]
+
+func (au *AuthController) VerifySignUp(c fiber.Ctx) error {
+	var confirm *models.ConfirmationSignup
+	if err := c.Bind().Query(&confirm); err != nil {
+		return c.JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+	_, err := au.API.Auth.Verify(types.VerifyRequest{Type: types.VerificationType(confirm.Type), Token: confirm.TokenHash, RedirectTo: confirm.RedirectTo})
+	if err != nil {
+		c.JSON(fiber.Map{"status": "fail", "message": err.Error()})
+		return c.Redirect().Status(fiber.StatusConflict).To("/v1/auth-failed")
+	}
+	return c.Redirect().Status(fiber.StatusOK).To(confirm.RedirectTo)
 }
