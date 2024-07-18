@@ -16,7 +16,8 @@ func NewRouteAuthController(authRouter auth.AuthController) AuthRouter {
 func (ar *AuthRouter) AuthRoutes(rg fiber.Router) {
 	router := rg.Group("auth")
 
-	router.Post("/loginemailpassword", ar.authRouter.SignInWithEmailPassword)
-	router.Post("/signupemailpassword", ar.authRouter.SignUpWithEmailPassword)
+	router.Post("/signin-email-password", ar.authRouter.SignInWithEmailPassword)
+	router.Post("/signup-email-password", ar.authRouter.SignUpWithEmailPassword)
 	router.Post("/signout", ar.authRouter.SignOut)
+	router.Get("/verify-signup", ar.authRouter.VerifySignUp)
 }
