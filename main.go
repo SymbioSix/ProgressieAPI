@@ -52,29 +52,44 @@ func main() {
 	app.Use(cors.New(corsConfig))
 
 	router := app.Group("/v1")
+	router.Get("/liveness-check",
+		healthcheck.NewHealthChecker(
+			healthcheck.Config{
+				Probe: func(c fiber.Ctx) bool { return true },
+			},
+		),
+	)
 	router.Get("/healthcheck", func(c fiber.Ctx) error {
-		database_status := "ready"
-		supabase_api_status := "ready"
-		overall_status := "super healthy"
+		var database_status string = "ready"
+		var supabase_api_status string = "ready"
+		var overall_status string = "super healthy"
 		healthmap := fiber.Map{
 			"database_status":     database_status,
 			"supabase_api_status": supabase_api_status,
 			"overall_status":      overall_status,
 		}
-		if s.DB.Error != nil {
+		if s.DB.Error != nil && !s.Client.Rest.Ping() {
 			database_status = "error"
-			if !s.Client.Rest.Ping() {
-				supabase_api_status = "error"
-			}
+			supabase_api_status = "error"
+			overall_status = "having issue(s) : database and supabase"
 			return c.Status(fiber.StatusInternalServerError).JSON(healthmap)
 		}
-		return c.JSON(healthmap)
-	}, healthcheck.NewHealthChecker(healthcheck.Config{Probe: func(c fiber.Ctx) bool { return true }}))
+		if s.DB.Error != nil {
+			database_status = "error"
+			overall_status = "having issue(s) : database"
+			return c.Status(fiber.StatusInternalServerError).JSON(healthmap)
+		}
+		if !s.Client.Rest.Ping() {
+			supabase_api_status = "error"
+			overall_status = "having issue(s) : supabase"
+			return c.Status(fiber.StatusInternalServerError).JSON(healthmap)
+		}
+		return c.Status(fiber.StatusOK).JSON(healthmap)
+	})
 
 	// Connect all the routes
 	AuthRouter.AuthRoutes(router)
 
 	// Serve The API
-	app.Listen(config.ServerAddr)
-	// app.Server().ListenAndServe(config.ServerAddr)
+	s.StartServerWithGracefulShutdown(app, &config)
 }
