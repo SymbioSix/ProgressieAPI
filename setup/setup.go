@@ -2,8 +2,11 @@ package setup
 
 import (
 	"log"
+	"os"
+	"os/signal"
 
 	api "github.com/SymbioSix/ProgressieAPI/utils"
+	"github.com/gofiber/fiber/v3"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -46,4 +49,30 @@ func ConnectViaAPI(config *Config) {
 	log.Println("Connected to API Gateway")
 
 	Client = client
+}
+
+func StartServerWithGracefulShutdown(a *fiber.App, config *Config) {
+	// Create channel for idle connections.
+	idleConnsClosed := make(chan struct{})
+
+	go func() {
+		sigint := make(chan os.Signal, 1)
+		signal.Notify(sigint, os.Interrupt) // Catch OS signals.
+		<-sigint
+
+		// Received an interrupt signal, shutdown.
+		if err := a.Shutdown(); err != nil {
+			// Error from closing listeners, or context timeout:
+			log.Printf("Server is not shutting down! Reason: %v", err)
+		}
+
+		close(idleConnsClosed)
+	}()
+
+	// Run server.
+	if err := a.Listen(config.ServerAddr); err != nil {
+		log.Printf("Server is not running! Reason: %v", err)
+	}
+
+	<-idleConnsClosed
 }
