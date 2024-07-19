@@ -19,7 +19,7 @@ type land_navbar_request struct {
 
 
 type land_navbar_response struct {
-	NavComponentID     int `json:"nav_component_id"`
+    NavComponentID     int `json:"nav_component_id"`
     NavComponentName   string `json:"nav_component_name"`
     NavComponentGroup  int `json:"nav_component_group"`
     NavComponentIcon   string `json:"nav_component_icon"`
