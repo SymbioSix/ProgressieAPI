@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type land_aboutus_request struct {
+type Land_Aboutus_Request struct {
     AboutUsComponentID      int       `gorm:"column:aboutus_component_id" json:"aboutus_component_id"` // Primary key
     AboutUsComponentName    string    `gorm:"column:aboutus_component_name" json:"aboutus_component_name"`
     AboutUsComponentJobdesc string    `gorm:"column:aboutus_component_jobdesc" json:"aboutus_component_jobdesc"`
@@ -16,7 +16,7 @@ type land_aboutus_request struct {
     UpdatedAt               time.Time `gorm:"column:updated_at" json:"updated_at"`
 }
 
-type land_aboutus_response struct {
+type Land_Aboutus_Response struct {
     AboutUsComponentID      int       `gorm:"column:aboutus_component_id" json:"aboutus_component_id"`
     AboutUsComponentName    string    `gorm:"column:aboutus_component_name" json:"aboutus_component_name"`
     AboutUsComponentJobdesc string    `gorm:"column:aboutus_component_jobdesc" json:"aboutus_component_jobdesc"`
