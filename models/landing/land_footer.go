@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type land_footer_request struct {
+type Land_Footer_Request struct {
     FooterComponentID    int       `gorm:"column:footer_component_id" json:"footer_component_id"`   // Primary key
     FooterComponentName  string    `gorm:"column:footer_component_name" json:"footer_component_name"`
     FooterComponentGroup int       `gorm:"column:footer_component_group" json:"footer_component_group"` // Foreign key
@@ -15,7 +15,7 @@ type land_footer_request struct {
     UpdatedAt            time.Time `gorm:"column:updated_at" json:"updated_at"`
 }
 
-type land_footer_response struct {
+type Land_Footer_Response struct {
     FooterComponentID    int       `gorm:"column:footer_component_id" json:"footer_component_id"`
     FooterComponentName  string    `gorm:"column:footer_component_name" json:"footer_component_name"`
     FooterComponentGroup int       `gorm:"column:footer_component_group" json:"footer_component_group"`

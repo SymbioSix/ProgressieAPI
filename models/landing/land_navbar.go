@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type land_navbar_request struct {
+type Land_Navbar_Request struct {
     NavComponentID    int       `gorm:"column:nav_component_id" json:"nav_component_id"`
     NavComponentName  string    `gorm:"column:nav_component_name" json:"nav_component_name"`
     NavComponentGroup int       `gorm:"column:nav_component_group" json:"nav_component_group"`
@@ -15,7 +15,7 @@ type land_navbar_request struct {
     UpdatedAt         time.Time `gorm:"column:updated_at" json:"updated_at"`
 }
 
-type land_navbar_response struct {
+type Land_Navbar_Response struct {
     NavComponentID    int       `gorm:"column:nav_component_id" json:"nav_component_id"`
     NavComponentName  string    `gorm:"column:nav_component_name" json:"nav_component_name"`
     NavComponentGroup int       `gorm:"column:nav_component_group" json:"nav_component_group"`

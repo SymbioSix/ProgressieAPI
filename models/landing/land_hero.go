@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type land_hero_request struct {
+type Land_Hero_Request struct {
     HeroComponentID      int       `gorm:"column:hero_component_id" json:"hero_component_id"`      // Primary key
     HeroComponentTitle   string    `gorm:"column:hero_component_title" json:"hero_component_title"`
     HeroComponentSubtitle string   `gorm:"column:hero_component_subtitle" json:"hero_component_subtitle"`
@@ -15,7 +15,7 @@ type land_hero_request struct {
     UpdatedAt            time.Time `gorm:"column:updated_at" json:"updated_at"`
 }
 
-type land_hero_response struct {
+type Land_Hero_Response struct {
     HeroComponentID      int       `gorm:"column:hero_component_id" json:"hero_component_id"`
     HeroComponentTitle   string    `gorm:"column:hero_component_title" json:"hero_component_title"`
     HeroComponentSubtitle string   `gorm:"column:hero_component_subtitle" json:"hero_component_subtitle"`
