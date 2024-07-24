@@ -1,12 +1,12 @@
-package services
+package landing
 
 import (
     "errors"
     "time"
 
     "gorm.io/gorm"
-    "github.com/gofiber/fiber/v2" 
-    "PROGRESSIEAPI/models/landing"
+    "github.com/gofiber/fiber/v3"
+     landing "github.com/SymbioSix/ProgressieAPI/models/landing"
 )
 
 type LandNavbarService struct {
@@ -18,8 +18,8 @@ func NewLandNavbarService(db *gorm.DB) LandNavbarService {
 }
 
 func (service LandNavbarService) CreateNavbarRequest(c fiber.Ctx) error {
-    var request models.Land_Navbar_Request
-    if err := c.BodyParser(&request); err != nil {
+    var request landing.Land_Navbar_Request
+    if err := c.Bind().JSON(&request); err != nil {
         return fiber.NewError(fiber.StatusBadRequest, "Failed to parse request body")
     }
 
@@ -30,7 +30,7 @@ func (service LandNavbarService) CreateNavbarRequest(c fiber.Ctx) error {
         return fiber.NewError(fiber.StatusInternalServerError, err.Error())
     }
 
-    response := models.Land_Navbar_Response{
+    response := landing.Land_Navbar_Response{
         NavComponentID:    request.NavComponentID,
         NavComponentName:  request.NavComponentName,
         NavComponentGroup: request.NavComponentGroup,
@@ -47,20 +47,16 @@ func (service LandNavbarService) CreateNavbarRequest(c fiber.Ctx) error {
 }
 
 func (service LandNavbarService) GetNavbarRequestByID(c fiber.Ctx) error {
-    navComponentID, err := c.ParamsInt("id")
-    if err != nil {
-        return fiber.NewError(fiber.StatusBadRequest, "Invalid ID format")
-    }
-
-    var request models.Land_Navbar_Request
-    if err := service.DB.First(&request, navComponentID).Error; err != nil {
+    navComponentID := c.Params("id")
+    var request landing.Land_Navbar_Request
+    if err := service.DB.Where("nav_component_id = ?", navComponentID).First(&request).Error; err != nil {
         if errors.Is(err, gorm.ErrRecordNotFound) {
             return fiber.NewError(fiber.StatusNotFound, "Navbar component not found")
         }
         return fiber.NewError(fiber.StatusInternalServerError, err.Error())
     }
 
-    response := models.Land_Navbar_Response{
+    response := landing.Land_Navbar_Response{
         NavComponentID:    request.NavComponentID,
         NavComponentName:  request.NavComponentName,
         NavComponentGroup: request.NavComponentGroup,
@@ -77,18 +73,15 @@ func (service LandNavbarService) GetNavbarRequestByID(c fiber.Ctx) error {
 }
 
 func (service LandNavbarService) UpdateNavbarRequest(c fiber.Ctx) error {
-    navComponentID, err := c.ParamsInt("id")
-    if err != nil {
-        return fiber.NewError(fiber.StatusBadRequest, "Invalid ID format")
-    }
+    navComponentID := c.Params("id")
 
-    var updatedRequest models.Land_Navbar_Request
-    if err := c.BodyParser(&updatedRequest); err != nil {
+    var updatedRequest landing.Land_Navbar_Request
+    if err := c.Bind().JSON(&updatedRequest); err != nil {
         return fiber.NewError(fiber.StatusBadRequest, "Failed to parse request body")
     }
 
-    var request models.Land_Navbar_Request
-    if err := service.DB.First(&request, navComponentID).Error; err != nil {
+    var request landing.Land_Navbar_Request
+    if err := service.DB.Where("nav_component_id = ?", navComponentID).First(&request).Error; err != nil {
         if errors.Is(err, gorm.ErrRecordNotFound) {
             return fiber.NewError(fiber.StatusNotFound, "Navbar component not found")
         }
@@ -107,7 +100,7 @@ func (service LandNavbarService) UpdateNavbarRequest(c fiber.Ctx) error {
         return fiber.NewError(fiber.StatusInternalServerError, err.Error())
     }
 
-    response := models.Land_Navbar_Response{
+    response := landing.Land_Navbar_Response{
         NavComponentID:    request.NavComponentID,
         NavComponentName:  request.NavComponentName,
         NavComponentGroup: request.NavComponentGroup,
