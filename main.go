@@ -5,6 +5,8 @@ import (
 
 	au_r "github.com/SymbioSix/ProgressieAPI/routers/auth"
 	au_s "github.com/SymbioSix/ProgressieAPI/services/auth"
+	ln_r "github.com/SymbioSix/ProgressieAPI/routers/landing"
+	ln_s "github.com/SymbioSix/ProgressieAPI/services/landing"
 	s "github.com/SymbioSix/ProgressieAPI/setup"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
@@ -17,6 +19,12 @@ var (
 	// TODO: Create New Service Controller and Router Variables
 	AuthController au_s.AuthController
 	AuthRouter     au_r.AuthRouter
+
+	LandNavbarService ln_s.LandNavbarService
+	LandNavbarRouter  ln_r.LandNavbarRouter
+
+	LandHeroService   ln_s.LandHeroService
+    LandHeroRouter    ln_r.LandHeroRouter
 )
 
 func init() {
@@ -34,6 +42,11 @@ func init() {
 	AuthController = au_s.NewAuthController(s.DB, s.Client)
 	AuthRouter = au_r.NewRouteAuthController(AuthController)
 
+	LandNavbarService = ln_s.NewLandNavbarService(s.DB)
+	LandNavbarRouter = ln_r.NewLandNavbarRouter(LandNavbarService)
+
+	LandHeroService = ln_s.NewLandHeroService(s.DB)
+    LandHeroRouter = ln_r.NewLandHeroRouter(LandHeroService)
 	app = fiber.New()
 }
 
@@ -89,7 +102,9 @@ func main() {
 
 	// Connect all the routes
 	AuthRouter.AuthRoutes(router)
-
+	LandNavbarRouter.LandNavbarRoutes(router)
+	LandHeroRouter.LandHeroRoutes(router)
+	
 	// Serve The API
 	s.StartServerWithGracefulShutdown(app, &config)
 }
