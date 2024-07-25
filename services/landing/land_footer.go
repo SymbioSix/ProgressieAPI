@@ -4,6 +4,7 @@ import (
 	"time"
 
 	models "github.com/SymbioSix/ProgressieAPI/models/landing"
+	"github.com/gofiber/fiber/v3"
 	"gorm.io/gorm"
 )
 
@@ -13,8 +14,17 @@ type FooterService struct {
 }
 
 // NewFooterService creates a new FooterService
-func NewFooterService(db *gorm.DB) *FooterService {
-	return &FooterService{db: db}
+func NewFooterService(db *gorm.DB) FooterService {
+	return FooterService{db: db}
+}
+
+func (service *FooterService) GetAllFooter() ([]models.Land_Footer_Response, error) {
+	var footer []models.Land_Footer_Response
+	if err := service.db.Table("land_footer").Find(&footer); err.Error != nil {
+		return nil, err.Error
+	}
+
+	return footer, nil
 }
 
 // CreateFooter creates a new footer component
@@ -111,4 +121,13 @@ func (service *FooterService) DeleteFooter(id int) error {
 		return err
 	}
 	return nil
+}
+
+func (service FooterService) GetAllFooterHandler(c fiber.Ctx) error {
+	response, err := service.GetAllFooter()
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response)
 }
