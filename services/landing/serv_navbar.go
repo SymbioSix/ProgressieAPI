@@ -34,7 +34,7 @@ func (service LandNavbarService) CreateNavbarRequest(c fiber.Ctx) error {
 	request.CreatedAt = time.Now()
 	request.UpdatedAt = time.Now()
 
-	if err := service.DB.Create(&request).Error; err != nil {
+	if err := service.DB.Table("land_navbar").Create(&request).Error; err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
@@ -57,7 +57,7 @@ func (service LandNavbarService) CreateNavbarRequest(c fiber.Ctx) error {
 func (service LandNavbarService) GetNavbarRequestByID(c fiber.Ctx) error {
 	navComponentID := c.Params("id")
 	var request landing.Land_Navbar_Request
-	if err := service.DB.Where("nav_component_id = ?", navComponentID).First(&request).Error; err != nil {
+	if err := service.DB.Table("land_navbar").Where("nav_component_id = ?", navComponentID).First(&request).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return fiber.NewError(fiber.StatusNotFound, "Navbar component not found")
 		}
@@ -89,7 +89,7 @@ func (service LandNavbarService) UpdateNavbarRequest(c fiber.Ctx) error {
 	}
 
 	var request landing.Land_Navbar_Request
-	if err := service.DB.Where("nav_component_id = ?", navComponentID).First(&request).Error; err != nil {
+	if err := service.DB.Table("land_navbar").Where("nav_component_id = ?", navComponentID).First(&request).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return fiber.NewError(fiber.StatusNotFound, "Navbar component not found")
 		}
@@ -104,7 +104,7 @@ func (service LandNavbarService) UpdateNavbarRequest(c fiber.Ctx) error {
 	request.UpdatedBy = updatedRequest.UpdatedBy
 	request.UpdatedAt = time.Now()
 
-	if err := service.DB.Save(&request).Error; err != nil {
+	if err := service.DB.Table("land_navbar").Save(&request).Error; err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 

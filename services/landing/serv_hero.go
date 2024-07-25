@@ -34,7 +34,7 @@ func (service LandHeroService) CreateHeroRequest(c fiber.Ctx) error {
 	request.CreatedAt = time.Now()
 	request.UpdatedAt = time.Now()
 
-	if err := service.DB.Create(&request).Error; err != nil {
+	if err := service.DB.Table("land_hero").Create(&request).Error; err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
@@ -57,7 +57,7 @@ func (service LandHeroService) CreateHeroRequest(c fiber.Ctx) error {
 func (service LandHeroService) GetHeroRequestByID(c fiber.Ctx) error {
 	heroComponentID := c.Params("id")
 	var request landing.Land_Hero_Request
-	if err := service.DB.Where("hero_component_id = ?", heroComponentID).First(&request).Error; err != nil {
+	if err := service.DB.Table("land_hero").Where("hero_component_id = ?", heroComponentID).First(&request).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return fiber.NewError(fiber.StatusNotFound, "Hero component not found")
 		}
@@ -89,7 +89,7 @@ func (service LandHeroService) UpdateHeroRequest(c fiber.Ctx) error {
 	}
 
 	var request landing.Land_Hero_Request
-	if err := service.DB.Where("hero_component_id = ?", heroComponentID).First(&request).Error; err != nil {
+	if err := service.DB.Table("land_hero").Where("hero_component_id = ?", heroComponentID).First(&request).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return fiber.NewError(fiber.StatusNotFound, "Hero component not found")
 		}
@@ -104,7 +104,7 @@ func (service LandHeroService) UpdateHeroRequest(c fiber.Ctx) error {
 	request.UpdatedBy = updatedRequest.UpdatedBy
 	request.UpdatedAt = time.Now()
 
-	if err := service.DB.Save(&request).Error; err != nil {
+	if err := service.DB.Table("land_hero").Save(&request).Error; err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 

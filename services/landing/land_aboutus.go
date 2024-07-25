@@ -30,7 +30,7 @@ func (s *AboutUsService) CreateAboutUs(request *models.Land_Aboutus_Request) (*m
 	request.CreatedAt = time.Now()
 	request.UpdatedAt = time.Now()
 
-	if err := s.db.Create(request).Error; err != nil {
+	if err := s.db.Table("land_aboutus").Create(request).Error; err != nil {
 		return nil, err
 	}
 
@@ -54,7 +54,7 @@ func (s *AboutUsService) CreateAboutUs(request *models.Land_Aboutus_Request) (*m
 func (s *AboutUsService) GetAboutUsByID(id int) (*models.Land_Aboutus_Response, error) {
 	var request models.Land_Aboutus_Request
 
-	if err := s.db.First(&request, id).Error; err != nil {
+	if err := s.db.Table("land_aboutus").First(&request, id).Error; err != nil {
 		return nil, err
 	}
 
@@ -78,7 +78,7 @@ func (s *AboutUsService) GetAboutUsByID(id int) (*models.Land_Aboutus_Response, 
 func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutus_Request) (*models.Land_Aboutus_Response, error) {
 	var request models.Land_Aboutus_Request
 
-	if err := s.db.First(&request, id).Error; err != nil {
+	if err := s.db.Table("land_aboutus").First(&request, id).Error; err != nil {
 		return nil, err
 	}
 
@@ -91,7 +91,7 @@ func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutu
 	request.UpdatedBy = updatedRequest.UpdatedBy
 	request.UpdatedAt = time.Now()
 
-	if err := s.db.Save(&request).Error; err != nil {
+	if err := s.db.Table("land_aboutus").Save(&request).Error; err != nil {
 		return nil, err
 	}
 
@@ -115,11 +115,11 @@ func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutu
 func (s *AboutUsService) DeleteAboutUs(id int) error {
 	var request models.Land_Aboutus_Request
 
-	if err := s.db.First(&request, id).Error; err != nil {
+	if err := s.db.Table("land_aboutus").First(&request, id).Error; err != nil {
 		return err
 	}
 
-	if err := s.db.Delete(&request).Error; err != nil {
+	if err := s.db.Table("land_aboutus").Delete(&request).Error; err != nil {
 		return err
 	}
 

@@ -34,7 +34,7 @@ func (service LandFaqService) CreateFaqRequest(c fiber.Ctx) error {
 	request.CreatedAt = time.Now()
 	request.UpdatedAt = time.Now()
 
-	if err := service.DB.Create(&request).Error; err != nil {
+	if err := service.DB.Table("land_faq").Create(&request).Error; err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
@@ -56,7 +56,7 @@ func (service LandFaqService) CreateFaqRequest(c fiber.Ctx) error {
 func (service LandFaqService) GetFaqRequestByID(c fiber.Ctx) error {
 	faqID := c.Params("id")
 	var request landing.Land_Faq_Request
-	if err := service.DB.Where("faq_id = ?", faqID).First(&request).Error; err != nil {
+	if err := service.DB.Table("land_faq").Where("faq_id = ?", faqID).First(&request).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return fiber.NewError(fiber.StatusNotFound, "FAQ not found")
 		}
@@ -87,7 +87,7 @@ func (service LandFaqService) UpdateFaqRequest(c fiber.Ctx) error {
 	}
 
 	var request landing.Land_Faq_Request
-	if err := service.DB.Where("faq_id = ?", faqID).First(&request).Error; err != nil {
+	if err := service.DB.Table("land_faq").Where("faq_id = ?", faqID).First(&request).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return fiber.NewError(fiber.StatusNotFound, "FAQ not found")
 		}
@@ -101,7 +101,7 @@ func (service LandFaqService) UpdateFaqRequest(c fiber.Ctx) error {
 	request.UpdatedBy = updatedRequest.UpdatedBy
 	request.UpdatedAt = time.Now()
 
-	if err := service.DB.Save(&request).Error; err != nil {
+	if err := service.DB.Table("land_faq").Save(&request).Error; err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 

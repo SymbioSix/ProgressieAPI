@@ -39,7 +39,7 @@ func (service *FooterService) CreateFooter(req *models.Land_Footer_Request) (*mo
 		CreatedAt:            time.Now(),
 	}
 
-	if err := service.db.Create(footer).Error; err != nil {
+	if err := service.db.Table("land_footer").Create(footer).Error; err != nil {
 		return nil, err
 	}
 
@@ -60,7 +60,7 @@ func (service *FooterService) CreateFooter(req *models.Land_Footer_Request) (*mo
 // GetFooter retrieves a footer component by ID
 func (service *FooterService) GetFooter(id int) (*models.Land_Footer_Response, error) {
 	var footer models.Land_Footer_Request
-	if err := service.db.First(&footer, id).Error; err != nil {
+	if err := service.db.Table("land_footer").First(&footer, id).Error; err != nil {
 		return nil, err
 	}
 
@@ -83,7 +83,7 @@ func (service *FooterService) GetFooter(id int) (*models.Land_Footer_Response, e
 // UpdateFooter updates an existing footer component
 func (service *FooterService) UpdateFooter(id int, req *models.Land_Footer_Request) (*models.Land_Footer_Response, error) {
 	var footer models.Land_Footer_Request
-	if err := service.db.First(&footer, id).Error; err != nil {
+	if err := service.db.Table("land_footer").First(&footer, id).Error; err != nil {
 		return nil, err
 	}
 
@@ -95,7 +95,7 @@ func (service *FooterService) UpdateFooter(id int, req *models.Land_Footer_Reque
 	footer.UpdatedBy = req.UpdatedBy
 	footer.UpdatedAt = time.Now()
 
-	if err := service.db.Save(&footer).Error; err != nil {
+	if err := service.db.Table("land_footer").Save(&footer).Error; err != nil {
 		return nil, err
 	}
 
@@ -117,7 +117,7 @@ func (service *FooterService) UpdateFooter(id int, req *models.Land_Footer_Reque
 
 // DeleteFooter deletes a footer component by ID
 func (service *FooterService) DeleteFooter(id int) error {
-	if err := service.db.Delete(&models.Land_Footer_Request{}, id).Error; err != nil {
+	if err := service.db.Table("land_footer").Delete(&models.Land_Footer_Request{}, id).Error; err != nil {
 		return err
 	}
 	return nil
