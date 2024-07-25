@@ -27,10 +27,10 @@ type UserModel struct {
 }
 
 type RoleModel struct {
-	ID          string    `gorm:"column:role_id"`
-	RoleName    string    `gorm:"column:role_name"`
-	Description string    `gorm:"column:description"`
-	Status      string    `gorm:"column:status"`
+	ID          string    `gorm:"column:role_id" json:"id"`
+	RoleName    string    `gorm:"column:role_name" json:"role_name"`
+	Description string    `gorm:"column:description" json:"description,omitempty"`
+	Status      string    `gorm:"column:status" json:"status,omitempty"`
 	CreatedBy   string    `gorm:"column:created_by"`
 	UpdatedBy   string    `gorm:"column:updated_by"`
 	UpdatedAt   time.Time `gorm:"column:updated_at"`

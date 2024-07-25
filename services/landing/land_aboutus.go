@@ -14,15 +14,23 @@ type AboutUsService struct {
 	db *gorm.DB
 }
 
-func NewAboutUsService(db *gorm.DB) *AboutUsService {
-	return &AboutUsService{db: db}
+func NewAboutUsService(db *gorm.DB) AboutUsService {
+	return AboutUsService{db: db}
+}
+
+func (s *AboutUsService) GetAllAboutUs() ([]models.Land_Aboutus_Response, error) {
+	var aboutUs []models.Land_Aboutus_Response
+	if err := s.db.Table("land_aboutus").Find(&aboutUs); err.Error != nil {
+		return nil, err.Error
+	}
+	return aboutUs, nil
 }
 
 func (s *AboutUsService) CreateAboutUs(request *models.Land_Aboutus_Request) (*models.Land_Aboutus_Response, error) {
 	request.CreatedAt = time.Now()
 	request.UpdatedAt = time.Now()
 
-	if err := s.db.Create(request).Error; err != nil {
+	if err := s.db.Table("land_aboutus").Create(request).Error; err != nil {
 		return nil, err
 	}
 
@@ -46,7 +54,7 @@ func (s *AboutUsService) CreateAboutUs(request *models.Land_Aboutus_Request) (*m
 func (s *AboutUsService) GetAboutUsByID(id int) (*models.Land_Aboutus_Response, error) {
 	var request models.Land_Aboutus_Request
 
-	if err := s.db.First(&request, id).Error; err != nil {
+	if err := s.db.Table("land_aboutus").First(&request, id).Error; err != nil {
 		return nil, err
 	}
 
@@ -70,7 +78,7 @@ func (s *AboutUsService) GetAboutUsByID(id int) (*models.Land_Aboutus_Response, 
 func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutus_Request) (*models.Land_Aboutus_Response, error) {
 	var request models.Land_Aboutus_Request
 
-	if err := s.db.First(&request, id).Error; err != nil {
+	if err := s.db.Table("land_aboutus").First(&request, id).Error; err != nil {
 		return nil, err
 	}
 
@@ -83,7 +91,7 @@ func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutu
 	request.UpdatedBy = updatedRequest.UpdatedBy
 	request.UpdatedAt = time.Now()
 
-	if err := s.db.Save(&request).Error; err != nil {
+	if err := s.db.Table("land_aboutus").Save(&request).Error; err != nil {
 		return nil, err
 	}
 
@@ -107,15 +115,23 @@ func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutu
 func (s *AboutUsService) DeleteAboutUs(id int) error {
 	var request models.Land_Aboutus_Request
 
-	if err := s.db.First(&request, id).Error; err != nil {
+	if err := s.db.Table("land_aboutus").First(&request, id).Error; err != nil {
 		return err
 	}
 
-	if err := s.db.Delete(&request).Error; err != nil {
+	if err := s.db.Table("land_aboutus").Delete(&request).Error; err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (s AboutUsService) GetAllAboutUsHandler(c fiber.Ctx) error {
+	response, err := s.GetAllAboutUs()
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 func (s AboutUsService) CreateAboutUsHandler(c fiber.Ctx) error {
