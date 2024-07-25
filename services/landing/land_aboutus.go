@@ -14,8 +14,16 @@ type AboutUsService struct {
 	db *gorm.DB
 }
 
-func NewAboutUsService(db *gorm.DB) *AboutUsService {
-	return &AboutUsService{db: db}
+func NewAboutUsService(db *gorm.DB) AboutUsService {
+	return AboutUsService{db: db}
+}
+
+func (s *AboutUsService) GetAllAboutUs() ([]models.Land_Aboutus_Response, error) {
+	var aboutUs []models.Land_Aboutus_Response
+	if err := s.db.Table("land_aboutus").Find(&aboutUs); err.Error != nil {
+		return nil, err.Error
+	}
+	return aboutUs, nil
 }
 
 func (s *AboutUsService) CreateAboutUs(request *models.Land_Aboutus_Request) (*models.Land_Aboutus_Response, error) {
@@ -116,6 +124,14 @@ func (s *AboutUsService) DeleteAboutUs(id int) error {
 	}
 
 	return nil
+}
+
+func (s AboutUsService) GetAllAboutUsHandler(c fiber.Ctx) error {
+	response, err := s.GetAllAboutUs()
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 func (s AboutUsService) CreateAboutUsHandler(c fiber.Ctx) error {
