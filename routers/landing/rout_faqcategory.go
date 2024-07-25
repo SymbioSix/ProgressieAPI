@@ -1,22 +1,23 @@
 package landing
 
 import (
-    "github.com/gofiber/fiber/v3"
-    services "github.com/SymbioSix/ProgressieAPI/services/landing"
+	services "github.com/SymbioSix/ProgressieAPI/services/landing"
+	"github.com/gofiber/fiber/v3"
 )
 
 type LandFaqCategoryRouter struct {
-    faqCategoryService services.LandFaqCategoryService
+	faqCategoryService services.LandFaqCategoryService
 }
 
 func NewLandFaqCategoryRouter(faqCategoryService services.LandFaqCategoryService) LandFaqCategoryRouter {
-    return LandFaqCategoryRouter{faqCategoryService}
+	return LandFaqCategoryRouter{faqCategoryService}
 }
 
 func (router *LandFaqCategoryRouter) LandFaqCategoryRoutes(rg fiber.Router) {
-    api := rg.Group("faq-category")
+	api := rg.Group("faq-category")
 
-    api.Post("/", router.faqCategoryService.CreateFaqCategoryRequest)
-    api.Get("/faqcategory/:id", router.faqCategoryService.GetFaqCategoryRequestByID)
-    api.Put("/faqcategory/:id", router.faqCategoryService.UpdateFaqCategoryRequest)
+	api.Get("/", router.faqCategoryService.GetAllFaqCategory)
+	api.Post("/", router.faqCategoryService.CreateFaqCategoryRequest)
+	api.Get("/:id", router.faqCategoryService.GetFaqCategoryRequestByID)
+	api.Put("/:id", router.faqCategoryService.UpdateFaqCategoryRequest)
 }
