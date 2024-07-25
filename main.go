@@ -28,6 +28,12 @@ var (
 	LandHeroService ln_s.LandHeroService
 	LandHeroRouter  ln_r.LandHeroRouter
 
+	LandFaqService      ln_s.LandFaqService
+	LandFaqRouter       ln_r.LandFaqRouter
+
+	LandFaqCategoryService ln_s.LandFaqCategoryService
+	LandFaqCategoryRouter  ln_r.LandFaqCategoryRouter
+
 	DashboardController dash_s.DashboardController
 	DashboardRouter     dash_r.DashboardRouter
 )
@@ -52,6 +58,12 @@ func init() {
 
 	LandHeroService = ln_s.NewLandHeroService(s.DB)
 	LandHeroRouter = ln_r.NewLandHeroRouter(LandHeroService)
+
+	LandFaqService = ln_s.NewLandFaqService(s.DB)
+	LandFaqRouter = ln_r.NewLandFaqRouter(LandFaqService)
+
+	LandFaqCategoryService = ln_s.NewLandFaqCategoryService(s.DB)
+	LandFaqCategoryRouter = ln_r.NewLandFaqCategoryRouter(LandFaqCategoryService)
 
 	DashboardController = dash_s.NewDashboardController(s.DB, s.Client)
 	DashboardRouter = dash_r.NewRouteAuthController(DashboardController)
@@ -113,6 +125,8 @@ func main() {
 	AuthRouter.AuthRoutes(router)
 	LandNavbarRouter.LandNavbarRoutes(router)
 	LandHeroRouter.LandHeroRoutes(router)
+	LandFaqRouter.LandFaqRoutes(router)
+	LandFaqCategoryRouter.LandFaqCategoryRoutes(router)
 	DashboardRouter.DashboardRoutes(router)
 
 	// Serve The API

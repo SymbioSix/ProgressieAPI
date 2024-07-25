@@ -17,6 +17,6 @@ func (hr *LandHeroRouter) LandHeroRoutes(rg fiber.Router) {
     router := rg.Group("hero")
 
     router.Post("/", hr.heroService.CreateHeroRequest)
-    router.Get("/nama-endpoint/:id", hr.heroService.GetHeroRequestByID)
-    router.Put("/nama-endpoint/:id", hr.heroService.UpdateHeroRequest)
+    router.Get("/hero/:id", hr.heroService.GetHeroRequestByID)
+    router.Put("/hero/:id", hr.heroService.UpdateHeroRequest)
 }
