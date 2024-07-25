@@ -17,6 +17,6 @@ func (nr *LandNavbarRouter) LandNavbarRoutes(rg fiber.Router) {
     router := rg.Group("navbar")
 
     router.Post("/", nr.navbarService.CreateNavbarRequest)
-    router.Get("/nama-endpoint/:id", nr.navbarService.GetNavbarRequestByID)
-    router.Put("/nama-endpoint/:id", nr.navbarService.UpdateNavbarRequest)
+    router.Get("/navbar/:id", nr.navbarService.GetNavbarRequestByID)
+    router.Put("/navbar/:id", nr.navbarService.UpdateNavbarRequest)
 }
