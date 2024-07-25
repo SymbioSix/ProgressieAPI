@@ -4,8 +4,10 @@ import (
 	"log"
 
 	au_r "github.com/SymbioSix/ProgressieAPI/routers/auth"
-	au_s "github.com/SymbioSix/ProgressieAPI/services/auth"
+	dash_r "github.com/SymbioSix/ProgressieAPI/routers/dashboard"
 	ln_r "github.com/SymbioSix/ProgressieAPI/routers/landing"
+	au_s "github.com/SymbioSix/ProgressieAPI/services/auth"
+	dash_s "github.com/SymbioSix/ProgressieAPI/services/dashboard"
 	ln_s "github.com/SymbioSix/ProgressieAPI/services/landing"
 	s "github.com/SymbioSix/ProgressieAPI/setup"
 	"github.com/gofiber/fiber/v3"
@@ -23,8 +25,11 @@ var (
 	LandNavbarService ln_s.LandNavbarService
 	LandNavbarRouter  ln_r.LandNavbarRouter
 
-	LandHeroService   ln_s.LandHeroService
-    LandHeroRouter    ln_r.LandHeroRouter
+	LandHeroService ln_s.LandHeroService
+	LandHeroRouter  ln_r.LandHeroRouter
+
+	DashboardController dash_s.DashboardController
+	DashboardRouter     dash_r.DashboardRouter
 )
 
 func init() {
@@ -46,7 +51,11 @@ func init() {
 	LandNavbarRouter = ln_r.NewLandNavbarRouter(LandNavbarService)
 
 	LandHeroService = ln_s.NewLandHeroService(s.DB)
-    LandHeroRouter = ln_r.NewLandHeroRouter(LandHeroService)
+	LandHeroRouter = ln_r.NewLandHeroRouter(LandHeroService)
+
+	DashboardController = dash_s.NewDashboardController(s.DB, s.Client)
+	DashboardRouter = dash_r.NewRouteAuthController(DashboardController)
+
 	app = fiber.New()
 }
 
@@ -104,7 +113,8 @@ func main() {
 	AuthRouter.AuthRoutes(router)
 	LandNavbarRouter.LandNavbarRoutes(router)
 	LandHeroRouter.LandHeroRoutes(router)
-	
+	DashboardRouter.DashboardRoutes(router)
+
 	// Serve The API
 	s.StartServerWithGracefulShutdown(app, &config)
 }
