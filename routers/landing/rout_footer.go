@@ -17,8 +17,8 @@ func (fo *LandFooterRouter) LandFooterRoutes(rg fiber.Router) {
 	router := rg.Group("footer")
 
 	router.Get("/", fo.footerService.GetAllFooterHandler)
-	// router.Post("/", fo.footerService.CreateFooterHandler)
-	// router.Get("/:id", fo.footerService.GetFooterRequestByIDHandler)
-	// router.Put("/:id", fo.footerService.UpdateFooterRequestHandler)
-	// router.Delete("/:id", fo.footerService.DeleteFooterHandler)
+	router.Post("/", fo.footerService.CreateFooterHandler)
+	router.Get("/:id", fo.footerService.GetFooterHandler)
+	router.Put("/:id", fo.footerService.UpdateFooterHandler)
+	router.Delete("/:id", fo.footerService.DeleteFooterHandler)
 }
