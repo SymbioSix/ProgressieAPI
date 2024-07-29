@@ -78,6 +78,7 @@ func (au *AuthController) SignUpWithEmailPassword(c fiber.Ctx) error {
 		"token_type":    result.TokenType,
 		"data":          userRoleResponse,
 	}
+	au.API.UpdateAuthSession(result.Session)
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "result": json})
 }
 
@@ -106,6 +107,7 @@ func (au *AuthController) SignInWithEmailPassword(c fiber.Ctx) error {
 		"token_type":    result.TokenType,
 		"data":          userRoleResponse,
 	}
+	au.API.UpdateAuthSession(result.Session)
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "result": json})
 }
 
@@ -120,6 +122,61 @@ func (au *AuthController) SignOut(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Logged Out Successfully"})
 }
 
+func (au *AuthController) SendForgotPasswordEmail(c fiber.Ctx) error {
+	var forgotRequest *models.ForgotPasswordRequest
+	if err := c.Bind().JSON(&forgotRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+
+	if err := au.API.Auth.Recover(types.RecoverRequest{Email: forgotRequest.Email}); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+
+	return c.JSON(fiber.Map{})
+}
+
+func (au *AuthController) VerifyPasswordRecovery(c fiber.Ctx) error {
+	var verify *models.ConfirmationSignup
+	if err := c.Bind().Query(&verify); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+
+	_, err := au.API.Auth.Verify(types.VerifyRequest{Type: types.VerificationType(verify.Type), Token: verify.TokenHash, RedirectTo: verify.RedirectTo})
+	if err != nil {
+		c.JSON(fiber.Map{"status": "fail", "message": err.Error()})
+		return c.Redirect().Status(fiber.StatusConflict).To("/v1/auth/failed?type=" + verify.Type)
+	}
+	return c.Status(fiber.StatusOK).Redirect().To(verify.RedirectTo)
+}
+
+func (au *AuthController) UpdateUserPassword(c fiber.Ctx) error {
+	var password *models.UpdatePasswordAfterForgotPassword
+	if err := c.Bind().JSON(&password); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+
+	_, err := au.API.Auth.UpdateUser(types.UpdateUserRequest{Password: &password.NewPassword})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Password has been changed!"})
+}
+
+func (au *AuthController) FailedAuthService(c fiber.Ctx) error {
+	var failedType *models.FailedAuth
+	if err := c.Bind().Query(&failedType); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+	if failedType.Type == "signup" {
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"status": "conflict", "message": "Error When Verifying SignUp. Please Confirm Again Later!"})
+	} else if failedType.Type == "recovery" {
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"status": "conflict", "message": "Error When Verifying Reset Password Request. Please Try Again Later!"})
+	} else {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Unknown error"})
+	}
+}
+
 /// [ THE CONFIRMATION EMAIL SEND SYSTEM WILL BE AUTOMATICALLY INVOKED WHEN CONFIRM EMAIL IN SUPABASE DASHBOARD CONFIGURATION IS ENABLED ]
 
 func (au *AuthController) VerifySignUp(c fiber.Ctx) error {
@@ -130,7 +187,7 @@ func (au *AuthController) VerifySignUp(c fiber.Ctx) error {
 	_, err := au.API.Auth.Verify(types.VerifyRequest{Type: types.VerificationType(confirm.Type), Token: confirm.TokenHash, RedirectTo: confirm.RedirectTo})
 	if err != nil {
 		c.JSON(fiber.Map{"status": "fail", "message": err.Error()})
-		return c.Redirect().Status(fiber.StatusConflict).To("/v1/auth-failed")
+		return c.Redirect().Status(fiber.StatusConflict).To("/v1/auth/failed?type=" + confirm.Type)
 	}
 	return c.Redirect().Status(fiber.StatusOK).To(confirm.RedirectTo)
 }
