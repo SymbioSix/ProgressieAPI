@@ -16,3 +16,15 @@ type ConfirmationSignup struct {
 	TokenHash  string `query:"token_hash"`
 	RedirectTo string `query:"redirect_to"`
 }
+
+type ForgotPasswordRequest struct {
+	Email string `json:"email" binding:"required"`
+}
+
+type UpdatePasswordAfterForgotPassword struct {
+	NewPassword string `json:"email" binding:"required"`
+}
+
+type FailedAuth struct {
+	Type string `query:"type"`
+}
