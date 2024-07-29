@@ -1,9 +1,12 @@
 package landing
 
 import (
+	"errors"
+	"strconv"
 	"time"
 
 	models "github.com/SymbioSix/ProgressieAPI/models/landing"
+	"github.com/gofiber/fiber/v3"
 	"gorm.io/gorm"
 )
 
@@ -111,4 +114,102 @@ func (service *FooterService) DeleteFooter(id int) error {
 		return err
 	}
 	return nil
+}
+
+// Handlers
+func (service FooterService) CreateFooterHandler(c fiber.Ctx) error {
+	req := new(models.Land_Footer_Request)
+	if err := c.Bind().JSON(&req); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	response, err := service.CreateFooter(req)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(response)
+}
+
+func (service FooterService) GetFooterHandler(c fiber.Ctx) error {
+	idStr := c.Params("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid footer ID")
+	}
+
+	response, err := service.GetFooter(id)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return fiber.NewError(fiber.StatusNotFound, "Footer not found")
+		}
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response)
+}
+
+func (service FooterService) UpdateFooterHandler(c fiber.Ctx) error {
+	idStr := c.Params("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid footer ID")
+	}
+
+	req := new(models.Land_Footer_Request)
+	if err := c.Bind().JSON(&req); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	response, err := service.UpdateFooter(id, req)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return fiber.NewError(fiber.StatusNotFound, "Footer not found")
+		}
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response)
+}
+
+func (service FooterService) DeleteFooterHandler(c fiber.Ctx) error {
+	idStr := c.Params("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid footer ID")
+	}
+
+	if err := service.DeleteFooter(id); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return fiber.NewError(fiber.StatusNotFound, "Footer not found")
+		}
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.SendStatus(fiber.StatusNoContent)
+}
+
+func (service FooterService) GetAllFooterHandler(c fiber.Ctx) error {
+	var footers []models.Land_Footer_Request
+	if err := service.db.Find(&footers).Error; err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	response := make([]*models.Land_Footer_Response, len(footers))
+	for i, footer := range footers {
+		response[i] = &models.Land_Footer_Response{
+			FooterComponentID:    footer.FooterComponentID,
+			FooterComponentName:  footer.FooterComponentName,
+			FooterComponentGroup: footer.FooterComponentGroup,
+			FooterComponentIcon:  footer.FooterComponentIcon,
+			Tooltip:              footer.Tooltip,
+			Endpoint:             footer.Endpoint,
+			CreatedBy:            footer.CreatedBy,
+			CreatedAt:            footer.CreatedAt,
+			UpdatedBy:            footer.UpdatedBy,
+			UpdatedAt:            footer.UpdatedAt,
+		}
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response)
 }
