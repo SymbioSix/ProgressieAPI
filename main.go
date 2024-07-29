@@ -4,8 +4,10 @@ import (
 	"log"
 
 	au_r "github.com/SymbioSix/ProgressieAPI/routers/auth"
-	au_s "github.com/SymbioSix/ProgressieAPI/services/auth"
+	dash_r "github.com/SymbioSix/ProgressieAPI/routers/dashboard"
 	ln_r "github.com/SymbioSix/ProgressieAPI/routers/landing"
+	au_s "github.com/SymbioSix/ProgressieAPI/services/auth"
+	dash_s "github.com/SymbioSix/ProgressieAPI/services/dashboard"
 	ln_s "github.com/SymbioSix/ProgressieAPI/services/landing"
 	s "github.com/SymbioSix/ProgressieAPI/setup"
 	"github.com/gofiber/fiber/v3"
@@ -23,8 +25,23 @@ var (
 	LandNavbarService ln_s.LandNavbarService
 	LandNavbarRouter  ln_r.LandNavbarRouter
 
-	LandHeroService   ln_s.LandHeroService
-    LandHeroRouter    ln_r.LandHeroRouter
+	LandHeroService ln_s.LandHeroService
+	LandHeroRouter  ln_r.LandHeroRouter
+
+	LandFaqService ln_s.LandFaqService
+	LandFaqRouter  ln_r.LandFaqRouter
+
+	LandFaqCategoryService ln_s.LandFaqCategoryService
+	LandFaqCategoryRouter  ln_r.LandFaqCategoryRouter
+
+	LandAboutUsService ln_s.AboutUsService
+	LandAboutUsRouter  ln_r.LandAboutUsRouter
+
+	LandFooterService ln_s.FooterService
+	LandFooterRouter  ln_r.LandFooterRouter
+
+	DashboardController dash_s.DashboardController
+	DashboardRouter     dash_r.DashboardRouter
 )
 
 func init() {
@@ -46,7 +63,23 @@ func init() {
 	LandNavbarRouter = ln_r.NewLandNavbarRouter(LandNavbarService)
 
 	LandHeroService = ln_s.NewLandHeroService(s.DB)
-    LandHeroRouter = ln_r.NewLandHeroRouter(LandHeroService)
+	LandHeroRouter = ln_r.NewLandHeroRouter(LandHeroService)
+
+	LandFaqService = ln_s.NewLandFaqService(s.DB)
+	LandFaqRouter = ln_r.NewLandFaqRouter(LandFaqService)
+
+	LandFaqCategoryService = ln_s.NewLandFaqCategoryService(s.DB)
+	LandFaqCategoryRouter = ln_r.NewLandFaqCategoryRouter(LandFaqCategoryService)
+
+	LandAboutUsService = ln_s.NewAboutUsService(s.DB)
+	LandAboutUsRouter = ln_r.NewLandAboutUsRouter(LandAboutUsService)
+
+	LandFooterService = ln_s.NewFooterService(s.DB)
+	LandFooterRouter = ln_r.NewLandFooterRouter(LandFooterService)
+
+	DashboardController = dash_s.NewDashboardController(s.DB, s.Client)
+	DashboardRouter = dash_r.NewRouteAuthController(DashboardController)
+
 	app = fiber.New()
 }
 
@@ -104,7 +137,12 @@ func main() {
 	AuthRouter.AuthRoutes(router)
 	LandNavbarRouter.LandNavbarRoutes(router)
 	LandHeroRouter.LandHeroRoutes(router)
-	
+	LandFaqRouter.LandFaqRoutes(router)
+	LandFaqCategoryRouter.LandFaqCategoryRoutes(router)
+	LandAboutUsRouter.LandAboutUsRoutes(router)
+	LandFooterRouter.LandFooterRoutes(router)
+	DashboardRouter.DashboardRoutes(router)
+
 	// Serve The API
 	s.StartServerWithGracefulShutdown(app, &config)
 }
