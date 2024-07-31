@@ -24,7 +24,7 @@ func ConnectDatabase(config *Config) error {
 	dbPort := config.DBPort
 	dbUser := config.DBUserName
 	dbPass := config.DBPassword
-	database, err := gorm.Open(postgres.Open("user="+dbUser+" password="+dbPass+" host="+dbHost+" port="+dbPort+" dbname="+dbName), &gorm.Config{})
+	database, err := gorm.Open(postgres.New(postgres.Config{DSN: "user=" + dbUser + " password=" + dbPass + " host=" + dbHost + " port=" + dbPort + " dbname=" + dbName, PreferSimpleProtocol: true}), &gorm.Config{TranslateError: true})
 	if err != nil {
 		log.Fatal(err)
 		panic("Can't connect to database!")
