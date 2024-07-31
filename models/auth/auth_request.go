@@ -22,7 +22,7 @@ type ForgotPasswordRequest struct {
 }
 
 type UpdatePasswordAfterForgotPassword struct {
-	NewPassword string `json:"email" binding:"required"`
+	NewPassword string `json:"new_password" binding:"required"`
 }
 
 type FailedAuth struct {
