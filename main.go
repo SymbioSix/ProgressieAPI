@@ -5,9 +5,11 @@ import (
 
 	_ "github.com/SymbioSix/ProgressieAPI/docs"
 	au_r "github.com/SymbioSix/ProgressieAPI/routers/auth"
+	crs_r "github.com/SymbioSix/ProgressieAPI/routers/courses"
 	dash_r "github.com/SymbioSix/ProgressieAPI/routers/dashboard"
 	ln_r "github.com/SymbioSix/ProgressieAPI/routers/landing"
 	au_s "github.com/SymbioSix/ProgressieAPI/services/auth"
+	crs_s "github.com/SymbioSix/ProgressieAPI/services/courses"
 	dash_s "github.com/SymbioSix/ProgressieAPI/services/dashboard"
 	ln_s "github.com/SymbioSix/ProgressieAPI/services/landing"
 	s "github.com/SymbioSix/ProgressieAPI/setup"
@@ -44,6 +46,9 @@ var (
 
 	DashboardController dash_s.DashboardController
 	DashboardRouter     dash_r.DashboardRouter
+
+	CourseController crs_s.CourseController
+	CourseRouter     crs_r.GetCourseRouter
 )
 
 func init() {
@@ -82,6 +87,9 @@ func init() {
 	DashboardController = dash_s.NewDashboardController(s.DB, s.Client)
 	DashboardRouter = dash_r.NewRouteAuthController(DashboardController)
 
+	CourseController = crs_s.NewCourseController(s.DB, s.Client)
+	CourseRouter = crs_r.NewGetCourseRouter(CourseController)
+
 	app = fiber.New()
 }
 
@@ -95,7 +103,7 @@ func init() {
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host		https://progressieapi.up.railway.app/
+//	@host		https://selfieapi.up.railway.app
 //	@BasePath	/v1
 
 //	@accept		json
@@ -162,6 +170,7 @@ func main() {
 	LandAboutUsRouter.LandAboutUsRoutes(router)
 	LandFooterRouter.LandFooterRoutes(router)
 	DashboardRouter.DashboardRoutes(router)
+	CourseRouter.GetCourseRoutes(router)
 
 	// Serve The API
 	s.StartServerWithGracefulShutdown(app, &config)

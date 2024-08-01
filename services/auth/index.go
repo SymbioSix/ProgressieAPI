@@ -100,6 +100,180 @@ func (au *AuthController) SignUpWithEmailPassword(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "result": json})
 }
 
+// SignUpForAdmin godoc
+//
+//	@Summary		Sign Up A Admin With Email Password
+//	@Description	Signing Up A Admin Using Email and Password. Request Body need email, password, and username.
+//	@Tags			Auth Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		models.SignUpRequest	true	"Sign Up Credentials"
+//	@Success		200		{object}	object
+//	@Failure		400		{object}	object
+//	@Failure		404		{object}	object
+//	@Failure		500		{object}	object
+//	@Router			/auth/signup-admin [post]
+func (au *AuthController) SignUpForAdmin(c fiber.Ctx) error {
+	var signup models.SignUpRequest
+
+	if err := c.Bind().JSON(&signup); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+
+	var user models.UserModel
+	checkUsername := au.DB.Table("usr_user").First(&user, "username = ?", signup.Username)
+	if checkUsername.Error != nil {
+		if errors.Is(checkUsername.Error, gorm.ErrRecordNotFound) {
+		} else {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": checkUsername.Error.Error()})
+		}
+	} else if checkUsername.Error == nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": "Username has been taken"})
+	}
+
+	checkEmail := au.DB.Table("usr_user").First(&user, "email = ?", signup.Email)
+	if checkEmail.Error != nil {
+		if errors.Is(checkEmail.Error, gorm.ErrRecordNotFound) {
+		} else {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": checkEmail.Error.Error()})
+		}
+	} else if checkEmail.Error == nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": "Email has been taken"})
+	}
+	data := make(map[string]interface{})
+	data["username"] = signup.Username
+
+	result, err := au.API.Auth.Signup(types.SignupRequest{Email: signup.Email, Password: signup.Password, Data: data})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+
+	var role models.RoleModel
+	if fetchRoleAdmin := au.DB.Table("usr_role").First(&role, "role_name = ?", "Administrator"); fetchRoleAdmin.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": fetchRoleAdmin.Error.Error()})
+	}
+
+	insertRole := models.InsertUserRole{
+		UserID:    result.User.ID,
+		RoleID:    role.RoleID,
+		CreatedBy: "SignUp System",
+	}
+
+	if assignRole := au.DB.Table("usr_roleuser").Create(&insertRole); assignRole.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": assignRole.Error.Error()})
+	}
+
+	if fetchRoleAdmin := au.DB.Table("usr_role").First(&role, "role_name = ?", "BasicUser"); fetchRoleAdmin.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": fetchRoleAdmin.Error.Error()})
+	}
+
+	insertRole = models.InsertUserRole{
+		UserID:    result.User.ID,
+		RoleID:    role.RoleID,
+		CreatedBy: "SignUp System",
+	}
+
+	if assignRole := au.DB.Table("usr_roleuser").Create(&insertRole); assignRole.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": assignRole.Error.Error()})
+	}
+
+	var userRoleResponse models.UserRoleResponse
+	if getUserRole := au.DB.Table("usr_roleuser").Preload(clause.Associations).Find(&userRoleResponse, "user_id = ?", result.User.ID); getUserRole.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getUserRole.Error.Error()})
+	}
+
+	json := fiber.Map{
+		"access_token":  result.AccessToken,
+		"refresh_token": result.RefreshToken,
+		"expired_at":    result.ExpiresAt,
+		"expires_in":    result.ExpiresIn,
+		"token_type":    result.TokenType,
+		"data":          userRoleResponse,
+	}
+	au.API.UpdateAuthSession(result.Session)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "result": json})
+}
+
+// SignUpForSuperUser godoc
+//
+//	@Summary		Sign Up A SuperUser With Email Password
+//	@Description	Signing Up A SuperUser Using Email and Password. Request Body need email, password, and username.
+//	@Tags			Auth Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		models.SignUpRequest	true	"Sign Up Credentials"
+//	@Success		200		{object}	object
+//	@Failure		400		{object}	object
+//	@Failure		404		{object}	object
+//	@Failure		500		{object}	object
+//	@Router			/auth/signup-super [post]
+func (au *AuthController) SignUpForSuperUser(c fiber.Ctx) error {
+	var signup models.SignUpRequest
+
+	if err := c.Bind().JSON(&signup); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+
+	var user models.UserModel
+	checkUsername := au.DB.Table("usr_user").First(&user, "username = ?", signup.Username)
+	if checkUsername.Error != nil {
+		if errors.Is(checkUsername.Error, gorm.ErrRecordNotFound) {
+		} else {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": checkUsername.Error.Error()})
+		}
+	} else if checkUsername.Error == nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": "Username has been taken"})
+	}
+
+	checkEmail := au.DB.Table("usr_user").First(&user, "email = ?", signup.Email)
+	if checkEmail.Error != nil {
+		if errors.Is(checkEmail.Error, gorm.ErrRecordNotFound) {
+		} else {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": checkEmail.Error.Error()})
+		}
+	} else if checkEmail.Error == nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": "Email has been taken"})
+	}
+	data := make(map[string]interface{})
+	data["username"] = signup.Username
+
+	result, err := au.API.Auth.Signup(types.SignupRequest{Email: signup.Email, Password: signup.Password, Data: data})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+
+	var role models.RoleModel
+	if fetchRoleSuper := au.DB.Table("usr_role").First(&role, "role_name = ?", "SuperUser"); fetchRoleSuper.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": fetchRoleSuper.Error.Error()})
+	}
+
+	insertRole := models.InsertUserRole{
+		UserID:    result.User.ID,
+		RoleID:    role.RoleID,
+		CreatedBy: "SignUp System",
+	}
+
+	if assignRole := au.DB.Table("usr_roleuser").Create(&insertRole); assignRole.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": assignRole.Error.Error()})
+	}
+
+	var userRoleResponse models.UserRoleResponse
+	if getUserRole := au.DB.Table("usr_roleuser").Preload(clause.Associations).Find(&userRoleResponse, "user_id = ?", result.User.ID); getUserRole.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getUserRole.Error.Error()})
+	}
+
+	json := fiber.Map{
+		"access_token":  result.AccessToken,
+		"refresh_token": result.RefreshToken,
+		"expired_at":    result.ExpiresAt,
+		"expires_in":    result.ExpiresIn,
+		"token_type":    result.TokenType,
+		"data":          userRoleResponse,
+	}
+	au.API.UpdateAuthSession(result.Session)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "result": json})
+}
+
 // SignInWithEmailPassword godoc
 //
 //	@Summary		Sign In A User With Email Password

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	models "github.com/SymbioSix/ProgressieAPI/models/course"
+	models "github.com/SymbioSix/ProgressieAPI/models/quiz"
 	"github.com/gofiber/fiber/v3"
 	"gorm.io/gorm"
 )
