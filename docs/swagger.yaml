@@ -1,0 +1,343 @@
+basePath: /v1
+consumes:
+- application/json
+definitions:
+  models.ForgotPasswordRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  models.SignInRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.SignUpRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  models.UpdatePasswordAfterForgotPassword:
+    properties:
+      new_password:
+        type: string
+    required:
+    - new_password
+    type: object
+host: http://127.0.0.1:8080
+info:
+  contact:
+    email: fiber@swagger.io
+    name: API Support
+  description: RESTful Self-ie Academy API Services. Built to ensure Self-ie Services
+    are good to be served!
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Self-Ie API Services
+  version: "1.0"
+paths:
+  /auth/failed:
+    get:
+      consumes:
+      - application/json
+      description: When Redirected To This Service, It Will Return JSON Response With
+        Various Error Message
+      parameters:
+      - description: Get The type Value When Being Redirected from Forgot Password
+          Recovery or Verify Signup
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Failed Auth Service Messages and Status Responser
+      tags:
+      - Auth Service
+  /auth/send-forgot-password-email:
+    post:
+      consumes:
+      - application/json
+      description: Request Body need email.
+      parameters:
+      - description: Forgot Password Requirement
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ForgotPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Send Email For Forgot Password Feature
+      tags:
+      - Auth Service
+  /auth/signin-email-password:
+    post:
+      consumes:
+      - application/json
+      description: Signing In A User Using Email and Password. Request Body need email
+        and password.
+      parameters:
+      - description: Sign In Credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Sign In A User With Email Password
+      tags:
+      - Auth Service
+  /auth/signout:
+    post:
+      consumes:
+      - application/json
+      description: Signing Out A User. Required Authenticated User.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Sign Out A User
+      tags:
+      - Auth Service
+  /auth/signup-email-password:
+    post:
+      consumes:
+      - application/json
+      description: Signing Up A User Using Email and Password. Request Body need email,
+        password, and username.
+      parameters:
+      - description: Sign Up Credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Sign Up A User With Email Password
+      tags:
+      - Auth Service
+  /auth/update-user-password:
+    put:
+      consumes:
+      - application/json
+      description: Request Body need new_password.
+      parameters:
+      - description: Update The Password
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdatePasswordAfterForgotPassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Update The User Password (After Confirming From Verify Password Recovery)
+      tags:
+      - Auth Service
+  /auth/verify-password-recovery:
+    get:
+      consumes:
+      - application/json
+      description: Request Body need email, password, and username. Required SendForgotPasswordEmail.
+      parameters:
+      - description: The Request Type From Confirmation Email
+        in: query
+        name: type
+        required: true
+        type: string
+      - description: Secret Token Hashed From Confirmation Email
+        in: query
+        name: token_hash
+        required: true
+        type: string
+      - description: Redirect API URL From Confirmation Email
+        in: query
+        name: redirect_to
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Verifying Forgotten Password
+      tags:
+      - Auth Service
+  /auth/verify-signup:
+    get:
+      consumes:
+      - application/json
+      description: Not Very Useful At The Moment
+      parameters:
+      - description: The Request Type From Confirmation Email
+        in: query
+        name: type
+        required: true
+        type: string
+      - description: Secret Token Hashed From Confirmation Email
+        in: query
+        name: token_hash
+        required: true
+        type: string
+      - description: Redirect API URL From Confirmation Email
+        in: query
+        name: redirect_to
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Verify New Signed Up User
+      tags:
+      - Auth Service
+produces:
+- application/json
+swagger: "2.0"

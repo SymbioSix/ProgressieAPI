@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	_ "github.com/SymbioSix/ProgressieAPI/docs"
 	au_r "github.com/SymbioSix/ProgressieAPI/routers/auth"
 	dash_r "github.com/SymbioSix/ProgressieAPI/routers/dashboard"
 	ln_r "github.com/SymbioSix/ProgressieAPI/routers/landing"
@@ -10,6 +11,7 @@ import (
 	dash_s "github.com/SymbioSix/ProgressieAPI/services/dashboard"
 	ln_s "github.com/SymbioSix/ProgressieAPI/services/landing"
 	s "github.com/SymbioSix/ProgressieAPI/setup"
+	"github.com/SymbioSix/ProgressieAPI/utils/swagger" // PROPS TO: github.com/gofiber/swagger (modified so it can runned in gofiber/fiber/v3)
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/healthcheck"
@@ -83,6 +85,22 @@ func init() {
 	app = fiber.New()
 }
 
+//	@title			Self-Ie API Services
+//	@version		1.0
+//	@description	RESTful Self-ie Academy API Services. Built to ensure Self-ie Services are good to be served!
+//	@termsOfService	http://swagger.io/terms/
+
+//	@contact.name	API Support
+//	@contact.email	fiber@swagger.io
+//	@license.name	Apache 2.0
+//	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
+
+//	@host		https://progressieapi.up.railway.app/
+//	@BasePath	/v1
+
+//	@accept		json
+//	@produce	json
+
 func main() {
 	config, err := s.LoadConfig(".")
 	if err != nil {
@@ -91,7 +109,7 @@ func main() {
 
 	corsConfig := cors.Config{
 		// Allow Origins Will Be Updated With Our Web Domain
-		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowOrigins:     []string{"http://localhost:5173", "http://127.0.0.1:5173"},
 		AllowCredentials: true,
 	}
 
@@ -132,6 +150,8 @@ func main() {
 		}
 		return c.Status(fiber.StatusOK).JSON(healthmap)
 	})
+
+	router.Get("/swagger/*", swagger.HandlerDefault)
 
 	// Connect all the routes
 	AuthRouter.AuthRoutes(router)
