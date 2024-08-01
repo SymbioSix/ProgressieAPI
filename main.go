@@ -95,7 +95,7 @@ func init() {
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host		http://127.0.0.1:8080
+//	@host		https://progressieapi.up.railway.app/
 //	@BasePath	/v1
 
 //	@accept		json
