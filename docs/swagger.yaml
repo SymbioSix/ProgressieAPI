@@ -39,7 +39,7 @@ definitions:
     required:
     - new_password
     type: object
-host: http://127.0.0.1:8080
+host: https://progressieapi.up.railway.app/
 info:
   contact:
     email: fiber@swagger.io
