@@ -17,6 +17,10 @@ type CourseModel struct {
 	SubCourses     []SubCourseModel `gorm:"foreignKey:CourseID;references:CourseID" json:"sub_courses,omitempty"`
 }
 
+func (crs *CourseModel) TableName() string {
+	return "crs_course"
+}
+
 type SubCourseModel struct {
 	SubcourseID     string                         `gorm:"column:subcourse_id;primaryKey" json:"subcourse_id"`
 	SubcourseName   string                         `gorm:"column:subcourse_name" json:"subcourse_name"`
@@ -32,12 +36,20 @@ type SubCourseModel struct {
 	ReadingContents []SubCourseReadingContentModel `gorm:"foreignKey:SubcourseID;references:SubcourseID" json:"reading_contents,omitempty"`
 }
 
+func (crs *SubCourseModel) TableName() string {
+	return "crs_subcourse"
+}
+
 type SubCourseVideoContentModel struct {
 	SubcourseID string `gorm:"column:subcourse_id;primaryKey" json:"subcourse_id"`
 	VideoLink   string `gorm:"column:video_link" json:"video_link"`
 	Description string `gorm:"column:description" json:"description"`
 	Status      string `gorm:"column:status" json:"status"`
 	EarnedPoint int    `gorm:"column:earned_point" json:"earned_point"`
+}
+
+func (crs *SubCourseVideoContentModel) TableName() string {
+	return "crs_subcoursevideo"
 }
 
 type SubCourseReadingContentModel struct {
@@ -55,8 +67,16 @@ type SubCourseReadingContentModel struct {
 	ReadingImages      []SubCourseReadingImageContentModel `gorm:"foreignKey:SubcoursereadingID;references:SubcoursereadingID" json:"reading_images"`
 }
 
+func (crs *SubCourseReadingContentModel) TableName() string {
+	return "crs_subcoursereading"
+}
+
 type SubCourseReadingImageContentModel struct {
 	SubcoursereadingID string `gorm:"column:subcoursereading_id;primaryKey" json:"subcoursereading_id"`
 	ImageLink          string `gorm:"column:image_link" json:"image_link"`
 	Description        string `gorm:"column:description" json:"description"`
+}
+
+func (crs *SubCourseReadingImageContentModel) TableName() string {
+	return "crs_subcoursereadingimage"
 }

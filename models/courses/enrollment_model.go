@@ -18,6 +18,10 @@ type EnrollmentModel struct {
 	UpdatedAt time.Time   `gorm:"column:updated_at" json:"updated_at,omitempty"`
 }
 
+func (crs *EnrollmentModel) TableName() string {
+	return "crs_enrollment"
+}
+
 type UpdateEnrollmentProgress struct {
 	Progress float64 `json:"progress" binding:"required"`
 }
