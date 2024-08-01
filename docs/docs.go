@@ -223,6 +223,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/signup-admin": {
+            "post": {
+                "description": "Signing Up A Admin Using Email and Password. Request Body need email, password, and username.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth Service"
+                ],
+                "summary": "Sign Up A Admin With Email Password",
+                "parameters": [
+                    {
+                        "description": "Sign Up Credentials",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SignUpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/signup-email-password": {
             "post": {
                 "description": "Signing Up A User Using Email and Password. Request Body need email, password, and username.",
@@ -236,6 +288,58 @@ const docTemplate = `{
                     "Auth Service"
                 ],
                 "summary": "Sign Up A User With Email Password",
+                "parameters": [
+                    {
+                        "description": "Sign Up Credentials",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SignUpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/signup-super": {
+            "post": {
+                "description": "Signing Up A SuperUser Using Email and Password. Request Body need email, password, and username.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth Service"
+                ],
+                "summary": "Sign Up A SuperUser With Email Password",
                 "parameters": [
                     {
                         "description": "Sign Up Credentials",
@@ -519,7 +623,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "https://progressieapi.up.railway.app/",
+	Host:             "https://selfieapi.up.railway.app",
 	BasePath:         "/v1",
 	Schemes:          []string{},
 	Title:            "Self-Ie API Services",

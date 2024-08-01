@@ -39,7 +39,7 @@ definitions:
     required:
     - new_password
     type: object
-host: https://progressieapi.up.railway.app/
+host: https://selfieapi.up.railway.app
 info:
   contact:
     email: fiber@swagger.io
@@ -183,6 +183,41 @@ paths:
       summary: Sign Out A User
       tags:
       - Auth Service
+  /auth/signup-admin:
+    post:
+      consumes:
+      - application/json
+      description: Signing Up A Admin Using Email and Password. Request Body need
+        email, password, and username.
+      parameters:
+      - description: Sign Up Credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Sign Up A Admin With Email Password
+      tags:
+      - Auth Service
   /auth/signup-email-password:
     post:
       consumes:
@@ -216,6 +251,41 @@ paths:
           schema:
             type: object
       summary: Sign Up A User With Email Password
+      tags:
+      - Auth Service
+  /auth/signup-super:
+    post:
+      consumes:
+      - application/json
+      description: Signing Up A SuperUser Using Email and Password. Request Body need
+        email, password, and username.
+      parameters:
+      - description: Sign Up Credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Sign Up A SuperUser With Email Password
       tags:
       - Auth Service
   /auth/update-user-password:

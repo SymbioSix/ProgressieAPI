@@ -1,7 +1,7 @@
 package routers
 
 import (
-	services "github.com/SymbioSix/ProgressieAPI/services/course"
+	services "github.com/SymbioSix/ProgressieAPI/services/quiz"
 	"github.com/gofiber/fiber/v3"
 )
 
