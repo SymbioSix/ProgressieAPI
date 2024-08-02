@@ -7,64 +7,84 @@ import (
 )
 
 type TdCustomTarget struct {
-	TargetID           string    `gorm:"column:target_id" json:"target_id"`
-	AchievementTitle   string `gorm:"achievement_title;column:achievement_title"`
-	UserID             string    `gorm:"column:user_id" json:"user_id"`
-	TargetTitle        string    `gorm:"column:target_title" json:"target_title"`
-	TargetSubtitle     string    `gorm:"column:target_subtitle" json:"target_subtitle"`
-	TargetIcon         string    `gorm:"column:target_icon" json:"target_icon"`
-	DailyClockReminder time.Time `gorm:"column:daily_clock_reminder" json:"daily_clock_reminder"`
-	Type               string    `gorm:"column:type" json:"type"`
-	CreatedBy          string    `gorm:"column:created_by" json:"created_by"`
-	CreatedAt          time.Time `gorm:"column:created_at" json:"created_at"`
-	UpdatedBy          string    `gorm:"column:updated_by" json:"updated_by"`
-	UpdatedAt          time.Time `gorm:"column:updated_at" json:"updated_at"`
-	DueAt              time.Time `gorm:"column:due_at" json:"due_at"`
+	TargetID           uuid.UUID   `gorm:"column:target_id;primaryKey" json:"target_id"`
+	AchievementID      uuid.UUID   `gorm:"column:achievement_title" json:"achievement_id"`
+	TargetTitle        string      `gorm:"column:target_title" json:"target_title"`
+	TargetSubtitle     string      `gorm:"column:target_subtitle" json:"target_subtitle"`
+	TargetIcon         string      `gorm:"column:target_icon" json:"target_icon"`
+	DailyClockReminder time.Time   `gorm:"column:daily_clock_reminder" json:"daily_clock_reminder"`
+	Type               string      `gorm:"column:type" json:"type"`
+	CreatedAt          time.Time   `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt          time.Time   `gorm:"column:updated_at" json:"updated_at"`
+	DueAt              time.Time   `gorm:"column:due_at" json:"due_at"`
+	CheckLists         []Checklist `gorm:"foreignKey:TargetID;references:TargetID" json:"checklists,omitempty"`
+}
+
+func (td *TdCustomTarget) TableName() string {
+	return "td_customtarget"
 }
 
 type TdSubcourseReminder struct {
-	ReminderID    string    `gorm:"column:reminder_id" json:"reminder_id"`
-	SubcourseId   string    `gorm:"column:subcourse_id" json:"subcourse_id"`
-	UserID        uuid.UUID `gorm:"column:user_id" json:"user_id"`
-	ReminderTitle string    `gorm:"column:reminder_title" json:"reminder_title"`
-	Icon          string    `gorm:"column:icon" json:"icon"`
-	ReminderTime  time.Time `gorm:"column:reminder_time" json:"reminder_time"`
-	StartDate     time.Time `gorm:"column:start_date" json:"start_date"`
-	Type          string    `gorm:"column:type" json:"type"`
-	IsFinished    bool      `gorm:"column:is_finished" json:"is_finished"`
-	CreatedBy     string    `gorm:"column:created_by" json:"created_by"`
-	CreatedAt     time.Time `gorm:"column:created_at" json:"created_at"`
-	UpdatedBy     string    `gorm:"column:updated_by" json:"updated_by"`
-	UpdatedAt     time.Time `gorm:"column:updated_at" json:"updated_at"`
-}
-
-type SubcourseProgress struct {
-	SubcourseProgressID string    `gorm:"column:subcourseprogress_id" json:"subcourse_progress_id"`
-	UserID              uuid.UUID `gorm:"column:user_id" json:"user_id"`
-	SubcourseID         string    `gorm:"column:subcourse_id" json:"subcourse_id"`
-	IsVideoViewed       bool      `gorm:"column:is_video_viewed" json:"is_video_viewed"`
-	IsSubcourseFinished bool      `gorm:"column:is_subcourse_finished" json:"is_subcourse_finished"`
+	ReminderID          string    `gorm:"column:reminder_id;primaryKey" json:"reminder_id"`
+	SubcourseprogressID string    `gorm:"column:subcourseprogress_id" json:"subcourseprogress_id"`
+	ReminderTitle       string    `gorm:"column:reminder_title" json:"reminder_title"`
+	Icon                string    `gorm:"column:icon" json:"icon"`
+	ReminderTime        time.Time `gorm:"column:reminder_time" json:"reminder_time"`
+	StartDate           time.Time `gorm:"column:start_date" json:"start_date"`
+	IsFinished          bool      `gorm:"column:is_finished" json:"is_finished"`
+	Type                string    `gorm:"column:type" json:"type"`
 	CreatedBy           string    `gorm:"column:created_by" json:"created_by"`
 	CreatedAt           time.Time `gorm:"column:created_at" json:"created_at"`
 	UpdatedBy           string    `gorm:"column:updated_by" json:"updated_by"`
 	UpdatedAt           time.Time `gorm:"column:updated_at" json:"updated_at"`
 }
 
+func (td *TdSubcourseReminder) TableName() string {
+	return "td_subcoursereminder"
+}
+
+type SubcourseProgress struct {
+	SubcourseprogressID string                `gorm:"column:subcourseprogress_id;primaryKey" json:"subcourseprogress_id"`
+	UserID              uuid.UUID             `gorm:"column:user_id" json:"user_id"`
+	SubcourseID         string                `gorm:"column:subcourse_id" json:"subcourse_id"`
+	IsVideoViewed       bool                  `gorm:"column:is_video_viewed" json:"is_video_viewed"`
+	IsSubcourseFinished bool                  `gorm:"column:is_subcourse_finished" json:"is_subcourse_finished"`
+	CreatedBy           string                `gorm:"column:created_by" json:"created_by"`
+	CreatedAt           time.Time             `gorm:"column:created_at" json:"created_at"`
+	UpdatedBy           string                `gorm:"column:updated_by" json:"updated_by"`
+	UpdatedAt           time.Time             `gorm:"column:updated_at" json:"updated_at"`
+	Reminders           []TdSubcourseReminder `gorm:"foreignKey:SubcourseprogressID;references:SubcourseprogressID" json:"reminders,omitempty"`
+}
+
+func (td *SubcourseProgress) TableName() string {
+	return "crs_subcourseprogress"
+}
+
 // Checklist represents the daily checklist entries for custom targets
 type Checklist struct {
-    ChecklistID string    `gorm:"column:checklist_id;primaryKey" json:"checklist_id"`
-    TargetID    string    `gorm:"column:target_id" json:"target_id"`
-    DateChecked time.Time `gorm:"column:date_checked" json:"date_checked"`
-    UserID      string    `gorm:"column:user_id" json:"user_id"`
+	ChecklistID string    `gorm:"column:checklist_id;primaryKey" json:"checklist_id"`
+	TargetID    string    `gorm:"column:target_id" json:"target_id"`
+	DateChecked time.Time `gorm:"column:date_checked" json:"date_checked"`
 }
 
-type Achievementtar struct {
-    UserID                   string `gorm:"user_id;column:user_id"`
-    AchievementTitle         string `gorm:"achievement_title;column:achievement_title"`
-    AchievementIcon          string `gorm:"column:achievement_icon"`
-    AchievementDescription   string `gorm:"column:achievement_description"`
-    AchievementCategory      string `gorm:"column:achievement_category"`
-    IsAchieved               bool   `gorm:"column:is_achieved"`
-    AchievementTotalAchieved int    `gorm:"column:achievement_total_achieved"` // New field
+func (td *Checklist) TableName() string {
+	return "td_customtargetchecklist"
 }
 
+type RequestCustomTarget struct {
+	AchievementID  uuid.UUID `json:"achievement_id"`
+	TargetTitle    string    `json:"target_title"`
+	TargetSubtitle string    `json:"target_subtitle"`
+	TargetIcon     string    `json:"target_icon"`
+	DailyReminder  time.Time `json:"daily_reminder"`
+}
+
+type RequestTdSubcourseReminder struct {
+	ReminderID          string    `json:"reminder_id"`
+	SubcourseprogressID string    `json:"subcourseprogress_id"`
+	ReminderTitle       string    `json:"reminder_title"`
+	Icon                string    `json:"icon"`
+	ReminderTime        time.Time `json:"reminder_time"`
+	StartDate           time.Time `json:"start_date"`
+	IsFinished          bool      `json:"is_finished"`
+}
