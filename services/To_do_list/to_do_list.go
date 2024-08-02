@@ -122,7 +122,7 @@ func (td *ToDoListController) GetSelectedSubcourses(c fiber.Ctx) error {
 	var tdo *todoroki.TdSubcourseReminder
     var reminders []todoroki.TdSubcourseReminder
 	if res := td.DB.Table("td_subcoursereminder").First(&tdo, "user_id = ?", user.ID); res.Error != nil {
-    	if res := td.DB.Table("td_subcourse_reminders").Where("user_id = ?", userID).Find(&reminders); res.Error != nil {
+    	if res := td.DB.Table("td_subcoursereminder").Where("user_id = ?", userID).Find(&reminders); res.Error != nil {
         return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
     	}
 	}
@@ -140,7 +140,7 @@ func (td *ToDoListController) DeleteSelectedSubcourse(c fiber.Ctx) error {
     reminderID := c.Params("reminderID")
 	var tdo *todoroki.TdSubcourseReminder
 	if res := td.DB.Table("td_subcoursereminder").First(&tdo, "user_id = ?", user.ID); res.Error != nil {
-    	if res := td.DB.Table("td_subcourse_reminders").Where("reminder_id = ?", reminderID).Delete(&todoroki.TdSubcourseReminder{}); res.Error != nil {
+    	if res := td.DB.Table("td_subcoursereminder").Where("reminder_id = ?", reminderID).Delete(&todoroki.TdSubcourseReminder{}); res.Error != nil {
        		 return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
     	}
 	}
