@@ -17,7 +17,7 @@ type UserTitleSkill struct {
 }
 
 func (usr *UserTitleSkill) TableName() string {
-	return "usr_titleskill"
+	return "usr_title"
 }
 
 type UserRank struct {
