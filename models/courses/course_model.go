@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	models "github.com/SymbioSix/ProgressieAPI/models/Todo"
+)
 
 type CourseModel struct {
 	CourseID       string           `gorm:"column:course_id;primaryKey" json:"course_id"`
@@ -32,6 +36,7 @@ type SubCourseModel struct {
 	CreatedAt       time.Time                      `gorm:"column:created_at" json:"created_at"`
 	UpdatedBy       string                         `gorm:"column:updated_by" json:"updated_by,omitempty"`
 	UpdatedAt       time.Time                      `gorm:"column:updated_at" json:"updated_at,omitempty"`
+	Progress        models.SubcourseProgress       `gorm:"foreignKey:SubcourseID;references:SubcourseID" json:"progress,omitempty"`
 	VideoContent    SubCourseVideoContentModel     `gorm:"foreignKey:SubcourseID;references:SubcourseID" json:"video_content,omitempty"`
 	ReadingContents []SubCourseReadingContentModel `gorm:"foreignKey:SubcourseID;references:SubcourseID" json:"reading_contents,omitempty"`
 }
