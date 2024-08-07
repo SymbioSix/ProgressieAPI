@@ -552,9 +552,196 @@
                     }
                 }
             }
+        },
+        "/subcourse/reminders": {
+            "get": {
+                "description": "Get all subcourse reminders",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Get all subcourse reminders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.TdSubcourseReminder"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/subcourse/reminders/auto-finish": {
+            "post": {
+                "description": "Automatically finish subcourse reminders based on subcourse progress",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Automatically finish subcourse reminders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/subcourse/reminders/user": {
+            "get": {
+                "description": "Get subcourse reminders by user ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Get subcourse reminders by user ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.TdSubcourseReminder"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/todos": {
+            "get": {
+                "description": "Get all td_customtarget and td_subcoursereminder",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Get all todo lists",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/todos/user": {
+            "get": {
+                "description": "Get all td_customtarget and td_subcoursereminder by user ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Get all todo lists by user ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall": {
+            "type": "object",
+            "properties": {
+                "Customremind": {
+                    "$ref": "#/definitions/models.TdCustomTarget"
+                },
+                "SubCourseremind": {
+                    "$ref": "#/definitions/models.TdSubcourseReminder"
+                }
+            }
+        },
+        "models.Checklist": {
+            "type": "object",
+            "properties": {
+                "checklist_id": {
+                    "type": "string"
+                },
+                "date_checked": {
+                    "type": "string"
+                },
+                "target_id": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ForgotPasswordRequest": {
             "type": "object",
             "required": [
@@ -596,6 +783,88 @@
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TdCustomTarget": {
+            "type": "object",
+            "properties": {
+                "achievement_id": {
+                    "type": "string"
+                },
+                "checklists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Checklist"
+                    }
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "daily_clock_reminder": {
+                    "type": "string"
+                },
+                "due_at": {
+                    "type": "string"
+                },
+                "target_icon": {
+                    "type": "string"
+                },
+                "target_id": {
+                    "type": "string"
+                },
+                "target_subtitle": {
+                    "type": "string"
+                },
+                "target_title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TdSubcourseReminder": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "is_finished": {
+                    "type": "boolean"
+                },
+                "reminder_id": {
+                    "type": "string"
+                },
+                "reminder_time": {
+                    "type": "string"
+                },
+                "reminder_title": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "subcourseprogress_id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
                     "type": "string"
                 }
             }
