@@ -2,6 +2,22 @@ basePath: /v1
 consumes:
 - application/json
 definitions:
+  github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall:
+    properties:
+      Customremind:
+        $ref: '#/definitions/models.TdCustomTarget'
+      SubCourseremind:
+        $ref: '#/definitions/models.TdSubcourseReminder'
+    type: object
+  models.Checklist:
+    properties:
+      checklist_id:
+        type: string
+      date_checked:
+        type: string
+      target_id:
+        type: string
+    type: object
   models.ForgotPasswordRequest:
     properties:
       email:
@@ -31,6 +47,60 @@ definitions:
     - email
     - password
     - username
+    type: object
+  models.TdCustomTarget:
+    properties:
+      achievement_id:
+        type: string
+      checklists:
+        items:
+          $ref: '#/definitions/models.Checklist'
+        type: array
+      created_at:
+        type: string
+      daily_clock_reminder:
+        type: string
+      due_at:
+        type: string
+      target_icon:
+        type: string
+      target_id:
+        type: string
+      target_subtitle:
+        type: string
+      target_title:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.TdSubcourseReminder:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      icon:
+        type: string
+      is_finished:
+        type: boolean
+      reminder_id:
+        type: string
+      reminder_time:
+        type: string
+      reminder_title:
+        type: string
+      start_date:
+        type: string
+      subcourseprogress_id:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
     type: object
   models.UpdatePasswordAfterForgotPassword:
     properties:
@@ -408,6 +478,114 @@ paths:
       summary: Verify New Signed Up User
       tags:
       - Auth Service
+  /subcourse/reminders:
+    get:
+      consumes:
+      - application/json
+      description: Get all subcourse reminders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.TdSubcourseReminder'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all subcourse reminders
+      tags:
+      - todo
+  /subcourse/reminders/auto-finish:
+    post:
+      consumes:
+      - application/json
+      description: Automatically finish subcourse reminders based on subcourse progress
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Automatically finish subcourse reminders
+      tags:
+      - todo
+  /subcourse/reminders/user:
+    get:
+      consumes:
+      - application/json
+      description: Get subcourse reminders by user ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TdSubcourseReminder'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get subcourse reminders by user ID
+      tags:
+      - todo
+  /todos:
+    get:
+      consumes:
+      - application/json
+      description: Get all td_customtarget and td_subcoursereminder
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all todo lists
+      tags:
+      - todo
+  /todos/user:
+    get:
+      consumes:
+      - application/json
+      description: Get all td_customtarget and td_subcoursereminder by user ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all todo lists by user ID
+      tags:
+      - todo
 produces:
 - application/json
 swagger: "2.0"
