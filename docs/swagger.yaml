@@ -2,12 +2,87 @@ basePath: /v1
 consumes:
 - application/json
 definitions:
+  To_do_list.Todoall:
+    properties:
+      Customremind:
+        $ref: '#/definitions/models.TdCustomTarget'
+      SubCourseremind:
+        $ref: '#/definitions/models.TdSubcourseReminder'
+    type: object
+  models.Checklist:
+    properties:
+      checklist_id:
+        type: string
+      date_checked:
+        type: string
+      target_id:
+        type: string
+    type: object
+  models.CourseModel:
+    properties:
+      course_category:
+        type: string
+      course_id:
+        type: string
+      course_image:
+        type: string
+      course_name:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: string
+      description:
+        type: string
+      price:
+        type: number
+      status:
+        type: string
+      sub_courses:
+        items:
+          $ref: '#/definitions/models.SubCourseModel'
+        type: array
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.EnrollmentModel:
+    properties:
+      course_id:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: string
+      progress:
+        type: number
+      status:
+        type: string
+      the_course:
+        $ref: '#/definitions/models.CourseModel'
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+      user_id:
+        type: string
+    type: object
   models.ForgotPasswordRequest:
     properties:
       email:
         type: string
     required:
     - email
+    type: object
+  models.HealthMap:
+    properties:
+      database_status:
+        type: string
+      overall_status:
+        type: string
+      supabase_api_status:
+        type: string
     type: object
   models.Land_Aboutus_Request:
     properties:
@@ -102,6 +177,36 @@ definitions:
       updated_by:
         type: string
     type: object
+  models.Land_Faqcategory_Request:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      faq_category_id:
+        type: integer
+      faq_category_name:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.Land_Faqcategory_Response:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      faq_category_id:
+        type: integer
+      faq_category_name:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
   models.Land_Footer_Request:
     properties:
       created_at:
@@ -150,6 +255,30 @@ definitions:
       updated_by:
         type: string
     type: object
+  models.Land_Hero_Request:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      hero_component_cover_img:
+        type: string
+      hero_component_id:
+        description: Primary key
+        type: integer
+      hero_component_image:
+        type: string
+      hero_component_subtitle:
+        type: string
+      hero_component_title:
+        type: string
+      tooltip:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
   models.Land_Hero_Response:
     properties:
       created_at:
@@ -171,6 +300,159 @@ definitions:
       updated_at:
         type: string
       updated_by:
+        type: string
+    type: object
+  models.Land_Navbar_Request:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      endpoint:
+        type: string
+      nav_component_group:
+        type: integer
+      nav_component_icon:
+        type: string
+      nav_component_id:
+        type: integer
+      nav_component_name:
+        type: string
+      tooltip:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.Land_Navbar_Response:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      endpoint:
+        type: string
+      nav_component_group:
+        type: integer
+      nav_component_icon:
+        type: string
+      nav_component_id:
+        type: integer
+      nav_component_name:
+        type: string
+      tooltip:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.ParseCustomTargetFromAchievement:
+    properties:
+      custom_targets:
+        items:
+          $ref: '#/definitions/models.TdCustomTarget'
+        type: array
+    type: object
+  models.ParseSessionsForAuth:
+    properties:
+      access_token:
+        type: string
+      data:
+        $ref: '#/definitions/models.UserRoleResponse'
+      expired_at:
+        type: integer
+      expires_in:
+        type: integer
+      refresh_token:
+        type: string
+      token_type:
+        type: string
+    type: object
+  models.RequestCustomTarget:
+    properties:
+      achievement_id:
+        type: string
+      daily_reminder:
+        type: string
+      target_icon:
+        type: string
+      target_subtitle:
+        type: string
+      target_title:
+        type: string
+    type: object
+  models.RequestTdSubcourseReminder:
+    properties:
+      icon:
+        type: string
+      is_finished:
+        type: boolean
+      reminder_id:
+        type: string
+      reminder_time:
+        type: string
+      reminder_title:
+        type: string
+      start_date:
+        type: string
+      subcourseprogress_id:
+        type: string
+    type: object
+  models.RoleModel:
+    properties:
+      created_by:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      role_name:
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.RoleSidebarResponse:
+    properties:
+      allow_add:
+        type: boolean
+      allow_delete:
+        type: boolean
+      allow_edit:
+        type: boolean
+      allow_view:
+        type: boolean
+      role_data:
+        $ref: '#/definitions/models.RoleModel'
+      role_id:
+        type: string
+      sidebar_data:
+        $ref: '#/definitions/models.SidebarModel'
+      sidebarmenu_id:
+        type: string
+    type: object
+  models.SidebarModel:
+    properties:
+      createdBy:
+        type: string
+      endpoint:
+        type: string
+      sidebar_group:
+        type: string
+      sidebar_name:
+        type: string
+      sidebarmenu_id:
+        type: string
+      status:
+        type: string
+      updatedAt:
+        type: string
+      updatedBy:
         type: string
     type: object
   models.SignInRequest:
@@ -196,12 +478,304 @@ definitions:
     - password
     - username
     type: object
+  models.StatusModel:
+    properties:
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  models.SubCourseModel:
+    properties:
+      course_id:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: string
+      description:
+        type: string
+      progress:
+        $ref: '#/definitions/models.SubcourseProgress'
+      reading_contents:
+        items:
+          $ref: '#/definitions/models.SubCourseReadingContentModel'
+        type: array
+      sequence:
+        type: integer
+      status:
+        type: string
+      subcourse_id:
+        type: string
+      subcourse_name:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+      video_content:
+        $ref: '#/definitions/models.SubCourseVideoContentModel'
+    type: object
+  models.SubCourseReadingContentModel:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      earned_point:
+        type: integer
+      reading_duration:
+        type: integer
+      reading_images:
+        items:
+          $ref: '#/definitions/models.SubCourseReadingImageContentModel'
+        type: array
+      status:
+        type: string
+      subcourse_id:
+        type: string
+      subcoursereading_id:
+        type: string
+      subtitle:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.SubCourseReadingImageContentModel:
+    properties:
+      description:
+        type: string
+      image_link:
+        type: string
+      subcoursereading_id:
+        type: string
+    type: object
+  models.SubCourseVideoContentModel:
+    properties:
+      description:
+        type: string
+      earned_point:
+        type: integer
+      status:
+        type: string
+      subcourse_id:
+        type: string
+      video_link:
+        type: string
+    type: object
+  models.SubcourseProgress:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      is_subcourse_finished:
+        type: boolean
+      is_video_viewed:
+        type: boolean
+      reminders:
+        items:
+          $ref: '#/definitions/models.TdSubcourseReminder'
+        type: array
+      subcourse_id:
+        type: string
+      subcourseprogress_id:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.TdCustomTarget:
+    properties:
+      achievement_id:
+        type: string
+      checklists:
+        items:
+          $ref: '#/definitions/models.Checklist'
+        type: array
+      created_at:
+        type: string
+      daily_clock_reminder:
+        type: string
+      due_at:
+        type: string
+      target_icon:
+        type: string
+      target_id:
+        type: string
+      target_subtitle:
+        type: string
+      target_title:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.TdSubcourseReminder:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      icon:
+        type: string
+      is_finished:
+        type: boolean
+      reminder_id:
+        type: string
+      reminder_time:
+        type: string
+      reminder_title:
+        type: string
+      start_date:
+        type: string
+      subcourseprogress_id:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.UpdateEnrollmentProgress:
+    properties:
+      progress:
+        type: number
+    required:
+    - progress
+    type: object
   models.UpdatePasswordAfterForgotPassword:
     properties:
       new_password:
         type: string
     required:
     - new_password
+    type: object
+  models.UserAchievement:
+    properties:
+      achievement_category:
+        type: string
+      achievement_description:
+        type: string
+      achievement_icon:
+        type: string
+      achievement_id:
+        type: string
+      achievement_title:
+        type: string
+      custom_targets:
+        items:
+          $ref: '#/definitions/models.TdCustomTarget'
+        type: array
+      is_achieved:
+        type: boolean
+      user_id:
+        type: string
+    type: object
+  models.UserModel:
+    properties:
+      achievements:
+        items:
+          $ref: '#/definitions/models.UserAchievement'
+        type: array
+      created_by:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      email_verified:
+        type: boolean
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      phone_verified:
+        type: boolean
+      photo_profile_link:
+        type: string
+      ranks:
+        items:
+          $ref: '#/definitions/models.UserRank'
+        type: array
+      status:
+        type: string
+      title_desc_profile:
+        type: string
+      title_skills:
+        items:
+          $ref: '#/definitions/models.UserTitleSkill'
+        type: array
+      total_courses_finished:
+        type: integer
+      total_point_achieved:
+        type: integer
+      total_subcourses_finished:
+        type: integer
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+      username:
+        type: string
+    type: object
+  models.UserRank:
+    properties:
+      is_obtained:
+        type: boolean
+      obtained_at:
+        type: string
+      rank_description:
+        type: string
+      rank_icon:
+        type: string
+      rank_id:
+        type: string
+      rank_title:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.UserRoleResponse:
+    properties:
+      role_data:
+        items:
+          $ref: '#/definitions/models.RoleModel'
+        type: array
+      role_id:
+        type: string
+      user_data:
+        $ref: '#/definitions/models.UserModel'
+      user_id:
+        type: string
+    type: object
+  models.UserTitleSkill:
+    properties:
+      created_at:
+        type: string
+      subtitle:
+        type: string
+      title_id:
+        type: string
+      title_skill:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
     type: object
 host: https://selfieapi.up.railway.app
 info:
@@ -234,10 +808,10 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Get all About Us components
       tags:
-      - AboutUs
+      - AboutUs Service
     post:
       consumes:
       - application/json
@@ -259,14 +833,117 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Create a new About Us component
       tags:
-      - AboutUs
+      - AboutUs Service
+  /aboutus/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an About Us component
+      parameters:
+      - description: About Us component ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Delete an About Us component
+      tags:
+      - AboutUs Service
+    get:
+      consumes:
+      - application/json
+      description: Get an About Us component by ID
+      parameters:
+      - description: About Us component ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Land_Aboutus_Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get an About Us component by ID
+      tags:
+      - AboutUs Service
+    put:
+      consumes:
+      - application/json
+      description: Update an About Us component
+      parameters:
+      - description: About Us component ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated About Us component data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Aboutus_Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Land_Aboutus_Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update an About Us component
+      tags:
+      - AboutUs Service
   /auth/failed:
     get:
       consumes:
@@ -282,22 +959,18 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
-          schema:
-            type: object
         "400":
           description: Bad Request
           schema:
-            type: object
-        "404":
-          description: Not Found
+            $ref: '#/definitions/models.StatusModel'
+        "409":
+          description: Conflict
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Failed Auth Service Messages and Status Responser
       tags:
       - Auth Service
@@ -319,19 +992,15 @@ paths:
         "200":
           description: OK
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "400":
           description: Bad Request
           schema:
-            type: object
-        "404":
-          description: Not Found
-          schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Send Email For Forgot Password Feature
       tags:
       - Auth Service
@@ -354,19 +1023,19 @@ paths:
         "200":
           description: OK
           schema:
-            type: object
+            $ref: '#/definitions/models.ParseSessionsForAuth'
         "400":
           description: Bad Request
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "404":
           description: Not Found
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Sign In A User With Email Password
       tags:
       - Auth Service
@@ -381,19 +1050,19 @@ paths:
         "200":
           description: OK
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "400":
           description: Bad Request
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "404":
           description: Not Found
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Sign Out A User
       tags:
       - Auth Service
@@ -416,19 +1085,19 @@ paths:
         "200":
           description: OK
           schema:
-            type: object
+            $ref: '#/definitions/models.ParseSessionsForAuth'
         "400":
           description: Bad Request
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "404":
           description: Not Found
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Sign Up A Admin With Email Password
       tags:
       - Auth Service
@@ -451,19 +1120,19 @@ paths:
         "200":
           description: OK
           schema:
-            type: object
+            $ref: '#/definitions/models.ParseSessionsForAuth'
         "400":
           description: Bad Request
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "404":
           description: Not Found
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Sign Up A User With Email Password
       tags:
       - Auth Service
@@ -486,19 +1155,19 @@ paths:
         "200":
           description: OK
           schema:
-            type: object
+            $ref: '#/definitions/models.ParseSessionsForAuth'
         "400":
           description: Bad Request
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "404":
           description: Not Found
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Sign Up A SuperUser With Email Password
       tags:
       - Auth Service
@@ -520,19 +1189,15 @@ paths:
         "200":
           description: OK
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "400":
           description: Bad Request
           schema:
-            type: object
-        "404":
-          description: Not Found
-          schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Update The User Password (After Confirming From Verify Password Recovery)
       tags:
       - Auth Service
@@ -562,20 +1227,16 @@ paths:
       responses:
         "200":
           description: OK
-          schema:
-            type: object
         "400":
           description: Bad Request
           schema:
-            type: object
-        "404":
-          description: Not Found
-          schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
+        "409":
+          description: Conflict
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Verifying Forgotten Password
       tags:
       - Auth Service
@@ -605,23 +1266,411 @@ paths:
       responses:
         "200":
           description: OK
-          schema:
-            type: object
         "400":
           description: Bad Request
           schema:
-            type: object
-        "404":
-          description: Not Found
-          schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
+        "409":
+          description: Conflict
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Verify New Signed Up User
       tags:
       - Auth Service
+  /courses/:
+    get:
+      consumes:
+      - application/json
+      description: Get all courses only
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/models.CourseModel'
+              type: array
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get all courses only
+      tags:
+      - Courses Service
+  /courses/{courseid}/enroll:
+    post:
+      consumes:
+      - application/json
+      description: Enroll a user to a course
+      parameters:
+      - description: Course ID
+        in: path
+        name: courseid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Enroll a user to a course
+      tags:
+      - Courses Service
+  /courses/{courseid}/enrollment/data:
+    get:
+      consumes:
+      - application/json
+      description: Get enrolled course data
+      parameters:
+      - description: Course ID
+        in: path
+        name: courseid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.EnrollmentModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get enrolled course data
+      tags:
+      - Courses Service
+  /courses/{courseid}/enrollment/progress:
+    put:
+      consumes:
+      - application/json
+      description: Update enrollment progress
+      parameters:
+      - description: Course ID
+        in: path
+        name: courseid
+        required: true
+        type: string
+      - description: Updated enrollment progress
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateEnrollmentProgress'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update enrollment progress
+      tags:
+      - Courses Service
+  /courses/{courseid}/enrollment/status:
+    get:
+      consumes:
+      - application/json
+      description: Check enrollment status for a course
+      parameters:
+      - description: Course ID
+        in: path
+        name: courseid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Check enrollment status for a course
+      tags:
+      - Courses Service
+  /courses/{courseid}/subcourses:
+    get:
+      consumes:
+      - application/json
+      description: Get sub-courses by course ID
+      parameters:
+      - description: Course ID
+        in: path
+        name: courseid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CourseModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get sub-courses by course ID
+      tags:
+      - Courses Service
+  /courses/all:
+    get:
+      consumes:
+      - application/json
+      description: Get all courses and their sub-courses
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/models.CourseModel'
+              type: array
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get all courses and their sub-courses
+      tags:
+      - Courses Service
+  /custom_targets:
+    get:
+      consumes:
+      - application/json
+      description: Get all td_customtarget records
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.TdCustomTarget'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get all custom targets
+      tags:
+      - TodoList Service
+    post:
+      consumes:
+      - application/json
+      description: Save a custom target with specified time, title, and description
+        for 30 days
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RequestCustomTarget'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Save a custom target
+      tags:
+      - TodoList Service
+  /custom_targets/{targetID}/check_progress:
+    put:
+      consumes:
+      - application/json
+      description: Check if a target has been checked for 30 consecutive days and
+        award an achievement
+      parameters:
+      - description: Target ID
+        in: path
+        name: targetID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Check custom target progress for achievement
+      tags:
+      - TodoList Service
+  /custom_targets/{targetID}/checklist:
+    put:
+      consumes:
+      - application/json
+      description: Update the checklist status for a custom target
+      parameters:
+      - description: Target ID
+        in: path
+        name: targetID
+        required: true
+        type: string
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update checklist
+      tags:
+      - TodoList Service
+  /custom_targets/user:
+    get:
+      consumes:
+      - application/json
+      description: Get td_customtarget records for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ParseCustomTargetFromAchievement'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get custom targets by user ID
+      tags:
+      - TodoList Service
+  /dashboard/profile:
+    get:
+      consumes:
+      - application/json
+      description: Get the profile of the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserRoleResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get user profile
+      tags:
+      - Dashboard Service
+  /dashboard/sidebar:
+    get:
+      consumes:
+      - application/json
+      description: Get sidebar mapping for the authenticated user based on their roles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.RoleSidebarResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get sidebar mapping for the user
+      tags:
+      - Dashboard Service
   /faq:
     get:
       consumes:
@@ -634,15 +1683,17 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Land_Faq_Response'
+              items:
+                $ref: '#/definitions/models.Land_Faq_Response'
+              type: array
             type: array
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Get all FAQ components
       tags:
-      - FAQ
+      - FAQ Service
     post:
       consumes:
       - application/json
@@ -660,18 +1711,18 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.Land_Faq_Response'
+            $ref: '#/definitions/models.StatusModel'
         "400":
           description: Bad Request
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Create a new FAQ component
       tags:
-      - FAQ
+      - FAQ Service
   /faq/{id}:
     get:
       consumes:
@@ -693,18 +1744,18 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "404":
           description: Not Found
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Get a FAQ component by ID
       tags:
-      - FAQ
+      - FAQ Service
     put:
       consumes:
       - application/json
@@ -727,22 +1778,145 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Land_Faq_Response'
+            $ref: '#/definitions/models.StatusModel'
         "400":
           description: Bad Request
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "404":
           description: Not Found
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update a FAQ component
+      tags:
+      - FAQ Service
+  /faqcategory:
+    get:
+      consumes:
+      - application/json
+      description: Get all FAQ categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/models.Land_Faqcategory_Response'
+              type: array
+            type: array
         "500":
           description: Internal Server Error
           schema:
             type: object
-      summary: Update a FAQ component
+      summary: Get all FAQ categories
       tags:
-      - FAQ
+      - FAQ Category Service
+    post:
+      consumes:
+      - application/json
+      description: Create a new FAQ category
+      parameters:
+      - description: FAQ category data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Faqcategory_Request'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Create a new FAQ category
+      tags:
+      - FAQ Category Service
+  /faqcategory/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a FAQ category by ID
+      parameters:
+      - description: FAQ category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Land_Faqcategory_Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get a FAQ category by ID
+      tags:
+      - FAQ Category Service
+    put:
+      consumes:
+      - application/json
+      description: Update a FAQ category
+      parameters:
+      - description: FAQ category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated FAQ category data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Faqcategory_Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update a FAQ category
+      tags:
+      - FAQ Category Service
   /footer:
     get:
       consumes:
@@ -760,10 +1934,10 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Get all Footer components
       tags:
-      - Footer
+      - Footer Service
     post:
       consumes:
       - application/json
@@ -785,14 +1959,132 @@ paths:
         "400":
           description: Bad Request
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Create a new Footer component
       tags:
-      - Footer
+      - Footer Service
+  /footer/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Footer component
+      parameters:
+      - description: Footer component ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Delete a Footer component
+      tags:
+      - Footer Service
+    get:
+      consumes:
+      - application/json
+      description: Get a Footer component by ID
+      parameters:
+      - description: Footer component ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Land_Footer_Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get a Footer component by ID
+      tags:
+      - Footer Service
+    put:
+      consumes:
+      - application/json
+      description: Update a Footer component
+      parameters:
+      - description: Footer component ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated Footer component data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Footer_Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Land_Footer_Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update a Footer component
+      tags:
+      - Footer Service
+  /healthcheck:
+    get:
+      description: Get API Health Check Status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.HealthMap'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.HealthMap'
+      summary: Get API Health Check Status
+      tags:
+      - CheckUp
   /hero:
     get:
       consumes:
@@ -810,10 +2102,456 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            type: object
+            $ref: '#/definitions/models.StatusModel'
       summary: Get all hero components
       tags:
-      - Hero
+      - Hero Service
+    post:
+      consumes:
+      - application/json
+      description: Create a new hero component
+      parameters:
+      - description: Hero component data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Hero_Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Create a new hero component
+      tags:
+      - Hero Service
+  /hero/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a hero component by ID
+      parameters:
+      - description: Hero component ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Land_Hero_Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get a hero component by ID
+      tags:
+      - Hero Service
+    put:
+      consumes:
+      - application/json
+      description: Update a hero component
+      parameters:
+      - description: Hero component ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated hero component data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Hero_Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update a hero component
+      tags:
+      - Hero Service
+  /liveness-check:
+    get:
+      description: Get Liveness Check Status
+      produces:
+      - text/plain
+      responses: {}
+      summary: Get Liveness Check Status
+      tags:
+      - CheckUp
+  /navbar:
+    get:
+      consumes:
+      - application/json
+      description: Get all navbar components
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Land_Navbar_Response'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get all navbar components
+      tags:
+      - Navbar Service
+    post:
+      consumes:
+      - application/json
+      description: Create a new navbar component
+      parameters:
+      - description: Navbar component data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Navbar_Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Create a new navbar component
+      tags:
+      - Navbar Service
+  /navbar/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a navbar component by ID
+      parameters:
+      - description: Navbar component ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Land_Navbar_Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get a navbar component by ID
+      tags:
+      - Navbar Service
+    put:
+      consumes:
+      - application/json
+      description: Update a navbar component
+      parameters:
+      - description: Navbar component ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated navbar component data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Navbar_Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update a navbar component
+      tags:
+      - Navbar Service
+  /subcourse_reminders:
+    get:
+      consumes:
+      - application/json
+      description: Get all td_subcoursereminder records
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.TdSubcourseReminder'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get all subcourse reminders
+      tags:
+      - TodoList Service
+    post:
+      consumes:
+      - application/json
+      description: Save a subcourse reminder with specified date and time
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RequestTdSubcourseReminder'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Save a subcourse reminder
+      tags:
+      - TodoList Service
+  /subcourse_reminders/{reminderID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a subcourse reminder for the authenticated user by reminder
+        ID
+      parameters:
+      - description: Reminder ID
+        in: path
+        name: reminderID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Delete a selected subcourse reminder
+      tags:
+      - TodoList Service
+  /subcourse_reminders/auto_finish:
+    post:
+      consumes:
+      - application/json
+      description: Auto finish td_subcoursereminder records if their subcourse is
+        finished
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Auto finish subcourse reminders
+      tags:
+      - TodoList Service
+  /subcourse_reminders/user:
+    get:
+      consumes:
+      - application/json
+      description: Get td_subcoursereminder records for a specific user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TdSubcourseReminder'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get subcourse reminders by user ID
+      tags:
+      - TodoList Service
+  /subcourses/not_selected:
+    get:
+      consumes:
+      - application/json
+      description: Get subcourses that have not been selected by the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.TdSubcourseReminder'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get subcourses not selected
+      tags:
+      - TodoList Service
+  /subcourses/selected:
+    get:
+      consumes:
+      - application/json
+      description: Get subcourses that have been selected by the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.TdSubcourseReminder'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get selected subcourses
+      tags:
+      - TodoList Service
+  /todos:
+    get:
+      consumes:
+      - application/json
+      description: Get all td_customtarget and td_subcoursereminder records
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/To_do_list.Todoall'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get all custom targets and subcourse reminders
+      tags:
+      - TodoList Service
+  /todos/user:
+    get:
+      consumes:
+      - application/json
+      description: Get all td_customtarget and td_subcoursereminder records for a
+        specific user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/To_do_list.Todoall'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get all todos by user ID
+      tags:
+      - TodoList Service
 produces:
 - application/json
 swagger: "2.0"

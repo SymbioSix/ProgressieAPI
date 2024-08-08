@@ -33,7 +33,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "AboutUs"
+                    "AboutUs Service"
                 ],
                 "summary": "Get all About Us components",
                 "responses": {
@@ -49,7 +49,7 @@
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -63,7 +63,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "AboutUs"
+                    "AboutUs Service"
                 ],
                 "summary": "Create a new About Us component",
                 "parameters": [
@@ -87,13 +87,168 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/aboutus/{id}": {
+            "get": {
+                "description": "Get an About Us component by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AboutUs Service"
+                ],
+                "summary": "Get an About Us component by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "About Us component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Aboutus_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update an About Us component",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AboutUs Service"
+                ],
+                "summary": "Update an About Us component",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "About Us component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated About Us component data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Aboutus_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Aboutus_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an About Us component",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AboutUs Service"
+                ],
+                "summary": "Delete an About Us component",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "About Us component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -121,28 +276,22 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object"
-                        }
-                    },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "409": {
+                        "description": "Conflict",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -176,25 +325,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -228,25 +371,25 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.ParseSessionsForAuth"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -269,25 +412,25 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -321,25 +464,25 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.ParseSessionsForAuth"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -373,25 +516,25 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.ParseSessionsForAuth"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -425,25 +568,25 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.ParseSessionsForAuth"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -477,25 +620,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -539,27 +676,21 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object"
-                        }
+                        "description": "OK"
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "object"
-                        }
+                    "409": {
+                        "description": "Conflict"
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -603,27 +734,613 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object"
-                        }
+                        "description": "OK"
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "409": {
+                        "description": "Conflict"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/courses/": {
+            "get": {
+                "description": "Get all courses only",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Courses Service"
+                ],
+                "summary": "Get all courses only",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/models.CourseModel"
+                                }
+                            }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/courses/all": {
+            "get": {
+                "description": "Get all courses and their sub-courses",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Courses Service"
+                ],
+                "summary": "Get all courses and their sub-courses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/models.CourseModel"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/courses/{courseid}/enroll": {
+            "post": {
+                "description": "Enroll a user to a course",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Courses Service"
+                ],
+                "summary": "Enroll a user to a course",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Course ID",
+                        "name": "courseid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/courses/{courseid}/enrollment/data": {
+            "get": {
+                "description": "Get enrolled course data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Courses Service"
+                ],
+                "summary": "Get enrolled course data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Course ID",
+                        "name": "courseid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.EnrollmentModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/courses/{courseid}/enrollment/progress": {
+            "put": {
+                "description": "Update enrollment progress",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Courses Service"
+                ],
+                "summary": "Update enrollment progress",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Course ID",
+                        "name": "courseid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated enrollment progress",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateEnrollmentProgress"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/courses/{courseid}/enrollment/status": {
+            "get": {
+                "description": "Check enrollment status for a course",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Courses Service"
+                ],
+                "summary": "Check enrollment status for a course",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Course ID",
+                        "name": "courseid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/courses/{courseid}/subcourses": {
+            "get": {
+                "description": "Get sub-courses by course ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Courses Service"
+                ],
+                "summary": "Get sub-courses by course ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Course ID",
+                        "name": "courseid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.CourseModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/custom_targets": {
+            "get": {
+                "description": "Get all td_customtarget records",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get all custom targets",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.TdCustomTarget"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Save a custom target with specified time, title, and description for 30 days",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Save a custom target",
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RequestCustomTarget"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/custom_targets/user": {
+            "get": {
+                "description": "Get td_customtarget records for the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get custom targets by user ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ParseCustomTargetFromAchievement"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/custom_targets/{targetID}/check_progress": {
+            "put": {
+                "description": "Check if a target has been checked for 30 consecutive days and award an achievement",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Check custom target progress for achievement",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Target ID",
+                        "name": "targetID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/custom_targets/{targetID}/checklist": {
+            "put": {
+                "description": "Update the checklist status for a custom target",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Update checklist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Target ID",
+                        "name": "targetID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
                             "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/profile": {
+            "get": {
+                "description": "Get the profile of the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard Service"
+                ],
+                "summary": "Get user profile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UserRoleResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/sidebar": {
+            "get": {
+                "description": "Get sidebar mapping for the authenticated user based on their roles",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard Service"
+                ],
+                "summary": "Get sidebar mapping for the user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.RoleSidebarResponse"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -639,7 +1356,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "FAQ"
+                    "FAQ Service"
                 ],
                 "summary": "Get all FAQ components",
                 "responses": {
@@ -648,14 +1365,17 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Land_Faq_Response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/models.Land_Faq_Response"
+                                }
                             }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -669,7 +1389,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "FAQ"
+                    "FAQ Service"
                 ],
                 "summary": "Create a new FAQ component",
                 "parameters": [
@@ -687,19 +1407,19 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Faq_Response"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -715,7 +1435,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "FAQ"
+                    "FAQ Service"
                 ],
                 "summary": "Get a FAQ component by ID",
                 "parameters": [
@@ -737,19 +1457,19 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -763,7 +1483,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "FAQ"
+                    "FAQ Service"
                 ],
                 "summary": "Update a FAQ component",
                 "parameters": [
@@ -788,25 +1508,211 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Faq_Response"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/faqcategory": {
+            "get": {
+                "description": "Get all FAQ categories",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FAQ Category Service"
+                ],
+                "summary": "Get all FAQ categories",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/models.Land_Faqcategory_Response"
+                                }
+                            }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
                             "type": "object"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new FAQ category",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FAQ Category Service"
+                ],
+                "summary": "Create a new FAQ category",
+                "parameters": [
+                    {
+                        "description": "FAQ category data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Faqcategory_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/faqcategory/{id}": {
+            "get": {
+                "description": "Get a FAQ category by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FAQ Category Service"
+                ],
+                "summary": "Get a FAQ category by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "FAQ category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Faqcategory_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a FAQ category",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FAQ Category Service"
+                ],
+                "summary": "Update a FAQ category",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "FAQ category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated FAQ category data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Faqcategory_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -822,7 +1728,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Footer"
+                    "Footer Service"
                 ],
                 "summary": "Get all Footer components",
                 "responses": {
@@ -838,7 +1744,7 @@
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -852,7 +1758,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Footer"
+                    "Footer Service"
                 ],
                 "summary": "Create a new Footer component",
                 "parameters": [
@@ -876,13 +1782,191 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/footer/{id}": {
+            "get": {
+                "description": "Get a Footer component by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Footer Service"
+                ],
+                "summary": "Get a Footer component by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Footer component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Footer_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a Footer component",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Footer Service"
+                ],
+                "summary": "Update a Footer component",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Footer component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated Footer component data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Footer_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Footer_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a Footer component",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Footer Service"
+                ],
+                "summary": "Delete a Footer component",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Footer component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/healthcheck": {
+            "get": {
+                "description": "Get API Health Check Status",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CheckUp"
+                ],
+                "summary": "Get API Health Check Status",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.HealthMap"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.HealthMap"
                         }
                     }
                 }
@@ -898,7 +1982,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Hero"
+                    "Hero Service"
                 ],
                 "summary": "Get all hero components",
                 "responses": {
@@ -914,7 +1998,678 @@
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new hero component",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hero Service"
+                ],
+                "summary": "Create a new hero component",
+                "parameters": [
+                    {
+                        "description": "Hero component data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Hero_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/hero/{id}": {
+            "get": {
+                "description": "Get a hero component by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hero Service"
+                ],
+                "summary": "Get a hero component by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Hero component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Hero_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a hero component",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hero Service"
+                ],
+                "summary": "Update a hero component",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Hero component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated hero component data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Hero_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/liveness-check": {
+            "get": {
+                "description": "Get Liveness Check Status",
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "CheckUp"
+                ],
+                "summary": "Get Liveness Check Status",
+                "responses": {}
+            }
+        },
+        "/navbar": {
+            "get": {
+                "description": "Get all navbar components",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Navbar Service"
+                ],
+                "summary": "Get all navbar components",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Land_Navbar_Response"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new navbar component",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Navbar Service"
+                ],
+                "summary": "Create a new navbar component",
+                "parameters": [
+                    {
+                        "description": "Navbar component data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Navbar_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/navbar/{id}": {
+            "get": {
+                "description": "Get a navbar component by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Navbar Service"
+                ],
+                "summary": "Get a navbar component by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Navbar component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Navbar_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a navbar component",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Navbar Service"
+                ],
+                "summary": "Update a navbar component",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Navbar component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated navbar component data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Navbar_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/subcourse_reminders": {
+            "get": {
+                "description": "Get all td_subcoursereminder records",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get all subcourse reminders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.TdSubcourseReminder"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Save a subcourse reminder with specified date and time",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Save a subcourse reminder",
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RequestTdSubcourseReminder"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/subcourse_reminders/auto_finish": {
+            "post": {
+                "description": "Auto finish td_subcoursereminder records if their subcourse is finished",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Auto finish subcourse reminders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/subcourse_reminders/user": {
+            "get": {
+                "description": "Get td_subcoursereminder records for a specific user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get subcourse reminders by user ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.TdSubcourseReminder"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/subcourse_reminders/{reminderID}": {
+            "delete": {
+                "description": "Delete a subcourse reminder for the authenticated user by reminder ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Delete a selected subcourse reminder",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Reminder ID",
+                        "name": "reminderID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/subcourses/not_selected": {
+            "get": {
+                "description": "Get subcourses that have not been selected by the user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get subcourses not selected",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.TdSubcourseReminder"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/subcourses/selected": {
+            "get": {
+                "description": "Get subcourses that have been selected by the user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get selected subcourses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.TdSubcourseReminder"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/todos": {
+            "get": {
+                "description": "Get all td_customtarget and td_subcoursereminder records",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get all custom targets and subcourse reminders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/To_do_list.Todoall"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/todos/user": {
+            "get": {
+                "description": "Get all td_customtarget and td_subcoursereminder records for a specific user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get all todos by user ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/To_do_list.Todoall"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     }
                 }
@@ -922,6 +2677,107 @@
         }
     },
     "definitions": {
+        "To_do_list.Todoall": {
+            "type": "object",
+            "properties": {
+                "Customremind": {
+                    "$ref": "#/definitions/models.TdCustomTarget"
+                },
+                "SubCourseremind": {
+                    "$ref": "#/definitions/models.TdSubcourseReminder"
+                }
+            }
+        },
+        "models.Checklist": {
+            "type": "object",
+            "properties": {
+                "checklist_id": {
+                    "type": "string"
+                },
+                "date_checked": {
+                    "type": "string"
+                },
+                "target_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CourseModel": {
+            "type": "object",
+            "properties": {
+                "course_category": {
+                    "type": "string"
+                },
+                "course_id": {
+                    "type": "string"
+                },
+                "course_image": {
+                    "type": "string"
+                },
+                "course_name": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "sub_courses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.SubCourseModel"
+                    }
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.EnrollmentModel": {
+            "type": "object",
+            "properties": {
+                "course_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "progress": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "the_course": {
+                    "$ref": "#/definitions/models.CourseModel"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ForgotPasswordRequest": {
             "type": "object",
             "required": [
@@ -929,6 +2785,20 @@
             ],
             "properties": {
                 "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.HealthMap": {
+            "type": "object",
+            "properties": {
+                "database_status": {
+                    "type": "string"
+                },
+                "overall_status": {
+                    "type": "string"
+                },
+                "supabase_api_status": {
                     "type": "string"
                 }
             }
@@ -1074,6 +2944,52 @@
                 }
             }
         },
+        "models.Land_Faqcategory_Request": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "faq_category_id": {
+                    "type": "integer"
+                },
+                "faq_category_name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Land_Faqcategory_Response": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "faq_category_id": {
+                    "type": "integer"
+                },
+                "faq_category_name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Land_Footer_Request": {
             "type": "object",
             "properties": {
@@ -1146,6 +3062,42 @@
                 }
             }
         },
+        "models.Land_Hero_Request": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "hero_component_cover_img": {
+                    "type": "string"
+                },
+                "hero_component_id": {
+                    "description": "Primary key",
+                    "type": "integer"
+                },
+                "hero_component_image": {
+                    "type": "string"
+                },
+                "hero_component_subtitle": {
+                    "type": "string"
+                },
+                "hero_component_title": {
+                    "type": "string"
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Land_Hero_Response": {
             "type": "object",
             "properties": {
@@ -1177,6 +3129,240 @@
                     "type": "string"
                 },
                 "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Land_Navbar_Request": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "endpoint": {
+                    "type": "string"
+                },
+                "nav_component_group": {
+                    "type": "integer"
+                },
+                "nav_component_icon": {
+                    "type": "string"
+                },
+                "nav_component_id": {
+                    "type": "integer"
+                },
+                "nav_component_name": {
+                    "type": "string"
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Land_Navbar_Response": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "endpoint": {
+                    "type": "string"
+                },
+                "nav_component_group": {
+                    "type": "integer"
+                },
+                "nav_component_icon": {
+                    "type": "string"
+                },
+                "nav_component_id": {
+                    "type": "integer"
+                },
+                "nav_component_name": {
+                    "type": "string"
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ParseCustomTargetFromAchievement": {
+            "type": "object",
+            "properties": {
+                "custom_targets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TdCustomTarget"
+                    }
+                }
+            }
+        },
+        "models.ParseSessionsForAuth": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/models.UserRoleResponse"
+                },
+                "expired_at": {
+                    "type": "integer"
+                },
+                "expires_in": {
+                    "type": "integer"
+                },
+                "refresh_token": {
+                    "type": "string"
+                },
+                "token_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.RequestCustomTarget": {
+            "type": "object",
+            "properties": {
+                "achievement_id": {
+                    "type": "string"
+                },
+                "daily_reminder": {
+                    "type": "string"
+                },
+                "target_icon": {
+                    "type": "string"
+                },
+                "target_subtitle": {
+                    "type": "string"
+                },
+                "target_title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.RequestTdSubcourseReminder": {
+            "type": "object",
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "is_finished": {
+                    "type": "boolean"
+                },
+                "reminder_id": {
+                    "type": "string"
+                },
+                "reminder_time": {
+                    "type": "string"
+                },
+                "reminder_title": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "subcourseprogress_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.RoleModel": {
+            "type": "object",
+            "properties": {
+                "created_by": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "role_name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.RoleSidebarResponse": {
+            "type": "object",
+            "properties": {
+                "allow_add": {
+                    "type": "boolean"
+                },
+                "allow_delete": {
+                    "type": "boolean"
+                },
+                "allow_edit": {
+                    "type": "boolean"
+                },
+                "allow_view": {
+                    "type": "boolean"
+                },
+                "role_data": {
+                    "$ref": "#/definitions/models.RoleModel"
+                },
+                "role_id": {
+                    "type": "string"
+                },
+                "sidebar_data": {
+                    "$ref": "#/definitions/models.SidebarModel"
+                },
+                "sidebarmenu_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SidebarModel": {
+            "type": "object",
+            "properties": {
+                "createdBy": {
+                    "type": "string"
+                },
+                "endpoint": {
+                    "type": "string"
+                },
+                "sidebar_group": {
+                    "type": "string"
+                },
+                "sidebar_name": {
+                    "type": "string"
+                },
+                "sidebarmenu_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "updatedBy": {
                     "type": "string"
                 }
             }
@@ -1215,6 +3401,273 @@
                 }
             }
         },
+        "models.StatusModel": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SubCourseModel": {
+            "type": "object",
+            "properties": {
+                "course_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "progress": {
+                    "$ref": "#/definitions/models.SubcourseProgress"
+                },
+                "reading_contents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.SubCourseReadingContentModel"
+                    }
+                },
+                "sequence": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subcourse_id": {
+                    "type": "string"
+                },
+                "subcourse_name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                },
+                "video_content": {
+                    "$ref": "#/definitions/models.SubCourseVideoContentModel"
+                }
+            }
+        },
+        "models.SubCourseReadingContentModel": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "earned_point": {
+                    "type": "integer"
+                },
+                "reading_duration": {
+                    "type": "integer"
+                },
+                "reading_images": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.SubCourseReadingImageContentModel"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subcourse_id": {
+                    "type": "string"
+                },
+                "subcoursereading_id": {
+                    "type": "string"
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SubCourseReadingImageContentModel": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "image_link": {
+                    "type": "string"
+                },
+                "subcoursereading_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SubCourseVideoContentModel": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "earned_point": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subcourse_id": {
+                    "type": "string"
+                },
+                "video_link": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SubcourseProgress": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "is_subcourse_finished": {
+                    "type": "boolean"
+                },
+                "is_video_viewed": {
+                    "type": "boolean"
+                },
+                "reminders": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TdSubcourseReminder"
+                    }
+                },
+                "subcourse_id": {
+                    "type": "string"
+                },
+                "subcourseprogress_id": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TdCustomTarget": {
+            "type": "object",
+            "properties": {
+                "achievement_id": {
+                    "type": "string"
+                },
+                "checklists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Checklist"
+                    }
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "daily_clock_reminder": {
+                    "type": "string"
+                },
+                "due_at": {
+                    "type": "string"
+                },
+                "target_icon": {
+                    "type": "string"
+                },
+                "target_id": {
+                    "type": "string"
+                },
+                "target_subtitle": {
+                    "type": "string"
+                },
+                "target_title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TdSubcourseReminder": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "is_finished": {
+                    "type": "boolean"
+                },
+                "reminder_id": {
+                    "type": "string"
+                },
+                "reminder_time": {
+                    "type": "string"
+                },
+                "reminder_title": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "subcourseprogress_id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateEnrollmentProgress": {
+            "type": "object",
+            "required": [
+                "progress"
+            ],
+            "properties": {
+                "progress": {
+                    "type": "number"
+                }
+            }
+        },
         "models.UpdatePasswordAfterForgotPassword": {
             "type": "object",
             "required": [
@@ -1222,6 +3675,184 @@
             ],
             "properties": {
                 "new_password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserAchievement": {
+            "type": "object",
+            "properties": {
+                "achievement_category": {
+                    "type": "string"
+                },
+                "achievement_description": {
+                    "type": "string"
+                },
+                "achievement_icon": {
+                    "type": "string"
+                },
+                "achievement_id": {
+                    "type": "string"
+                },
+                "achievement_title": {
+                    "type": "string"
+                },
+                "custom_targets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TdCustomTarget"
+                    }
+                },
+                "is_achieved": {
+                    "type": "boolean"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserModel": {
+            "type": "object",
+            "properties": {
+                "achievements": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UserAchievement"
+                    }
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "email_verified": {
+                    "type": "boolean"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "phone_verified": {
+                    "type": "boolean"
+                },
+                "photo_profile_link": {
+                    "type": "string"
+                },
+                "ranks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UserRank"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "title_desc_profile": {
+                    "type": "string"
+                },
+                "title_skills": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UserTitleSkill"
+                    }
+                },
+                "total_courses_finished": {
+                    "type": "integer"
+                },
+                "total_point_achieved": {
+                    "type": "integer"
+                },
+                "total_subcourses_finished": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserRank": {
+            "type": "object",
+            "properties": {
+                "is_obtained": {
+                    "type": "boolean"
+                },
+                "obtained_at": {
+                    "type": "string"
+                },
+                "rank_description": {
+                    "type": "string"
+                },
+                "rank_icon": {
+                    "type": "string"
+                },
+                "rank_id": {
+                    "type": "string"
+                },
+                "rank_title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserRoleResponse": {
+            "type": "object",
+            "properties": {
+                "role_data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.RoleModel"
+                    }
+                },
+                "role_id": {
+                    "type": "string"
+                },
+                "user_data": {
+                    "$ref": "#/definitions/models.UserModel"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserTitleSkill": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "title_id": {
+                    "type": "string"
+                },
+                "title_skill": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }

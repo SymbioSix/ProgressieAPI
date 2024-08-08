@@ -3,6 +3,7 @@ package dashboard
 import (
 	auth "github.com/SymbioSix/ProgressieAPI/models/auth"
 	dashb "github.com/SymbioSix/ProgressieAPI/models/dashboard"
+	status "github.com/SymbioSix/ProgressieAPI/models/status"
 	"github.com/SymbioSix/ProgressieAPI/utils"
 	"github.com/gofiber/fiber/v3"
 	"gorm.io/gorm"
@@ -21,20 +22,21 @@ func NewDashboardController(DB *gorm.DB, API *utils.Client) DashboardController 
 // TODO: Add Another Feature/Service Relatable to Dashboard Below this Line
 
 // SidebarMapper godoc
+//
 //	@Summary		Get sidebar mapping for the user
 //	@Description	Get sidebar mapping for the authenticated user based on their roles
-//	@Tags			Dashboard
+//	@Tags			Dashboard Service
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{array}		dashb.RoleSidebarResponse
-//	@Failure		401	{object}	fiber.Map
-//	@Failure		500	{object}	fiber.Map
+//	@Failure		401	{object}	status.StatusModel
+//	@Failure		500	{object}	status.StatusModel
 //	@Router			/dashboard/sidebar [get]
-
 func (dash *DashboardController) SidebarMapper(c fiber.Ctx) error {
 	getUser, err := dash.API.Auth.GetUser()
 	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusUnauthorized).JSON(stat)
 	}
 	var userRoleResponse []auth.UserRoleResponse
 	if getUserRole := dash.DB.Table("usr_roleuser").Preload(clause.Associations).Find(&userRoleResponse, "user_id = ?", getUser.ID); getUserRole.Error != nil {
@@ -48,28 +50,29 @@ func (dash *DashboardController) SidebarMapper(c fiber.Ctx) error {
 		}
 	}
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "length": len(roleSidebarResponse), "data": roleSidebarResponse})
+	return c.Status(fiber.StatusOK).JSON(roleSidebarResponse)
 }
 
 // GetUserProfile godoc
+//
 //	@Summary		Get user profile
 //	@Description	Get the profile of the authenticated user
-//	@Tags			Dashboard
+//	@Tags			Dashboard Service
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	auth.UserRoleResponse
-//	@Failure		401	{object}	fiber.Map
-//	@Failure		500	{object}	fiber.Map
+//	@Failure		401	{object}	status.StatusModel
+//	@Failure		500	{object}	status.StatusModel
 //	@Router			/dashboard/profile [get]
-
 func (dash *DashboardController) GetUserProfile(c fiber.Ctx) error {
 	getUser, err := dash.API.Auth.GetUser()
 	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusUnauthorized).JSON(stat)
 	}
 	var userRoleResponse *auth.UserRoleResponse
 	if getUserRole := dash.DB.Table("usr_roleuser").Preload(clause.Associations).Find(&userRoleResponse, "user_id = ?", getUser.ID); getUserRole.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getUserRole.Error.Error()})
 	}
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "result": userRoleResponse})
+	return c.Status(fiber.StatusOK).JSON(userRoleResponse)
 }
