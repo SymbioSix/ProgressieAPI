@@ -1,5 +1,5 @@
 // controllers/achievement.go
-package dashboard
+package achievement
 
 import (
     "encoding/json"

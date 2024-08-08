@@ -19,6 +19,16 @@ func NewCourseController(DB *gorm.DB, API *utils.Client) CourseController {
 	return CourseController{DB, API}
 }
 
+// GetAllCoursesOnly godoc
+//	@Summary		Get all courses only
+//	@Description	Get all courses only
+//	@Tags			Courses
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{array}		models.CourseModel
+//	@Failure		500	{object}	fiber.Error
+//	@Router			/courses [get]
+
 func (crs *CourseController) GetAllCoursesOnly(c fiber.Ctx) error {
 	var courses []models.CourseModel
 	if res := crs.DB.Table("crs_course").Find(&courses); res.Error != nil {
@@ -27,6 +37,16 @@ func (crs *CourseController) GetAllCoursesOnly(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "length": len(courses), "data": courses})
 }
 
+// GetAllCoursesAndSubCourses godoc
+//	@Summary		Get all courses and their sub-courses
+//	@Description	Get all courses and their sub-courses
+//	@Tags			Courses
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{array}		models.CourseModel
+//	@Failure		500	{object}	fiber.Error
+//	@Router			/courses/all [get]
+
 func (crs *CourseController) GetAllCoursesAndSubCourses(c fiber.Ctx) error {
 	var courses []models.CourseModel
 	if res := crs.DB.Table("crs_course").Table("crs_subcourse").Table("crs_subcoursevideo").Table("crs_subcoursereading").Table("crs_subcoursereadingimage").Preload("ReadingImages").Preload("VideoContent").Preload("ReadingContents").Preload("SubCourses").Find(&courses); res.Error != nil {
@@ -34,6 +54,17 @@ func (crs *CourseController) GetAllCoursesAndSubCourses(c fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": courses})
 }
+
+// GetSubCoursesByCourseID godoc
+//	@Summary		Get sub-courses by course ID
+//	@Description	Get sub-courses by course ID
+//	@Tags			Courses
+//	@Accept			json
+//	@Produce		json
+//	@Param			courseid	path		string	true	"Course ID"
+//	@Success		200			{object}	models.CourseModel
+//	@Failure		500			{object}	fiber.Error
+//	@Router			/courses/{courseid}/subcourses [get]
 
 func (crs *CourseController) GetSubCoursesByCourseID(c fiber.Ctx) error {
 	courseId := c.Params("courseid")
@@ -44,6 +75,19 @@ func (crs *CourseController) GetSubCoursesByCourseID(c fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": subCourses})
 }
+
+// CheckEnrollStatus godoc
+//	@Summary		Check enrollment status for a course
+//	@Description	Check enrollment status for a course
+//	@Tags			Courses
+//	@Accept			json
+//	@Produce		json
+//	@Param			courseid	path		string	true	"Course ID"
+//	@Success		200			{object}	fiber.Map
+//	@Failure		401			{object}	fiber.Map
+//	@Failure		403			{object}	fiber.Map
+//	@Failure		400			{object}	fiber.Map
+//	@Router			/courses/{courseid}/enrollment/status [get]
 
 func (crs *CourseController) CheckEnrollStatus(c fiber.Ctx) error {
 	courseId := c.Params("courseid")
@@ -60,6 +104,18 @@ func (crs *CourseController) CheckEnrollStatus(c fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusContinue).JSON(fiber.Map{"status": "enrolled", "message": "User Is Enrolled!"})
 }
+
+// EnrollUserToACourse godoc
+//	@Summary		Enroll a user to a course
+//	@Description	Enroll a user to a course
+//	@Tags			Courses
+//	@Accept			json
+//	@Produce		json
+//	@Param			courseid	path		string	true	"Course ID"
+//	@Success		200			{object}	fiber.Map
+//	@Failure		401			{object}	fiber.Map
+//	@Failure		400			{object}	fiber.Map
+//	@Router			/courses/{courseid}/enroll [post]
 
 func (crs *CourseController) EnrollUserToACourse(c fiber.Ctx) error {
 	courseId := c.Params("courseid")
@@ -87,6 +143,19 @@ func (crs *CourseController) EnrollUserToACourse(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "You are enrolled!"})
 }
 
+// GetEnrolledCourseData godoc
+//	@Summary		Get enrolled course data
+//	@Description	Get enrolled course data
+//	@Tags			Courses
+//	@Accept			json
+//	@Produce		json
+//	@Param			courseid	path		string	true	"Course ID"
+//	@Success		200			{object}	models.EnrollmentModel
+//	@Failure		401			{object}	fiber.Map
+//	@Failure		403			{object}	fiber.Map
+//	@Failure		400			{object}	fiber.Map
+//	@Router			/courses/{courseid}/enrollment/data [get]
+
 func (crs *CourseController) GetEnrolledCourseData(c fiber.Ctx) error {
 	courseId := c.Params("courseid")
 	user, err := crs.API.Auth.GetUser()
@@ -102,6 +171,20 @@ func (crs *CourseController) GetEnrolledCourseData(c fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": enrollment})
 }
+
+// UpdateEnrollmentProgress godoc
+//	@Summary		Update enrollment progress
+//	@Description	Update enrollment progress
+//	@Tags			Courses
+//	@Accept			json
+//	@Produce		json
+//	@Param			courseid	path		string							true	"Course ID"
+//	@Param			request		body		models.UpdateEnrollmentProgress	true	"Updated enrollment progress"
+//	@Success		200			{object}	fiber.Map
+//	@Failure		401			{object}	fiber.Map
+//	@Failure		400			{object}	fiber.Map
+//	@Failure		500			{object}	fiber.Map
+//	@Router			/courses/{courseid}/enrollment/progress [put]
 
 func (crs *CourseController) UpdateEnrollmentProgress(c fiber.Ctx) error {
 	courseId := c.Params("courseid")
