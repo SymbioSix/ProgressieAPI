@@ -20,6 +20,17 @@ func NewDashboardController(DB *gorm.DB, API *utils.Client) DashboardController 
 
 // TODO: Add Another Feature/Service Relatable to Dashboard Below this Line
 
+// SidebarMapper godoc
+//	@Summary		Get sidebar mapping for the user
+//	@Description	Get sidebar mapping for the authenticated user based on their roles
+//	@Tags			Dashboard
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{array}		dashb.RoleSidebarResponse
+//	@Failure		401	{object}	fiber.Map
+//	@Failure		500	{object}	fiber.Map
+//	@Router			/dashboard/sidebar [get]
+
 func (dash *DashboardController) SidebarMapper(c fiber.Ctx) error {
 	getUser, err := dash.API.Auth.GetUser()
 	if err != nil {
@@ -39,6 +50,17 @@ func (dash *DashboardController) SidebarMapper(c fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "length": len(roleSidebarResponse), "data": roleSidebarResponse})
 }
+
+// GetUserProfile godoc
+//	@Summary		Get user profile
+//	@Description	Get the profile of the authenticated user
+//	@Tags			Dashboard
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	auth.UserRoleResponse
+//	@Failure		401	{object}	fiber.Map
+//	@Failure		500	{object}	fiber.Map
+//	@Router			/dashboard/profile [get]
 
 func (dash *DashboardController) GetUserProfile(c fiber.Ctx) error {
 	getUser, err := dash.API.Auth.GetUser()

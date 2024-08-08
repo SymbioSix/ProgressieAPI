@@ -23,6 +23,82 @@
     "host": "https://selfieapi.up.railway.app",
     "basePath": "/v1",
     "paths": {
+        "/aboutus": {
+            "get": {
+                "description": "Get all About Us components",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AboutUs"
+                ],
+                "summary": "Get all About Us components",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Land_Aboutus_Response"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new About Us component",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AboutUs"
+                ],
+                "summary": "Create a new About Us component",
+                "parameters": [
+                    {
+                        "description": "About Us component data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Aboutus_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Aboutus_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/failed": {
             "get": {
                 "description": "When Redirected To This Service, It Will Return JSON Response With Various Error Message",
@@ -553,9 +629,9 @@
                 }
             }
         },
-        "/subcourse/reminders": {
+        "/faq": {
             "get": {
-                "description": "Get all subcourse reminders",
+                "description": "Get all FAQ components",
                 "consumes": [
                     "application/json"
                 ],
@@ -563,32 +639,29 @@
                     "application/json"
                 ],
                 "tags": [
-                    "todo"
+                    "FAQ"
                 ],
-                "summary": "Get all subcourse reminders",
+                "summary": "Get all FAQ components",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.TdSubcourseReminder"
+                                "$ref": "#/definitions/models.Land_Faq_Response"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "type": "object"
                         }
                     }
                 }
-            }
-        },
-        "/subcourse/reminders/auto-finish": {
+            },
             "post": {
-                "description": "Automatically finish subcourse reminders based on subcourse progress",
+                "description": "Create a new FAQ component",
                 "consumes": [
                     "application/json"
                 ],
@@ -596,32 +669,45 @@
                     "application/json"
                 ],
                 "tags": [
-                    "todo"
+                    "FAQ"
                 ],
-                "summary": "Automatically finish subcourse reminders",
-                "responses": {
-                    "200": {
-                        "description": "OK",
+                "summary": "Create a new FAQ component",
+                "parameters": [
+                    {
+                        "description": "FAQ component data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/models.Land_Faq_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Faq_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "type": "object"
                         }
                     }
                 }
             }
         },
-        "/subcourse/reminders/user": {
+        "/faq/{id}": {
             "get": {
-                "description": "Get subcourse reminders by user ID",
+                "description": "Get a FAQ component by ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -629,29 +715,47 @@
                     "application/json"
                 ],
                 "tags": [
-                    "todo"
+                    "FAQ"
                 ],
-                "summary": "Get subcourse reminders by user ID",
+                "summary": "Get a FAQ component by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "FAQ component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.TdSubcourseReminder"
+                            "$ref": "#/definitions/models.Land_Faq_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "type": "object"
                         }
                     }
                 }
-            }
-        },
-        "/todos": {
-            "get": {
-                "description": "Get all td_customtarget and td_subcoursereminder",
+            },
+            "put": {
+                "description": "Update a FAQ component",
                 "consumes": [
                     "application/json"
                 ],
@@ -659,32 +763,88 @@
                     "application/json"
                 ],
                 "tags": [
-                    "todo"
+                    "FAQ"
                 ],
-                "summary": "Get all todo lists",
+                "summary": "Update a FAQ component",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "FAQ component ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated FAQ component data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Faq_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Faq_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/footer": {
+            "get": {
+                "description": "Get all Footer components",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Footer"
+                ],
+                "summary": "Get all Footer components",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall"
+                                "$ref": "#/definitions/models.Land_Footer_Response"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "type": "object"
                         }
                     }
                 }
-            }
-        },
-        "/todos/user": {
-            "get": {
-                "description": "Get all td_customtarget and td_subcoursereminder by user ID",
+            },
+            "post": {
+                "description": "Create a new Footer component",
                 "consumes": [
                     "application/json"
                 ],
@@ -692,24 +852,69 @@
                     "application/json"
                 ],
                 "tags": [
-                    "todo"
+                    "Footer"
                 ],
-                "summary": "Get all todo lists by user ID",
+                "summary": "Create a new Footer component",
+                "parameters": [
+                    {
+                        "description": "Footer component data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Footer_Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Land_Footer_Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/hero": {
+            "get": {
+                "description": "Get all hero components",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hero"
+                ],
+                "summary": "Get all hero components",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall"
+                                "$ref": "#/definitions/models.Land_Hero_Response"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "type": "object"
                         }
                     }
                 }
@@ -717,31 +922,6 @@
         }
     },
     "definitions": {
-        "github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall": {
-            "type": "object",
-            "properties": {
-                "Customremind": {
-                    "$ref": "#/definitions/models.TdCustomTarget"
-                },
-                "SubCourseremind": {
-                    "$ref": "#/definitions/models.TdSubcourseReminder"
-                }
-            }
-        },
-        "models.Checklist": {
-            "type": "object",
-            "properties": {
-                "checklist_id": {
-                    "type": "string"
-                },
-                "date_checked": {
-                    "type": "string"
-                },
-                "target_id": {
-                    "type": "string"
-                }
-            }
-        },
         "models.ForgotPasswordRequest": {
             "type": "object",
             "required": [
@@ -749,6 +929,254 @@
             ],
             "properties": {
                 "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Land_Aboutus_Request": {
+            "type": "object",
+            "properties": {
+                "aboutus_component_id": {
+                    "description": "Primary key",
+                    "type": "integer"
+                },
+                "aboutus_component_jobdesc": {
+                    "type": "string"
+                },
+                "aboutus_component_name": {
+                    "type": "string"
+                },
+                "aboutus_component_photo": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Land_Aboutus_Response": {
+            "type": "object",
+            "properties": {
+                "aboutus_component_id": {
+                    "type": "integer"
+                },
+                "aboutus_component_jobdesc": {
+                    "type": "string"
+                },
+                "aboutus_component_name": {
+                    "type": "string"
+                },
+                "aboutus_component_photo": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Land_Faq_Request": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "faq_category": {
+                    "type": "integer"
+                },
+                "faq_description": {
+                    "type": "string"
+                },
+                "faq_id": {
+                    "type": "integer"
+                },
+                "faq_title": {
+                    "type": "string"
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Land_Faq_Response": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "faq_category": {
+                    "type": "integer"
+                },
+                "faq_description": {
+                    "type": "string"
+                },
+                "faq_id": {
+                    "type": "integer"
+                },
+                "faq_title": {
+                    "type": "string"
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Land_Footer_Request": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "endpoint": {
+                    "type": "string"
+                },
+                "footer_component_group": {
+                    "description": "Foreign key",
+                    "type": "integer"
+                },
+                "footer_component_icon": {
+                    "type": "string"
+                },
+                "footer_component_id": {
+                    "description": "Primary key",
+                    "type": "integer"
+                },
+                "footer_component_name": {
+                    "type": "string"
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Land_Footer_Response": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "endpoint": {
+                    "type": "string"
+                },
+                "footer_component_group": {
+                    "type": "integer"
+                },
+                "footer_component_icon": {
+                    "type": "string"
+                },
+                "footer_component_id": {
+                    "type": "integer"
+                },
+                "footer_component_name": {
+                    "type": "string"
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Land_Hero_Response": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "hero_component_cover_img": {
+                    "type": "string"
+                },
+                "hero_component_id": {
+                    "type": "integer"
+                },
+                "hero_component_image": {
+                    "type": "string"
+                },
+                "hero_component_subtitle": {
+                    "type": "string"
+                },
+                "hero_component_title": {
+                    "type": "string"
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
                     "type": "string"
                 }
             }
@@ -783,88 +1211,6 @@
                     "type": "string"
                 },
                 "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.TdCustomTarget": {
-            "type": "object",
-            "properties": {
-                "achievement_id": {
-                    "type": "string"
-                },
-                "checklists": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Checklist"
-                    }
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "daily_clock_reminder": {
-                    "type": "string"
-                },
-                "due_at": {
-                    "type": "string"
-                },
-                "target_icon": {
-                    "type": "string"
-                },
-                "target_id": {
-                    "type": "string"
-                },
-                "target_subtitle": {
-                    "type": "string"
-                },
-                "target_title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.TdSubcourseReminder": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "icon": {
-                    "type": "string"
-                },
-                "is_finished": {
-                    "type": "boolean"
-                },
-                "reminder_id": {
-                    "type": "string"
-                },
-                "reminder_time": {
-                    "type": "string"
-                },
-                "reminder_title": {
-                    "type": "string"
-                },
-                "start_date": {
-                    "type": "string"
-                },
-                "subcourseprogress_id": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "updated_by": {
                     "type": "string"
                 }
             }

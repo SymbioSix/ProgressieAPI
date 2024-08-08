@@ -2,28 +2,176 @@ basePath: /v1
 consumes:
 - application/json
 definitions:
-  github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall:
-    properties:
-      Customremind:
-        $ref: '#/definitions/models.TdCustomTarget'
-      SubCourseremind:
-        $ref: '#/definitions/models.TdSubcourseReminder'
-    type: object
-  models.Checklist:
-    properties:
-      checklist_id:
-        type: string
-      date_checked:
-        type: string
-      target_id:
-        type: string
-    type: object
   models.ForgotPasswordRequest:
     properties:
       email:
         type: string
     required:
     - email
+    type: object
+  models.Land_Aboutus_Request:
+    properties:
+      aboutus_component_id:
+        description: Primary key
+        type: integer
+      aboutus_component_jobdesc:
+        type: string
+      aboutus_component_name:
+        type: string
+      aboutus_component_photo:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: string
+      description:
+        type: string
+      status:
+        type: string
+      tooltip:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.Land_Aboutus_Response:
+    properties:
+      aboutus_component_id:
+        type: integer
+      aboutus_component_jobdesc:
+        type: string
+      aboutus_component_name:
+        type: string
+      aboutus_component_photo:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: string
+      description:
+        type: string
+      status:
+        type: string
+      tooltip:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.Land_Faq_Request:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      faq_category:
+        type: integer
+      faq_description:
+        type: string
+      faq_id:
+        type: integer
+      faq_title:
+        type: string
+      tooltip:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.Land_Faq_Response:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      faq_category:
+        type: integer
+      faq_description:
+        type: string
+      faq_id:
+        type: integer
+      faq_title:
+        type: string
+      tooltip:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.Land_Footer_Request:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      endpoint:
+        type: string
+      footer_component_group:
+        description: Foreign key
+        type: integer
+      footer_component_icon:
+        type: string
+      footer_component_id:
+        description: Primary key
+        type: integer
+      footer_component_name:
+        type: string
+      tooltip:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.Land_Footer_Response:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      endpoint:
+        type: string
+      footer_component_group:
+        type: integer
+      footer_component_icon:
+        type: string
+      footer_component_id:
+        type: integer
+      footer_component_name:
+        type: string
+      tooltip:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.Land_Hero_Response:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      hero_component_cover_img:
+        type: string
+      hero_component_id:
+        type: integer
+      hero_component_image:
+        type: string
+      hero_component_subtitle:
+        type: string
+      hero_component_title:
+        type: string
+      tooltip:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
     type: object
   models.SignInRequest:
     properties:
@@ -48,60 +196,6 @@ definitions:
     - password
     - username
     type: object
-  models.TdCustomTarget:
-    properties:
-      achievement_id:
-        type: string
-      checklists:
-        items:
-          $ref: '#/definitions/models.Checklist'
-        type: array
-      created_at:
-        type: string
-      daily_clock_reminder:
-        type: string
-      due_at:
-        type: string
-      target_icon:
-        type: string
-      target_id:
-        type: string
-      target_subtitle:
-        type: string
-      target_title:
-        type: string
-      type:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  models.TdSubcourseReminder:
-    properties:
-      created_at:
-        type: string
-      created_by:
-        type: string
-      icon:
-        type: string
-      is_finished:
-        type: boolean
-      reminder_id:
-        type: string
-      reminder_time:
-        type: string
-      reminder_title:
-        type: string
-      start_date:
-        type: string
-      subcourseprogress_id:
-        type: string
-      type:
-        type: string
-      updated_at:
-        type: string
-      updated_by:
-        type: string
-    type: object
   models.UpdatePasswordAfterForgotPassword:
     properties:
       new_password:
@@ -123,6 +217,56 @@ info:
   title: Self-Ie API Services
   version: "1.0"
 paths:
+  /aboutus:
+    get:
+      consumes:
+      - application/json
+      description: Get all About Us components
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Land_Aboutus_Response'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Get all About Us components
+      tags:
+      - AboutUs
+    post:
+      consumes:
+      - application/json
+      description: Create a new About Us component
+      parameters:
+      - description: About Us component data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Aboutus_Request'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Land_Aboutus_Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Create a new About Us component
+      tags:
+      - AboutUs
   /auth/failed:
     get:
       consumes:
@@ -478,11 +622,11 @@ paths:
       summary: Verify New Signed Up User
       tags:
       - Auth Service
-  /subcourse/reminders:
+  /faq:
     get:
       consumes:
       - application/json
-      description: Get all subcourse reminders
+      description: Get all FAQ components
       produces:
       - application/json
       responses:
@@ -490,63 +634,120 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.TdSubcourseReminder'
+              $ref: '#/definitions/models.Land_Faq_Response'
             type: array
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: true
             type: object
-      summary: Get all subcourse reminders
+      summary: Get all FAQ components
       tags:
-      - todo
-  /subcourse/reminders/auto-finish:
+      - FAQ
     post:
       consumes:
       - application/json
-      description: Automatically finish subcourse reminders based on subcourse progress
+      description: Create a new FAQ component
+      parameters:
+      - description: FAQ component data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Faq_Request'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Land_Faq_Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Create a new FAQ component
+      tags:
+      - FAQ
+  /faq/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a FAQ component by ID
+      parameters:
+      - description: FAQ component ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
+            $ref: '#/definitions/models.Land_Faq_Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
             type: object
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: true
             type: object
-      summary: Automatically finish subcourse reminders
+      summary: Get a FAQ component by ID
       tags:
-      - todo
-  /subcourse/reminders/user:
-    get:
+      - FAQ
+    put:
       consumes:
       - application/json
-      description: Get subcourse reminders by user ID
+      description: Update a FAQ component
+      parameters:
+      - description: FAQ component ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated FAQ component data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Faq_Request'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.TdSubcourseReminder'
+            $ref: '#/definitions/models.Land_Faq_Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: true
             type: object
-      summary: Get subcourse reminders by user ID
+      summary: Update a FAQ component
       tags:
-      - todo
-  /todos:
+      - FAQ
+  /footer:
     get:
       consumes:
       - application/json
-      description: Get all td_customtarget and td_subcoursereminder
+      description: Get all Footer components
       produces:
       - application/json
       responses:
@@ -554,21 +755,49 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall'
+              $ref: '#/definitions/models.Land_Footer_Response'
             type: array
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: true
             type: object
-      summary: Get all todo lists
+      summary: Get all Footer components
       tags:
-      - todo
-  /todos/user:
+      - Footer
+    post:
+      consumes:
+      - application/json
+      description: Create a new Footer component
+      parameters:
+      - description: Footer component data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Land_Footer_Request'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Land_Footer_Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Create a new Footer component
+      tags:
+      - Footer
+  /hero:
     get:
       consumes:
       - application/json
-      description: Get all td_customtarget and td_subcoursereminder by user ID
+      description: Get all hero components
       produces:
       - application/json
       responses:
@@ -576,16 +805,15 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/github_com_SymbioSix_ProgressieAPI_services_To_do_list.Todoall'
+              $ref: '#/definitions/models.Land_Hero_Response'
             type: array
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: true
             type: object
-      summary: Get all todo lists by user ID
+      summary: Get all hero components
       tags:
-      - todo
+      - Hero
 produces:
 - application/json
 swagger: "2.0"

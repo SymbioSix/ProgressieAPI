@@ -17,6 +17,15 @@ func NewLandHeroService(db *gorm.DB) LandHeroService {
 	return LandHeroService{DB: db}
 }
 
+// GetAllHero godoc
+//	@Summary		Get all hero components
+//	@Description	Get all hero components
+//	@Tags			Hero
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{array}		landing.Land_Hero_Response
+//	@Failure		500	{object}	object
+//	@Router			/hero [get]
 func (service LandHeroService) GetAllHero(c fiber.Ctx) error {
 	var heros []landing.Land_Hero_Response
 	if err := service.DB.Table("land_hero").Find(&heros); err != nil {
@@ -24,6 +33,18 @@ func (service LandHeroService) GetAllHero(c fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "length": len(heros), "result": heros})
 }
+
+// CreateHeroRequest godoc
+//	@Summary		Create a new hero component
+//	@Description	Create a new hero component
+//	@Tags			Hero
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		landing.Land_Hero_Request	true	"Hero component data"
+//	@Success		201		{object}	landing.Land_Hero_Response
+//	@Failure		400		{object}	object
+//	@Failure		500		{object}	object
+//	@Router			/hero [post]
 
 func (service LandHeroService) CreateHeroRequest(c fiber.Ctx) error {
 	var request landing.Land_Hero_Request
@@ -54,6 +75,19 @@ func (service LandHeroService) CreateHeroRequest(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
+// GetHeroRequestByID godoc
+//	@Summary		Get a hero component by ID
+//	@Description	Get a hero component by ID
+//	@Tags			Hero
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Hero component ID"
+//	@Success		200	{object}	landing.Land_Hero_Response
+//	@Failure		400	{object}	object
+//	@Failure		404	{object}	object
+//	@Failure		500	{object}	object
+//	@Router			/hero/{id} [get]
+
 func (service LandHeroService) GetHeroRequestByID(c fiber.Ctx) error {
 	heroComponentID := c.Params("id")
 	var request landing.Land_Hero_Request
@@ -79,6 +113,20 @@ func (service LandHeroService) GetHeroRequestByID(c fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(response)
 }
+
+// UpdateHeroRequest godoc
+//	@Summary		Update a hero component
+//	@Description	Update a hero component
+//	@Tags			Hero
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int							true	"Hero component ID"
+//	@Param			request	body		landing.Land_Hero_Request	true	"Updated hero component data"
+//	@Success		200		{object}	landing.Land_Hero_Response
+//	@Failure		400		{object}	object
+//	@Failure		404		{object}	object
+//	@Failure		500		{object}	object
+//	@Router			/hero/{id} [put]
 
 func (service LandHeroService) UpdateHeroRequest(c fiber.Ctx) error {
 	heroComponentID := c.Params("id")

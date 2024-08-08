@@ -17,6 +17,16 @@ func NewLandFaqCategoryService(db *gorm.DB) LandFaqCategoryService {
 	return LandFaqCategoryService{DB: db}
 }
 
+// GetAllFaqCategory godoc
+//	@Summary		Get all FAQ categories
+//	@Description	Get all FAQ categories
+//	@Tags			FAQ Category
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{array}		landing.Land_Faqcategory_Response
+//	@Failure		500	{object}	object
+//	@Router			/faqcategory [get]
+
 func (service LandFaqCategoryService) GetAllFaqCategory(c fiber.Ctx) error {
 	var faqCategory []landing.Land_Faqcategory_Response
 	if err := service.DB.Table("land_faqcategory").Find(&faqCategory); err != nil {
@@ -24,6 +34,18 @@ func (service LandFaqCategoryService) GetAllFaqCategory(c fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "length": len(faqCategory), "result": faqCategory})
 }
+
+// CreateFaqCategoryRequest godoc
+//	@Summary		Create a new FAQ category
+//	@Description	Create a new FAQ category
+//	@Tags			FAQ Category
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		landing.Land_Faqcategory_Request	true	"FAQ category data"
+//	@Success		201		{object}	landing.Land_Faqcategory_Response
+//	@Failure		400		{object}	object
+//	@Failure		500		{object}	object
+//	@Router			/faqcategory [post]
 
 func (service LandFaqCategoryService) CreateFaqCategoryRequest(c fiber.Ctx) error {
 	var request landing.Land_Faqcategory_Request
@@ -50,6 +72,19 @@ func (service LandFaqCategoryService) CreateFaqCategoryRequest(c fiber.Ctx) erro
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
+// GetFaqCategoryRequestByID godoc
+//	@Summary		Get a FAQ category by ID
+//	@Description	Get a FAQ category by ID
+//	@Tags			FAQ Category
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"FAQ category ID"
+//	@Success		200	{object}	landing.Land_Faqcategory_Response
+//	@Failure		400	{object}	object
+//	@Failure		404	{object}	object
+//	@Failure		500	{object}	object
+//	@Router			/faqcategory/{id} [get]
+
 func (service LandFaqCategoryService) GetFaqCategoryRequestByID(c fiber.Ctx) error {
 	faqCategoryID := c.Params("id")
 	var request landing.Land_Faqcategory_Request
@@ -71,6 +106,20 @@ func (service LandFaqCategoryService) GetFaqCategoryRequestByID(c fiber.Ctx) err
 
 	return c.Status(fiber.StatusOK).JSON(response)
 }
+
+// UpdateFaqCategoryRequest godoc
+//	@Summary		Update a FAQ category
+//	@Description	Update a FAQ category
+//	@Tags			FAQ Category
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int									true	"FAQ category ID"
+//	@Param			request	body		landing.Land_Faqcategory_Request	true	"Updated FAQ category data"
+//	@Success		200		{object}	landing.Land_Faqcategory_Response
+//	@Failure		400		{object}	object
+//	@Failure		404		{object}	object
+//	@Failure		500		{object}	object
+//	@Router			/faqcategory/{id} [put]
 
 func (service LandFaqCategoryService) UpdateFaqCategoryRequest(c fiber.Ctx) error {
 	faqCategoryID := c.Params("id")

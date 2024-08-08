@@ -17,6 +17,15 @@ func NewLandFaqService(db *gorm.DB) LandFaqService {
 	return LandFaqService{DB: db}
 }
 
+// GetAllFaq godoc
+//	@Summary		Get all FAQ components
+//	@Description	Get all FAQ components
+//	@Tags			FAQ
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{array}		landing.Land_Faq_Response
+//	@Failure		500	{object}	object
+//	@Router			/faq [get]
 func (service LandFaqService) GetAllFaq(c fiber.Ctx) error {
 	var faq []landing.Land_Faq_Response
 	if err := service.DB.Table("land_faq").Find(&faq); err != nil {
@@ -24,7 +33,17 @@ func (service LandFaqService) GetAllFaq(c fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "length": len(faq), "result": faq})
 }
-
+// CreateFaqRequest godoc
+//	@Summary		Create a new FAQ component
+//	@Description	Create a new FAQ component
+//	@Tags			FAQ
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		landing.Land_Faq_Request	true	"FAQ component data"
+//	@Success		201		{object}	landing.Land_Faq_Response
+//	@Failure		400		{object}	object
+//	@Failure		500		{object}	object
+//	@Router			/faq [post]
 func (service LandFaqService) CreateFaqRequest(c fiber.Ctx) error {
 	var request landing.Land_Faq_Request
 	if err := c.Bind().JSON(&request); err != nil {
@@ -53,6 +72,18 @@ func (service LandFaqService) CreateFaqRequest(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
+// GetFaqRequestByID godoc
+//	@Summary		Get a FAQ component by ID
+//	@Description	Get a FAQ component by ID
+//	@Tags			FAQ
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"FAQ component ID"
+//	@Success		200	{object}	landing.Land_Faq_Response
+//	@Failure		400	{object}	object
+//	@Failure		404	{object}	object
+//	@Failure		500	{object}	object
+//	@Router			/faq/{id} [get]
 func (service LandFaqService) GetFaqRequestByID(c fiber.Ctx) error {
 	faqID := c.Params("id")
 	var request landing.Land_Faq_Request
@@ -77,7 +108,19 @@ func (service LandFaqService) GetFaqRequestByID(c fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(response)
 }
-
+// UpdateFaqRequest godoc
+//	@Summary		Update a FAQ component
+//	@Description	Update a FAQ component
+//	@Tags			FAQ
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int							true	"FAQ component ID"
+//	@Param			request	body		landing.Land_Faq_Request	true	"Updated FAQ component data"
+//	@Success		200		{object}	landing.Land_Faq_Response
+//	@Failure		400		{object}	object
+//	@Failure		404		{object}	object
+//	@Failure		500		{object}	object
+//	@Router			/faq/{id} [put]
 func (service LandFaqService) UpdateFaqRequest(c fiber.Ctx) error {
 	faqID := c.Params("id")
 
