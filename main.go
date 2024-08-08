@@ -4,6 +4,7 @@ import (
 	"log"
 
 	_ "github.com/SymbioSix/ProgressieAPI/docs"
+	status "github.com/SymbioSix/ProgressieAPI/models/status"
 	au_r "github.com/SymbioSix/ProgressieAPI/routers/auth"
 	crs_r "github.com/SymbioSix/ProgressieAPI/routers/courses"
 	dash_r "github.com/SymbioSix/ProgressieAPI/routers/dashboard"
@@ -124,6 +125,7 @@ func main() {
 	app.Use(cors.New(corsConfig))
 
 	router := app.Group("/v1")
+
 	router.Get("/liveness-check",
 		healthcheck.NewHealthChecker(
 			healthcheck.Config{
@@ -131,33 +133,36 @@ func main() {
 			},
 		),
 	)
-	router.Get("/healthcheck", func(c fiber.Ctx) error {
-		var database_status string = "ready"
-		var supabase_api_status string = "ready"
-		var overall_status string = "super healthy"
-		healthmap := fiber.Map{
-			"database_status":     database_status,
-			"supabase_api_status": supabase_api_status,
-			"overall_status":      overall_status,
-		}
-		if s.DB.Error != nil && !s.Client.Rest.Ping() {
-			database_status = "error"
-			supabase_api_status = "error"
-			overall_status = "having issue(s) : database and supabase"
-			return c.Status(fiber.StatusInternalServerError).JSON(healthmap)
-		}
-		if s.DB.Error != nil {
-			database_status = "error"
-			overall_status = "having issue(s) : database"
-			return c.Status(fiber.StatusInternalServerError).JSON(healthmap)
-		}
-		if !s.Client.Rest.Ping() {
-			supabase_api_status = "error"
-			overall_status = "having issue(s) : supabase"
-			return c.Status(fiber.StatusInternalServerError).JSON(healthmap)
-		}
-		return c.Status(fiber.StatusOK).JSON(healthmap)
-	})
+
+	router.Get("/healthcheck",
+
+		func(c fiber.Ctx) error {
+			var database_status string = "ready"
+			var supabase_api_status string = "ready"
+			var overall_status string = "super healthy"
+			healthmap := status.HealthMap{
+				DatabaseStatus:    database_status,
+				SupabaseAPIStatus: supabase_api_status,
+				OverallStatus:     overall_status,
+			}
+			if s.DB.Error != nil && !s.Client.Rest.Ping() {
+				database_status = "error"
+				supabase_api_status = "error"
+				overall_status = "having issue(s) : database and supabase"
+				return c.Status(fiber.StatusInternalServerError).JSON(healthmap)
+			}
+			if s.DB.Error != nil {
+				database_status = "error"
+				overall_status = "having issue(s) : database"
+				return c.Status(fiber.StatusInternalServerError).JSON(healthmap)
+			}
+			if !s.Client.Rest.Ping() {
+				supabase_api_status = "error"
+				overall_status = "having issue(s) : supabase"
+				return c.Status(fiber.StatusInternalServerError).JSON(healthmap)
+			}
+			return c.Status(fiber.StatusOK).JSON(healthmap)
+		})
 
 	router.Get("/swagger/*", swagger.HandlerDefault)
 
@@ -175,3 +180,23 @@ func main() {
 	// Serve The API
 	s.StartServerWithGracefulShutdown(app, &config)
 }
+
+// HealthCheck godoc
+//
+//	@Summary		Get API Health Check Status
+//	@Description	Get API Health Check Status
+//	@Tags			CheckUp
+//	@Produce		json
+//	@Success		200	{object}	status.HealthMap
+//	@Failure		500	{object}	status.HealthMap
+//	@Router			/healthcheck [get]
+func Unusable1() {}
+
+// LivenessCheck godoc
+//
+//	@Summary		Get Liveness Check Status
+//	@Description	Get Liveness Check Status
+//	@Tags			CheckUp
+//	@Produce		plain
+//	@Router			/liveness-check [get]
+func Unuable2() {}
