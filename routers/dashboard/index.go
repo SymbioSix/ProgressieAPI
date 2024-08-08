@@ -17,5 +17,5 @@ func (dr *DashboardRouter) DashboardRoutes(rg fiber.Router) {
 	router := rg.Group("dashboard")
 
 	router.Get("/sidebar", dr.dashboardRouter.SidebarMapper)
-	router.Get("/getuserdata", dr.dashboardRouter.GetUserProfile)
+	router.Get("/profile", dr.dashboardRouter.GetUserProfile)
 }

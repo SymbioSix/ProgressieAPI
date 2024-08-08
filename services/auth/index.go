@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	models "github.com/SymbioSix/ProgressieAPI/models/auth"
+	status "github.com/SymbioSix/ProgressieAPI/models/status"
 	"github.com/SymbioSix/ProgressieAPI/utils"
 	"github.com/gofiber/fiber/v3"
 	"github.com/supabase-community/gotrue-go/types"
@@ -28,10 +29,10 @@ func NewAuthController(DB *gorm.DB, API *utils.Client) AuthController {
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		models.SignUpRequest	true	"Sign Up Credentials"
-//	@Success		200		{object}	object
-//	@Failure		400		{object}	object
-//	@Failure		404		{object}	object
-//	@Failure		500		{object}	object
+//	@Success		200		{object}	status.ParseSessionsForAuth
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		404		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
 //	@Router			/auth/signup-email-password [post]
 func (au *AuthController) SignUpWithEmailPassword(c fiber.Ctx) error {
 	var signup models.SignUpRequest
@@ -88,16 +89,16 @@ func (au *AuthController) SignUpWithEmailPassword(c fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getUserRole.Error.Error()})
 	}
 
-	json := fiber.Map{
-		"access_token":  result.AccessToken,
-		"refresh_token": result.RefreshToken,
-		"expired_at":    result.ExpiresAt,
-		"expires_in":    result.ExpiresIn,
-		"token_type":    result.TokenType,
-		"data":          userRoleResponse,
+	json := status.ParseSessionsForAuth{
+		AccessToken:  result.AccessToken,
+		RefreshToken: result.RefreshToken,
+		ExpiredAt:    result.ExpiresAt,
+		ExpiresIn:    result.ExpiresIn,
+		TokenType:    result.TokenType,
+		Data:         userRoleResponse,
 	}
 	au.API.UpdateAuthSession(result.Session)
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "result": json})
+	return c.Status(fiber.StatusOK).JSON(json)
 }
 
 // SignUpForAdmin godoc
@@ -108,10 +109,10 @@ func (au *AuthController) SignUpWithEmailPassword(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		models.SignUpRequest	true	"Sign Up Credentials"
-//	@Success		200		{object}	object
-//	@Failure		400		{object}	object
-//	@Failure		404		{object}	object
-//	@Failure		500		{object}	object
+//	@Success		200		{object}	status.ParseSessionsForAuth
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		404		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
 //	@Router			/auth/signup-admin [post]
 func (au *AuthController) SignUpForAdmin(c fiber.Ctx) error {
 	var signup models.SignUpRequest
@@ -202,10 +203,10 @@ func (au *AuthController) SignUpForAdmin(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		models.SignUpRequest	true	"Sign Up Credentials"
-//	@Success		200		{object}	object
-//	@Failure		400		{object}	object
-//	@Failure		404		{object}	object
-//	@Failure		500		{object}	object
+//	@Success		200		{object}	status.ParseSessionsForAuth
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		404		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
 //	@Router			/auth/signup-super [post]
 func (au *AuthController) SignUpForSuperUser(c fiber.Ctx) error {
 	var signup models.SignUpRequest
@@ -282,10 +283,10 @@ func (au *AuthController) SignUpForSuperUser(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		models.SignInRequest	true	"Sign In Credentials"
-//	@Success		200		{object}	object
-//	@Failure		400		{object}	object
-//	@Failure		404		{object}	object
-//	@Failure		500		{object}	object
+//	@Success		200		{object}	status.ParseSessionsForAuth
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		404		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
 //	@Router			/auth/signin-email-password [post]
 func (au *AuthController) SignInWithEmailPassword(c fiber.Ctx) error {
 	var signIn models.SignInRequest
@@ -322,10 +323,10 @@ func (au *AuthController) SignInWithEmailPassword(c fiber.Ctx) error {
 //	@Tags			Auth Service
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	object
-//	@Failure		400	{object}	object
-//	@Failure		404	{object}	object
-//	@Failure		500	{object}	object
+//	@Success		200	{object}	status.StatusModel
+//	@Failure		400	{object}	status.StatusModel
+//	@Failure		404	{object}	status.StatusModel
+//	@Failure		500	{object}	status.StatusModel
 //	@Router			/auth/signout [post]
 func (au *AuthController) SignOut(c fiber.Ctx) error {
 	result, err := au.API.Auth.GetUser()
@@ -346,10 +347,9 @@ func (au *AuthController) SignOut(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		models.ForgotPasswordRequest	true	"Forgot Password Requirement"
-//	@Success		200		{object}	object
-//	@Failure		400		{object}	object
-//	@Failure		404		{object}	object
-//	@Failure		500		{object}	object
+//	@Success		200		{object}	status.StatusModel
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
 //	@Router			/auth/send-forgot-password-email [post]
 func (au *AuthController) SendForgotPasswordEmail(c fiber.Ctx) error {
 	var forgotRequest models.ForgotPasswordRequest
@@ -371,13 +371,13 @@ func (au *AuthController) SendForgotPasswordEmail(c fiber.Ctx) error {
 //	@Tags			Auth Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			type		query		string	true	"The Request Type From Confirmation Email"
-//	@Param			token_hash	query		string	true	"Secret Token Hashed From Confirmation Email"
-//	@Param			redirect_to	query		string	true	"Redirect API URL From Confirmation Email"
-//	@Success		200			{object}	object
-//	@Failure		400			{object}	object
-//	@Failure		404			{object}	object
-//	@Failure		500			{object}	object
+//	@Param			type		query	string	true	"The Request Type From Confirmation Email"
+//	@Param			token_hash	query	string	true	"Secret Token Hashed From Confirmation Email"
+//	@Param			redirect_to	query	string	true	"Redirect API URL From Confirmation Email"
+//	@Success		200
+//	@Failure		400	{object}	status.StatusModel
+//	@Failure		409
+//	@Failure		500	{object}	status.StatusModel
 //	@Router			/auth/verify-password-recovery [get]
 func (au *AuthController) VerifyPasswordRecovery(c fiber.Ctx) error {
 	var verify models.ConfirmationSignup
@@ -387,7 +387,6 @@ func (au *AuthController) VerifyPasswordRecovery(c fiber.Ctx) error {
 
 	_, err := au.API.Auth.Verify(types.VerifyRequest{Type: types.VerificationType(verify.Type), Token: verify.TokenHash, RedirectTo: verify.RedirectTo})
 	if err != nil {
-		c.JSON(fiber.Map{"status": "fail", "message": err.Error()})
 		return c.Redirect().Status(fiber.StatusConflict).To("/v1/auth/failed?type=" + verify.Type)
 	}
 	return c.Redirect().Status(fiber.StatusOK).To(verify.RedirectTo)
@@ -401,10 +400,9 @@ func (au *AuthController) VerifyPasswordRecovery(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		models.UpdatePasswordAfterForgotPassword	true	"Update The Password"
-//	@Success		200		{object}	object
-//	@Failure		400		{object}	object
-//	@Failure		404		{object}	object
-//	@Failure		500		{object}	object
+//	@Success		200		{object}	status.StatusModel
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
 //	@Router			/auth/update-user-password [put]
 func (au *AuthController) UpdateUserPassword(c fiber.Ctx) error {
 	var password models.UpdatePasswordAfterForgotPassword
@@ -428,10 +426,9 @@ func (au *AuthController) UpdateUserPassword(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			type	query		string	false	"Get The type Value When Being Redirected from Forgot Password Recovery or Verify Signup"
-//	@Success		200		{object}	object
-//	@Failure		400		{object}	object
-//	@Failure		404		{object}	object
-//	@Failure		500		{object}	object
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		409		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
 //	@Router			/auth/failed [get]
 func (au *AuthController) FailedAuthService(c fiber.Ctx) error {
 	var failedType models.FailedAuth
@@ -443,7 +440,7 @@ func (au *AuthController) FailedAuthService(c fiber.Ctx) error {
 	} else if failedType.Type == "recovery" {
 		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"status": "conflict", "message": "Error When Verifying Reset Password Request. Please Try Again Later!"})
 	} else {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Unknown error"})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": "Unknown error"})
 	}
 }
 
@@ -455,13 +452,13 @@ func (au *AuthController) FailedAuthService(c fiber.Ctx) error {
 //	@Tags			Auth Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			type		query		string	true	"The Request Type From Confirmation Email"
-//	@Param			token_hash	query		string	true	"Secret Token Hashed From Confirmation Email"
-//	@Param			redirect_to	query		string	true	"Redirect API URL From Confirmation Email"
-//	@Success		200			{object}	object
-//	@Failure		400			{object}	object
-//	@Failure		404			{object}	object
-//	@Failure		500			{object}	object
+//	@Param			type		query	string	true	"The Request Type From Confirmation Email"
+//	@Param			token_hash	query	string	true	"Secret Token Hashed From Confirmation Email"
+//	@Param			redirect_to	query	string	true	"Redirect API URL From Confirmation Email"
+//	@Success		200
+//	@Failure		400	{object}	status.StatusModel
+//	@Failure		409
+//	@Failure		500	{object}	status.StatusModel
 //	@Router			/auth/verify-signup [get]
 func (au *AuthController) VerifySignUp(c fiber.Ctx) error {
 	var confirm models.ConfirmationSignup
@@ -470,7 +467,6 @@ func (au *AuthController) VerifySignUp(c fiber.Ctx) error {
 	}
 	_, err := au.API.Auth.Verify(types.VerifyRequest{Type: types.VerificationType(confirm.Type), Token: confirm.TokenHash, RedirectTo: confirm.RedirectTo})
 	if err != nil {
-		c.JSON(fiber.Map{"status": "fail", "message": err.Error()})
 		return c.Redirect().Status(fiber.StatusConflict).To("/v1/auth/failed?type=" + confirm.Type)
 	}
 	return c.Redirect().Status(fiber.StatusOK).To(confirm.RedirectTo)

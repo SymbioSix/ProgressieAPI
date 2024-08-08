@@ -16,13 +16,12 @@ func NewGetCourseRouter(getCourseController courses.CourseController) GetCourseR
 
 func (gcrs *GetCourseRouter) GetCourseRoutes(rg fiber.Router) {
 	router := rg.Group("courses")
-	// router.Use(middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
 
+	router.Get("/", gcrs.getCourseController.GetAllCoursesOnly)
 	router.Get("/all", gcrs.getCourseController.GetAllCoursesAndSubCourses)
-	router.Get("/all-course-only", gcrs.getCourseController.GetAllCoursesOnly)
-	router.Get("/get-by-courseid/:courseid", gcrs.getCourseController.GetSubCoursesByCourseID)
-	router.Get("/check-enrollment-status/:courseid", gcrs.getCourseController.CheckEnrollStatus, middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
-	router.Post("/enroll-user-to-a-course/:courseid", gcrs.getCourseController.EnrollUserToACourse, middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
-	router.Get("/get-user-enrolled-course/:courseid", gcrs.getCourseController.GetEnrolledCourseData, middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
-	router.Put("/update-enrollment-progress/:courseid", gcrs.getCourseController.UpdateEnrollmentProgress, middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
+	router.Get("/:courseid/subcourses", gcrs.getCourseController.GetSubCoursesByCourseID)
+	router.Get("/:courseid/enrollment/status", gcrs.getCourseController.CheckEnrollStatus, middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
+	router.Post("/:courseid/enroll", gcrs.getCourseController.EnrollUserToACourse, middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
+	router.Get("/:courseid/enrollment/data", gcrs.getCourseController.GetEnrolledCourseData, middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
+	router.Put("/:courseid/enrollment/progress", gcrs.getCourseController.UpdateEnrollmentProgress, middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
 }

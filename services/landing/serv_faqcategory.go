@@ -5,6 +5,7 @@ import (
 	"time"
 
 	landing "github.com/SymbioSix/ProgressieAPI/models/landing"
+	status "github.com/SymbioSix/ProgressieAPI/models/status"
 	"github.com/gofiber/fiber/v3"
 	"gorm.io/gorm"
 )
@@ -18,123 +19,115 @@ func NewLandFaqCategoryService(db *gorm.DB) LandFaqCategoryService {
 }
 
 // GetAllFaqCategory godoc
+//
 //	@Summary		Get all FAQ categories
 //	@Description	Get all FAQ categories
-//	@Tags			FAQ Category
+//	@Tags			FAQ Category Service
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{array}		landing.Land_Faqcategory_Response
+//	@Success		200	{array}		[]landing.Land_Faqcategory_Response
 //	@Failure		500	{object}	object
 //	@Router			/faqcategory [get]
-
 func (service LandFaqCategoryService) GetAllFaqCategory(c fiber.Ctx) error {
 	var faqCategory []landing.Land_Faqcategory_Response
 	if err := service.DB.Table("land_faqcategory").Find(&faqCategory); err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "length": len(faqCategory), "result": faqCategory})
+	return c.Status(fiber.StatusOK).JSON(faqCategory)
 }
 
 // CreateFaqCategoryRequest godoc
+//
 //	@Summary		Create a new FAQ category
 //	@Description	Create a new FAQ category
-//	@Tags			FAQ Category
+//	@Tags			FAQ Category Service
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		landing.Land_Faqcategory_Request	true	"FAQ category data"
-//	@Success		201		{object}	landing.Land_Faqcategory_Response
-//	@Failure		400		{object}	object
-//	@Failure		500		{object}	object
+//	@Success		201		{object}	status.StatusModel
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
 //	@Router			/faqcategory [post]
-
 func (service LandFaqCategoryService) CreateFaqCategoryRequest(c fiber.Ctx) error {
 	var request landing.Land_Faqcategory_Request
 	if err := c.Bind().JSON(&request); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Failed to parse request body")
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
 	request.CreatedAt = time.Now()
 	request.UpdatedAt = time.Now()
 
 	if err := service.DB.Table("land_faqcategory").Create(&request).Error; err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
 
-	response := landing.Land_Faqcategory_Response{
-		FaqCategoryID:   request.FaqCategoryID,
-		FaqCategoryName: request.FaqCategoryName,
-		CreatedBy:       request.CreatedBy,
-		CreatedAt:       request.CreatedAt,
-		UpdatedBy:       request.UpdatedBy,
-		UpdatedAt:       request.UpdatedAt,
-	}
-
-	return c.Status(fiber.StatusOK).JSON(response)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Created successfully"})
 }
 
 // GetFaqCategoryRequestByID godoc
+//
 //	@Summary		Get a FAQ category by ID
 //	@Description	Get a FAQ category by ID
-//	@Tags			FAQ Category
+//	@Tags			FAQ Category Service
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		int	true	"FAQ category ID"
 //	@Success		200	{object}	landing.Land_Faqcategory_Response
-//	@Failure		400	{object}	object
-//	@Failure		404	{object}	object
-//	@Failure		500	{object}	object
+//	@Failure		400	{object}	status.StatusModel
+//	@Failure		404	{object}	status.StatusModel
+//	@Failure		500	{object}	status.StatusModel
 //	@Router			/faqcategory/{id} [get]
-
 func (service LandFaqCategoryService) GetFaqCategoryRequestByID(c fiber.Ctx) error {
 	faqCategoryID := c.Params("id")
-	var request landing.Land_Faqcategory_Request
+	var request landing.Land_Faqcategory_Response
 	if err := service.DB.Table("land_faqcategory").Where("faq_category_id = ?", faqCategoryID).First(&request).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return fiber.NewError(fiber.StatusNotFound, "FAQ category not found")
+			stat := status.StatusModel{Status: "fail", Message: "FAQ Category not found"}
+			return c.Status(fiber.StatusNotFound).JSON(stat)
 		}
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
 
-	response := landing.Land_Faqcategory_Response{
-		FaqCategoryID:   request.FaqCategoryID,
-		FaqCategoryName: request.FaqCategoryName,
-		CreatedBy:       request.CreatedBy,
-		CreatedAt:       request.CreatedAt,
-		UpdatedBy:       request.UpdatedBy,
-		UpdatedAt:       request.UpdatedAt,
-	}
+	response := request
 
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 // UpdateFaqCategoryRequest godoc
+//
 //	@Summary		Update a FAQ category
 //	@Description	Update a FAQ category
-//	@Tags			FAQ Category
+//	@Tags			FAQ Category Service
 //	@Accept			json
 //	@Produce		json
 //	@Param			id		path		int									true	"FAQ category ID"
 //	@Param			request	body		landing.Land_Faqcategory_Request	true	"Updated FAQ category data"
-//	@Success		200		{object}	landing.Land_Faqcategory_Response
-//	@Failure		400		{object}	object
-//	@Failure		404		{object}	object
-//	@Failure		500		{object}	object
+//	@Success		200		{object}	status.StatusModel
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		404		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
 //	@Router			/faqcategory/{id} [put]
-
 func (service LandFaqCategoryService) UpdateFaqCategoryRequest(c fiber.Ctx) error {
 	faqCategoryID := c.Params("id")
 
 	var updatedRequest landing.Land_Faqcategory_Request
 	if err := c.Bind().JSON(&updatedRequest); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Failed to parse request body")
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
 	var request landing.Land_Faqcategory_Request
 	if err := service.DB.Table("land_faqcategory").Where("faq_category_id = ?", faqCategoryID).First(&request).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return fiber.NewError(fiber.StatusNotFound, "FAQ category not found")
+			stat := status.StatusModel{Status: "fail", Message: "FAQ Category not found"}
+			return c.Status(fiber.StatusNotFound).JSON(stat)
 		}
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
 
 	request.FaqCategoryName = updatedRequest.FaqCategoryName
@@ -142,17 +135,9 @@ func (service LandFaqCategoryService) UpdateFaqCategoryRequest(c fiber.Ctx) erro
 	request.UpdatedAt = time.Now()
 
 	if err := service.DB.Table("land_faqcategory").Save(&request).Error; err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
 
-	response := landing.Land_Faqcategory_Response{
-		FaqCategoryID:   request.FaqCategoryID,
-		FaqCategoryName: request.FaqCategoryName,
-		CreatedBy:       request.CreatedBy,
-		CreatedAt:       request.CreatedAt,
-		UpdatedBy:       request.UpdatedBy,
-		UpdatedAt:       request.UpdatedAt,
-	}
-
-	return c.Status(fiber.StatusOK).JSON(response)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Updated successfully"})
 }

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	models "github.com/SymbioSix/ProgressieAPI/models/landing"
+	status "github.com/SymbioSix/ProgressieAPI/models/status"
 	"github.com/gofiber/fiber/v3"
 	"gorm.io/gorm"
 )
@@ -18,15 +19,6 @@ func NewAboutUsService(db *gorm.DB) AboutUsService {
 	return AboutUsService{db: db}
 }
 
-// GetAllAboutUs godoc
-//	@Summary		Get all About Us components
-//	@Description	Get all About Us components
-//	@Tags			AboutUs
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{array}		models.Land_Aboutus_Response
-//	@Failure		500	{object}	object
-//	@Router			/aboutus [get]
 func (s *AboutUsService) GetAllAboutUs() ([]models.Land_Aboutus_Response, error) {
 	var aboutUs []models.Land_Aboutus_Response
 	if err := s.db.Table("land_aboutus").Find(&aboutUs); err.Error != nil {
@@ -35,17 +27,6 @@ func (s *AboutUsService) GetAllAboutUs() ([]models.Land_Aboutus_Response, error)
 	return aboutUs, nil
 }
 
-// CreateAboutUs godoc
-//	@Summary		Create a new About Us component
-//	@Description	Create a new About Us component
-//	@Tags			AboutUs
-//	@Accept			json
-//	@Produce		json
-//	@Param			request	body		models.Land_Aboutus_Request	true	"About Us component data"
-//	@Success		201		{object}	models.Land_Aboutus_Response
-//	@Failure		400		{object}	object
-//	@Failure		500		{object}	object
-//	@Router			/aboutus [post]
 func (s *AboutUsService) CreateAboutUs(request *models.Land_Aboutus_Request) (*models.Land_Aboutus_Response, error) {
 	request.CreatedAt = time.Now()
 	request.UpdatedAt = time.Now()
@@ -71,19 +52,6 @@ func (s *AboutUsService) CreateAboutUs(request *models.Land_Aboutus_Request) (*m
 	return response, nil
 }
 
-// GetAboutUsByID godoc
-//	@Summary		Get an About Us component by ID
-//	@Description	Get an About Us component by ID
-//	@Tags			AboutUs
-//	@Accept			json
-//	@Produce		json
-//	@Param			id	path		int	true	"About Us component ID"
-//	@Success		200	{object}	models.Land_Aboutus_Response
-//	@Failure		400	{object}	object
-//	@Failure		404	{object}	object
-//	@Failure		500	{object}	object
-//	@Router			/aboutus/{id} [get]
-
 func (s *AboutUsService) GetAboutUsByID(id int) (*models.Land_Aboutus_Response, error) {
 	var request models.Land_Aboutus_Request
 
@@ -107,20 +75,6 @@ func (s *AboutUsService) GetAboutUsByID(id int) (*models.Land_Aboutus_Response, 
 
 	return response, nil
 }
-
-// UpdateAboutUs godoc
-//	@Summary		Update an About Us component
-//	@Description	Update an About Us component
-//	@Tags			AboutUs
-//	@Accept			json
-//	@Produce		json
-//	@Param			id		path		int							true	"About Us component ID"
-//	@Param			request	body		models.Land_Aboutus_Request	true	"Updated About Us component data"
-//	@Success		200		{object}	models.Land_Aboutus_Response
-//	@Failure		400		{object}	object
-//	@Failure		404		{object}	object
-//	@Failure		500		{object}	object
-//	@Router			/aboutus/{id} [put]
 
 func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutus_Request) (*models.Land_Aboutus_Response, error) {
 	var request models.Land_Aboutus_Request
@@ -159,19 +113,6 @@ func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutu
 	return response, nil
 }
 
-// DeleteAboutUs godoc
-//	@Summary		Delete an About Us component
-//	@Description	Delete an About Us component
-//	@Tags			AboutUs
-//	@Accept			json
-//	@Produce		json
-//	@Param			id	path	int	true	"About Us component ID"
-//	@Success		204
-//	@Failure		400	{object}	object
-//	@Failure		404	{object}	object
-//	@Failure		500	{object}	object
-//	@Router			/aboutus/{id} [delete]
-
 func (s *AboutUsService) DeleteAboutUs(id int) error {
 	var request models.Land_Aboutus_Request
 
@@ -187,140 +128,152 @@ func (s *AboutUsService) DeleteAboutUs(id int) error {
 }
 
 // GetAllAboutUsHandler godoc
+//
 //	@Summary		Get all About Us components
 //	@Description	Get all About Us components
-//	@Tags			AboutUs
+//	@Tags			AboutUs Service
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{array}		models.Land_Aboutus_Response
-//	@Failure		500	{object}	object
+//	@Failure		500	{object}	status.StatusModel
 //	@Router			/aboutus [get]
-
 func (s AboutUsService) GetAllAboutUsHandler(c fiber.Ctx) error {
 	response, err := s.GetAllAboutUs()
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 // CreateAboutUsHandler godoc
+//
 //	@Summary		Create a new About Us component
 //	@Description	Create a new About Us component
-//	@Tags			AboutUs
+//	@Tags			AboutUs Service
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		models.Land_Aboutus_Request	true	"About Us component data"
 //	@Success		201		{object}	models.Land_Aboutus_Response
-//	@Failure		400		{object}	object
-//	@Failure		500		{object}	object
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
 //	@Router			/aboutus [post]
-
 func (s AboutUsService) CreateAboutUsHandler(c fiber.Ctx) error {
 	var request models.Land_Aboutus_Request
 	if err := c.Bind().JSON(&request); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
 	response, err := s.CreateAboutUs(&request)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(response)
 }
 
 // GetAboutUsByIDHandler godoc
+//
 //	@Summary		Get an About Us component by ID
 //	@Description	Get an About Us component by ID
-//	@Tags			AboutUs
+//	@Tags			AboutUs Service
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		int	true	"About Us component ID"
 //	@Success		200	{object}	models.Land_Aboutus_Response
-//	@Failure		400	{object}	object
-//	@Failure		404	{object}	object
-//	@Failure		500	{object}	object
+//	@Failure		400	{object}	status.StatusModel
+//	@Failure		404	{object}	status.StatusModel
+//	@Failure		500	{object}	status.StatusModel
 //	@Router			/aboutus/{id} [get]
-
 func (s AboutUsService) GetAboutUsByIDHandler(c fiber.Ctx) error {
 	idStr := c.Params("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Invalid ID")
+		stat := status.StatusModel{Status: "fail", Message: "Invalid ID"}
+		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
 	response, err := s.GetAboutUsByID(id)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return fiber.NewError(fiber.StatusNotFound, "Record not found")
+			stat := status.StatusModel{Status: "fail", Message: "Record not found"}
+			return c.Status(fiber.StatusNotFound).JSON(stat)
 		}
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
 
-	return c.JSON(response)
+	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 // UpdateAboutUsHandler godoc
+//
 //	@Summary		Update an About Us component
 //	@Description	Update an About Us component
-//	@Tags			AboutUs
+//	@Tags			AboutUs Service
 //	@Accept			json
 //	@Produce		json
 //	@Param			id		path		int							true	"About Us component ID"
 //	@Param			request	body		models.Land_Aboutus_Request	true	"Updated About Us component data"
 //	@Success		200		{object}	models.Land_Aboutus_Response
-//	@Failure		400		{object}	object
-//	@Failure		404		{object}	object
-//	@Failure		500		{object}	object
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		404		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
 //	@Router			/aboutus/{id} [put]
-
 func (s AboutUsService) UpdateAboutUsHandler(c fiber.Ctx) error {
 	idStr := c.Params("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Invalid ID")
+		stat := status.StatusModel{Status: "fail", Message: "Invalid ID"}
+		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
 	var request models.Land_Aboutus_Request
 	if err := c.Bind().JSON(&request); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
 	response, err := s.UpdateAboutUs(id, &request)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
 
-	return c.JSON(response)
+	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 // DeleteAboutUsHandler godoc
+//
 //	@Summary		Delete an About Us component
 //	@Description	Delete an About Us component
-//	@Tags			AboutUs
+//	@Tags			AboutUs Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			id	path	int	true	"About Us component ID"
-//	@Success		204
-//	@Failure		400	{object}	object
-//	@Failure		404	{object}	object
-//	@Failure		500	{object}	object
+//	@Param			id	path		int	true	"About Us component ID"
+//	@Success		204	{object}	status.StatusModel
+//	@Failure		400	{object}	status.StatusModel
+//	@Failure		404	{object}	status.StatusModel
+//	@Failure		500	{object}	status.StatusModel
 //	@Router			/aboutus/{id} [delete]
-
 func (s AboutUsService) DeleteAboutUsHandler(c fiber.Ctx) error {
 	idStr := c.Params("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Invalid ID")
+		stat := status.StatusModel{Status: "fail", Message: "Invalid ID"}
+		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
 	if err := s.DeleteAboutUs(id); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return fiber.NewError(fiber.StatusNotFound, "Record not found")
+			stat := status.StatusModel{Status: "fail", Message: "Record not found"}
+			return c.Status(fiber.StatusNotFound).JSON(stat)
 		}
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
 
-	return c.SendStatus(fiber.StatusNoContent)
+	return c.Status(fiber.StatusNoContent).JSON(fiber.Map{"status": "success", "message": "Deleted successfully"})
 }
