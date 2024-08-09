@@ -15,7 +15,7 @@ func NewSetupToDoListRoutes(gettodoController To_do_list.ToDoListController) Set
 
 func (controller *SetupToDoListRoutes) GetSetupToDoListRoutes(app fiber.Router) {
 	// Grouping all TodoList routes under /api/todo
-	todo := app.Group("/api/todo")
+	todo := app.Group("todo")
 
 	// Route to get all custom targets and subcourse reminders
 	todo.Get("/todos", controller.gettodoController.Getalltodo)
