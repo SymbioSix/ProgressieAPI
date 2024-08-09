@@ -1,4 +1,4 @@
-package landing
+package routers
 
 import (
 	services "github.com/SymbioSix/ProgressieAPI/services/landing"

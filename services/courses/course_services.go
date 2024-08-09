@@ -105,7 +105,7 @@ func (crs *CourseController) CheckEnrollStatus(c fiber.Ctx) error {
 		}
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 	}
-	return c.Status(fiber.StatusContinue).JSON(fiber.Map{"status": "enrolled", "message": "User Is Enrolled!"})
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "enrolled", "message": "User Is Enrolled!"})
 }
 
 // EnrollUserToACourse godoc
@@ -116,7 +116,7 @@ func (crs *CourseController) CheckEnrollStatus(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			courseid	path		string	true	"Course ID"
-//	@Success		200			{object}	status.StatusModel
+//	@Success		201			{object}	status.StatusModel
 //	@Failure		401			{object}	status.StatusModel
 //	@Failure		400			{object}	status.StatusModel
 //	@Router			/courses/{courseid}/enroll [post]
@@ -143,7 +143,7 @@ func (crs *CourseController) EnrollUserToACourse(c fiber.Ctx) error {
 		CreatedAt: time.Now(),
 	}
 	crs.DB.Table("crs_enrollment").Create(&enrollment)
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "You are enrolled!"})
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "You are enrolled!"})
 }
 
 // GetEnrolledCourseData godoc
@@ -188,7 +188,7 @@ func (crs *CourseController) GetEnrolledCourseData(c fiber.Ctx) error {
 //	@Failure		401			{object}	status.StatusModel
 //	@Failure		400			{object}	status.StatusModel
 //	@Failure		500			{object}	status.StatusModel
-//	@Router			/courses/{courseid}/enrollment/progress [put]
+//	@Router			/courses/{courseid}/enrollment/progress [patch]
 func (crs *CourseController) UpdateEnrollmentProgress(c fiber.Ctx) error {
 	courseId := c.Params("courseid")
 	user, err := crs.API.Auth.GetUser()
@@ -215,6 +215,48 @@ func (crs *CourseController) UpdateEnrollmentProgress(c fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Succeed updating enrollment progress"})
+}
+
+// UpdateEnrollmentPoint godoc
+//
+//	@Summary		Update enrollment point
+//	@Description	Update enrollment point
+//	@Tags			Courses Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			courseid	path		string							true	"Course ID"
+//	@Param			request		body		models.UpdateEnrollmentPoint	true	"Updated enrollment point"
+//	@Success		200			{object}	status.StatusModel
+//	@Failure		401			{object}	status.StatusModel
+//	@Failure		400			{object}	status.StatusModel
+//	@Failure		500			{object}	status.StatusModel
+//	@Router			/courses/{courseid}/enrollment/point [patch]
+func (crs *CourseController) UpdateEnrollmentPoint(c fiber.Ctx) error {
+	courseId := c.Params("courseid")
+	user, err := crs.API.Auth.GetUser()
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "message": "Unauthorized Access"})
+	}
+	var updateRequest models.UpdateEnrollmentPoint
+	if err := c.Bind().JSON(&updateRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+
+	var updateProgress models.EnrollmentModel
+
+	if res := crs.DB.Table("crs_enrollment").Where(&models.EnrollmentModel{UserID: user.ID, CourseID: courseId}).First(&updateProgress); res.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+	}
+
+	updateProgress.PointAchieved = updateProgress.PointAchieved + updateRequest.Point
+	updateProgress.UpdatedBy = "API SYSTEM"
+	updateProgress.UpdatedAt = time.Now()
+
+	if res := crs.DB.Table("crs_enrollment").Save(&updateProgress); res.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Succeed updating enrollment point"})
 }
 
 // RESTRICTED BY ADMIN MIDDLEWARE
