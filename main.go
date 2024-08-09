@@ -5,14 +5,18 @@ import (
 
 	_ "github.com/SymbioSix/ProgressieAPI/docs"
 	status "github.com/SymbioSix/ProgressieAPI/models/status"
+	todo_r "github.com/SymbioSix/ProgressieAPI/routers/Todo"
 	au_r "github.com/SymbioSix/ProgressieAPI/routers/auth"
 	crs_r "github.com/SymbioSix/ProgressieAPI/routers/courses"
 	dash_r "github.com/SymbioSix/ProgressieAPI/routers/dashboard"
 	ln_r "github.com/SymbioSix/ProgressieAPI/routers/landing"
+	lead_r "github.com/SymbioSix/ProgressieAPI/routers/leaderboard"
+	todo_s "github.com/SymbioSix/ProgressieAPI/services/To_do_list"
 	au_s "github.com/SymbioSix/ProgressieAPI/services/auth"
 	crs_s "github.com/SymbioSix/ProgressieAPI/services/courses"
 	dash_s "github.com/SymbioSix/ProgressieAPI/services/dashboard"
 	ln_s "github.com/SymbioSix/ProgressieAPI/services/landing"
+	lead_s "github.com/SymbioSix/ProgressieAPI/services/leaderboard"
 	s "github.com/SymbioSix/ProgressieAPI/setup"
 	"github.com/SymbioSix/ProgressieAPI/utils/swagger" // PROPS TO: github.com/gofiber/swagger (modified so it can runned in gofiber/fiber/v3)
 	"github.com/gofiber/fiber/v3"
@@ -50,6 +54,12 @@ var (
 
 	CourseController crs_s.CourseController
 	CourseRouter     crs_r.GetCourseRouter
+
+	TodoController todo_s.ToDoListController
+	TodoRouter     todo_r.SetupToDoListRoutes
+
+	LeaderboardController lead_s.LeaderboardController
+	LeaderboardRouter     lead_r.LeaderboardRouter
 )
 
 func init() {
@@ -90,6 +100,12 @@ func init() {
 
 	CourseController = crs_s.NewCourseController(s.DB, s.Client)
 	CourseRouter = crs_r.NewGetCourseRouter(CourseController)
+
+	TodoController = todo_s.NewTodoController(s.DB, s.Client)
+	TodoRouter = todo_r.NewSetupToDoListRoutes(TodoController)
+
+	LeaderboardController = lead_s.NewLeaderboardController(s.DB, s.Client)
+	LeaderboardRouter = lead_r.NewRouteLeaderboardController(LeaderboardController)
 
 	app = fiber.New()
 }
@@ -176,6 +192,8 @@ func main() {
 	LandFooterRouter.LandFooterRoutes(router)
 	DashboardRouter.DashboardRoutes(router)
 	CourseRouter.GetCourseRoutes(router)
+	TodoRouter.GetSetupToDoListRoutes(router)
+	LeaderboardRouter.LeaderboardRoutes(router)
 
 	// Serve The API
 	s.StartServerWithGracefulShutdown(app, &config)
