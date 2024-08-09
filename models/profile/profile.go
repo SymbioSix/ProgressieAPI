@@ -9,7 +9,7 @@ import (
 
 type UserTitleSkill struct {
 	UserID     uuid.UUID `gorm:"column:user_id" json:"user_id"`
-	TitleID    string    `gorm:"column:title_id" json:"title_id"`
+	TitleID    uuid.UUID `gorm:"column:title_id" json:"title_id"`
 	TitleSkill string    `gorm:"column:title_skill" json:"title_skill"`
 	Subtitle   string    `gorm:"column:subtitle" json:"subtitle,omitempty"`
 	CreatedAt  time.Time `gorm:"column:created_at" json:"created_at"`
@@ -48,4 +48,10 @@ type UserAchievement struct {
 
 func (usr *UserAchievement) TableName() string {
 	return "usr_achievement"
+}
+
+type UpdateUserTitleSkillRequest struct {
+	TitleSkill string    `json:"title_skill,omitempty"`
+	Subtitle   string    `json:"subtitle,omitempty"`
+	UpdatedAt  time.Time `json:"updated_at,omitempty"`
 }
