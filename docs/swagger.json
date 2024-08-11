@@ -847,8 +847,8 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/models.StatusModel"
                         }
@@ -918,8 +918,67 @@
                 }
             }
         },
+        "/courses/{courseid}/enrollment/point": {
+            "patch": {
+                "description": "Update enrollment point",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Courses Service"
+                ],
+                "summary": "Update enrollment point",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Course ID",
+                        "name": "courseid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated enrollment point",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateEnrollmentPoint"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
         "/courses/{courseid}/enrollment/progress": {
-            "put": {
+            "patch": {
                 "description": "Update enrollment progress",
                 "consumes": [
                     "application/json"
@@ -1306,6 +1365,50 @@
                         }
                     }
                 }
+            },
+            "put": {
+                "description": "Update the profile of the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard Service"
+                ],
+                "summary": "Update user profile",
+                "parameters": [
+                    {
+                        "description": "Update User Profile Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateUserProfileRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
             }
         },
         "/dashboard/sidebar": {
@@ -1329,6 +1432,52 @@
                             "items": {
                                 "$ref": "#/definitions/models.RoleSidebarResponse"
                             }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/skill": {
+            "put": {
+                "description": "Update the skill of the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard Service"
+                ],
+                "summary": "Update user skill",
+                "parameters": [
+                    {
+                        "description": "Update User Skill Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateUserTitleSkillRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "401": {
@@ -2155,6 +2304,73 @@
                 }
             }
         },
+        "/leaderboard/rank": {
+            "get": {
+                "description": "Get 100 Top Users With Highest Achieved Points Based On Category Filter",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Leaderboard Service"
+                ],
+                "summary": "Get 100 Top Users With Highest Achieved Points Based On Category Filter",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "filter by category",
+                        "name": "category",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserModel"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/leaderboard/ranks": {
+            "get": {
+                "description": "Get 100 Top Users With Highest Achieved Points",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Leaderboard Service"
+                ],
+                "summary": "Get 100 Top Users With Highest Achieved Points",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserModel"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
         "/liveness-check": {
             "get": {
                 "description": "Get Liveness Check Status",
@@ -2757,6 +2973,9 @@
                 },
                 "created_by": {
                     "type": "string"
+                },
+                "point_achieved": {
+                    "type": "integer"
                 },
                 "progress": {
                     "type": "number"
@@ -3657,6 +3876,17 @@
                 }
             }
         },
+        "models.UpdateEnrollmentPoint": {
+            "type": "object",
+            "required": [
+                "point"
+            ],
+            "properties": {
+                "point": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.UpdateEnrollmentProgress": {
             "type": "object",
             "required": [
@@ -3675,6 +3905,49 @@
             ],
             "properties": {
                 "new_password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateUserProfileRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "photo_profile_link": {
+                    "type": "string"
+                },
+                "title_desc_profile": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateUserTitleSkillRequest": {
+            "type": "object",
+            "properties": {
+                "subtitle": {
+                    "type": "string"
+                },
+                "title_skill": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -3733,6 +4006,9 @@
                     "type": "boolean"
                 },
                 "first_name": {
+                    "type": "string"
+                },
+                "gender": {
                     "type": "string"
                 },
                 "id": {

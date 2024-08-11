@@ -55,6 +55,8 @@ definitions:
         type: string
       created_by:
         type: string
+      point_achieved:
+        type: integer
       progress:
         type: number
       status:
@@ -646,6 +648,13 @@ definitions:
       updated_by:
         type: string
     type: object
+  models.UpdateEnrollmentPoint:
+    properties:
+      point:
+        type: integer
+    required:
+    - point
+    type: object
   models.UpdateEnrollmentProgress:
     properties:
       progress:
@@ -659,6 +668,34 @@ definitions:
         type: string
     required:
     - new_password
+    type: object
+  models.UpdateUserProfileRequest:
+    properties:
+      description:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      gender:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      photo_profile_link:
+        type: string
+      title_desc_profile:
+        type: string
+    type: object
+  models.UpdateUserTitleSkillRequest:
+    properties:
+      subtitle:
+        type: string
+      title_skill:
+        type: string
+      updated_at:
+        type: string
     type: object
   models.UserAchievement:
     properties:
@@ -696,6 +733,8 @@ definitions:
       email_verified:
         type: boolean
       first_name:
+        type: string
+      gender:
         type: string
       id:
         type: string
@@ -1316,8 +1355,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/models.StatusModel'
         "400":
@@ -1364,8 +1403,47 @@ paths:
       summary: Get enrolled course data
       tags:
       - Courses Service
+  /courses/{courseid}/enrollment/point:
+    patch:
+      consumes:
+      - application/json
+      description: Update enrollment point
+      parameters:
+      - description: Course ID
+        in: path
+        name: courseid
+        required: true
+        type: string
+      - description: Updated enrollment point
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateEnrollmentPoint'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update enrollment point
+      tags:
+      - Courses Service
   /courses/{courseid}/enrollment/progress:
-    put:
+    patch:
       consumes:
       - application/json
       description: Update enrollment progress
@@ -1646,6 +1724,35 @@ paths:
       summary: Get user profile
       tags:
       - Dashboard Service
+    put:
+      consumes:
+      - application/json
+      description: Update the profile of the authenticated user
+      parameters:
+      - description: Update User Profile Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateUserProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update user profile
+      tags:
+      - Dashboard Service
   /dashboard/sidebar:
     get:
       consumes:
@@ -1669,6 +1776,36 @@ paths:
           schema:
             $ref: '#/definitions/models.StatusModel'
       summary: Get sidebar mapping for the user
+      tags:
+      - Dashboard Service
+  /dashboard/skill:
+    put:
+      consumes:
+      - application/json
+      description: Update the skill of the authenticated user
+      parameters:
+      - description: Update User Skill Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateUserTitleSkillRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update user skill
       tags:
       - Dashboard Service
   /faq:
@@ -2206,6 +2343,51 @@ paths:
       summary: Update a hero component
       tags:
       - Hero Service
+  /leaderboard/rank:
+    get:
+      description: Get 100 Top Users With Highest Achieved Points Based On Category
+        Filter
+      parameters:
+      - description: filter by category
+        in: query
+        name: category
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserModel'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get 100 Top Users With Highest Achieved Points Based On Category Filter
+      tags:
+      - Leaderboard Service
+  /leaderboard/ranks:
+    get:
+      description: Get 100 Top Users With Highest Achieved Points
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserModel'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get 100 Top Users With Highest Achieved Points
+      tags:
+      - Leaderboard Service
   /liveness-check:
     get:
       description: Get Liveness Check Status

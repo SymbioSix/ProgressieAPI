@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"github.com/SymbioSix/ProgressieAPI/middleware"
 	"github.com/SymbioSix/ProgressieAPI/services/dashboard"
 	"github.com/gofiber/fiber/v3"
 )
@@ -16,6 +17,8 @@ func NewRouteAuthController(dashboardRouter dashboard.DashboardController) Dashb
 func (dr *DashboardRouter) DashboardRoutes(rg fiber.Router) {
 	router := rg.Group("dashboard")
 
-	router.Get("/sidebar", dr.dashboardRouter.SidebarMapper)
-	router.Get("/profile", dr.dashboardRouter.GetUserProfile)
+	router.Get("/sidebar", dr.dashboardRouter.SidebarMapperForAuthenticatedUser, middleware.RestrictUnauthenticatedUser())
+	router.Get("/profile", dr.dashboardRouter.GetUserProfile, middleware.RestrictUnauthenticatedUser())
+	router.Put("/profile", dr.dashboardRouter.UpdateUserProfile, middleware.RestrictUnauthenticatedUser())
+	router.Put("/skill", dr.dashboardRouter.CreateOrUpdateUserSkill, middleware.RestrictUnauthenticatedUser())
 }
