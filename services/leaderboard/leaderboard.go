@@ -45,10 +45,10 @@ func (lead *LeaderboardController) Get100TopRanks(c fiber.Ctx) error {
 //	@Description	Get 100 Top Users With Highest Achieved Points Based On Category Filter
 //	@Tags			Leaderboard Service
 //	@Produce		json
-//	@Param			category query string true "filter by category"
-//	@Success		200	{object}	[]user.UserModel
-//	@Failute		400 {object} status.StatusModel
-//	@Failure		500	{object}	status.StatusModel
+//	@Param			category	query		string	true	"filter by category option: Financial Management or Personal Wellness or Social Etiquette"
+//	@Success		200			{object}	[]user.UserModel
+//	@Failure		400			{object}	status.StatusModel
+//	@Failure		500			{object}	status.StatusModel
 //	@Router			/leaderboard/rank [get]
 func (lead *LeaderboardController) Get100TopFilteredRanks(c fiber.Ctx) error {
 	// Ambil filter kategori dari query
