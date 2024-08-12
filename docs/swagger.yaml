@@ -372,6 +372,17 @@ definitions:
       token_type:
         type: string
     type: object
+  models.RankBadge:
+    properties:
+      rank_description:
+        type: string
+      rank_icon:
+        type: string
+      rank_id:
+        type: string
+      rank_title:
+        type: string
+    type: object
   models.RequestCustomTarget:
     properties:
       achievement_id:
@@ -784,6 +795,19 @@ definitions:
       rank_id:
         type: string
       rank_title:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.UserRankBadges:
+    properties:
+      obtained_at:
+        type: string
+      rank_category:
+        type: string
+      rank_data:
+        $ref: '#/definitions/models.RankBadge'
+      rank_id:
         type: string
       user_id:
         type: string
@@ -2348,7 +2372,8 @@ paths:
       description: Get 100 Top Users With Highest Achieved Points Based On Category
         Filter
       parameters:
-      - description: filter by category
+      - description: 'filter by category option: Financial Management or Personal
+          Wellness or Social Etiquette'
         in: query
         name: category
         required: true
@@ -2362,6 +2387,10 @@ paths:
             items:
               $ref: '#/definitions/models.UserModel'
             type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
         "500":
           description: Internal Server Error
           schema:
@@ -2518,6 +2547,66 @@ paths:
       summary: Update a navbar component
       tags:
       - Navbar Service
+  /rank/:
+    get:
+      description: Get User Rank Badges
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserRankBadges'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get User Rank Badges
+      tags:
+      - RankBadge Profile Service
+  /rank/set:
+    post:
+      description: Set User Rank badge
+      parameters:
+      - description: 'filter by badge type option: Beginner or Intermediate or Expert'
+        in: query
+        name: type
+        required: true
+        type: string
+      - description: 'filter by category option: Financial Management or Personal
+          Wellness or Social Etiquette'
+        in: query
+        name: category
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Set User Rank Badge
+      tags:
+      - RankBadge Profile Service
   /subcourse_reminders:
     get:
       consumes:
