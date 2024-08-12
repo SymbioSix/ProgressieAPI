@@ -11,12 +11,14 @@ import (
 	dash_r "github.com/SymbioSix/ProgressieAPI/routers/dashboard"
 	ln_r "github.com/SymbioSix/ProgressieAPI/routers/landing"
 	lead_r "github.com/SymbioSix/ProgressieAPI/routers/leaderboard"
+	rank_r "github.com/SymbioSix/ProgressieAPI/routers/rank"
 	todo_s "github.com/SymbioSix/ProgressieAPI/services/To_do_list"
 	au_s "github.com/SymbioSix/ProgressieAPI/services/auth"
 	crs_s "github.com/SymbioSix/ProgressieAPI/services/courses"
 	dash_s "github.com/SymbioSix/ProgressieAPI/services/dashboard"
 	ln_s "github.com/SymbioSix/ProgressieAPI/services/landing"
 	lead_s "github.com/SymbioSix/ProgressieAPI/services/leaderboard"
+	rank_s "github.com/SymbioSix/ProgressieAPI/services/rank"
 	s "github.com/SymbioSix/ProgressieAPI/setup"
 	"github.com/SymbioSix/ProgressieAPI/utils/swagger" // PROPS TO: github.com/gofiber/swagger (modified so it can runned in gofiber/fiber/v3)
 	"github.com/gofiber/fiber/v3"
@@ -60,6 +62,9 @@ var (
 
 	LeaderboardController lead_s.LeaderboardController
 	LeaderboardRouter     lead_r.LeaderboardRouter
+
+	RankController rank_s.RankController
+	RankRouter     rank_r.RankRouter
 )
 
 func init() {
@@ -106,6 +111,9 @@ func init() {
 
 	LeaderboardController = lead_s.NewLeaderboardController(s.DB, s.Client)
 	LeaderboardRouter = lead_r.NewRouteLeaderboardController(LeaderboardController)
+
+	RankController = rank_s.NewRankController(s.DB, s.Client)
+	RankRouter = rank_r.NewRouteRankController(RankController)
 
 	app = fiber.New()
 }
@@ -194,6 +202,7 @@ func main() {
 	CourseRouter.GetCourseRoutes(router)
 	TodoRouter.GetSetupToDoListRoutes(router)
 	LeaderboardRouter.LeaderboardRoutes(router)
+	RankRouter.RankRoutes(router)
 
 	// Serve The API
 	s.StartServerWithGracefulShutdown(app, &config)

@@ -2323,7 +2323,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "filter by category",
+                        "description": "filter by category option: Financial Management or Personal Wellness or Social Etiquette",
                         "name": "category",
                         "in": "query",
                         "required": true
@@ -2337,6 +2337,12 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/models.UserModel"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "500": {
@@ -2560,6 +2566,95 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/rank/": {
+            "get": {
+                "description": "Get User Rank Badges",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "RankBadge Profile Service"
+                ],
+                "summary": "Get User Rank Badges",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserRankBadges"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/rank/set": {
+            "post": {
+                "description": "Set User Rank badge",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "RankBadge Profile Service"
+                ],
+                "summary": "Set User Rank Badge",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "filter by badge type option: Beginner or Intermediate or Expert",
+                        "name": "type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter by category option: Financial Management or Personal Wellness or Social Etiquette",
+                        "name": "category",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/models.StatusModel"
                         }
@@ -3462,6 +3557,23 @@ const docTemplate = `{
                 }
             }
         },
+        "models.RankBadge": {
+            "type": "object",
+            "properties": {
+                "rank_description": {
+                    "type": "string"
+                },
+                "rank_icon": {
+                    "type": "string"
+                },
+                "rank_id": {
+                    "type": "string"
+                },
+                "rank_title": {
+                    "type": "string"
+                }
+            }
+        },
         "models.RequestCustomTarget": {
             "type": "object",
             "properties": {
@@ -4089,6 +4201,26 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "rank_title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserRankBadges": {
+            "type": "object",
+            "properties": {
+                "obtained_at": {
+                    "type": "string"
+                },
+                "rank_category": {
+                    "type": "string"
+                },
+                "rank_data": {
+                    "$ref": "#/definitions/models.RankBadge"
+                },
+                "rank_id": {
                     "type": "string"
                 },
                 "user_id": {
