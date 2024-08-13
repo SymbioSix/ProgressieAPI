@@ -1,21 +1,29 @@
 package routers
 
 import (
-	services "github.com/SymbioSix/ProgressieAPI/services/quiz"
+	quiz "github.com/SymbioSix/ProgressieAPI/services/quiz"
 	"github.com/gofiber/fiber/v3"
 )
 
-// SetupQuizAnswerMultipleChoiceRoutes sets up routes for QuizAnswerMultipleChoice operations
-func SetupQuizAnswerMultipleChoiceRoutes(app *fiber.App, service *services.QuizAnswerMultipleChoiceService) {
-	// Route to create a new QuizAnswerMultipleChoice record
-	app.Post("/quiz-answer-multiple-choices", service.CreateQuizAnswerMultipleChoice)
+type GetQuizAMCRouter struct {
+	getQuizAMCController quiz.QuizAnswerMultipleChoiceService
+}
+
+func NewGetQuizAMCRouter(getQuizAMCController quiz.QuizAnswerMultipleChoiceService) GetQuizAMCRouter {
+	return GetQuizAMCRouter{getQuizAMCController}
+}
+
+func (gqAMCs *GetQuizAMCRouter) GetQuizAMCRouter(qAMC fiber.Router) {
+	app := qAMC.Group("QuizAnswerMultipleChoice")
+
+	app.Post("/quiz-answer-multiple-choices", gqAMCs.getQuizAMCController.CreateQuizAnswerMultipleChoice)
 
 	// Route to get a QuizAnswerMultipleChoice record by ID
-	app.Get("/quiz-answer-multiple-choices/:id", service.GetQuizAnswerMultipleChoiceByID)
+	app.Get("/quiz-answer-multiple-choices/:id", gqAMCs.getQuizAMCController.GetQuizAnswerMultipleChoiceByID)
 
 	// Route to update an existing QuizAnswerMultipleChoice record
-	app.Put("/quiz-answer-multiple-choices/:id", service.UpdateQuizAnswerMultipleChoice)
+	app.Put("/quiz-answer-multiple-choices/:id", gqAMCs.getQuizAMCController.UpdateQuizAnswerMultipleChoice)
 
 	// Route to delete a QuizAnswerMultipleChoice record by ID
-	app.Delete("/quiz-answer-multiple-choices/:id", service.DeleteQuizAnswerMultipleChoice)
+	app.Delete("/quiz-answer-multiple-choices/:id", gqAMCs.getQuizAMCController.DeleteQuizAnswerMultipleChoice)
 }
