@@ -24,21 +24,10 @@ type QuizService struct {
 }
 
 // NewQuizService creates a new QuizService
-func NewQuizService(db *gorm.DB) *QuizService {
-	return &QuizService{db: db}
+func NewQuizService(db *gorm.DB) QuizService {
+	return QuizService{db: db}
 }
 
-// CreateQuiz creates a new quiz
-// @Summary Create a new quiz
-// @Description Create a new quiz with the provided details
-// @Tags quizzes
-// @Accept  json
-// @Produce  json
-// @Param quiz body models.Quiz true "Quiz object"
-// @Success 201 {object} models.Quiz
-// @Failure 400 {object} status.StatusModel
-// @Failure 500 {object} status.StatusModel
-// @Router /quizzes [post]
 func (service *QuizService) CreateQuiz(req *models.Quiz) (*models.Quiz, error) {
 	quiz := &models.Quiz{
 		QuizID:      req.QuizID,
@@ -63,15 +52,6 @@ func (service *QuizService) CreateQuiz(req *models.Quiz) (*models.Quiz, error) {
 	return quiz, nil
 }
 
-// GetQuiz retrieves a quiz by ID
-// @Summary Get a quiz by ID
-// @Description Retrieve a quiz using its ID
-// @Tags quizzes
-// @Produce  json
-// @Param id path string true "Quiz ID"
-// @Success 200 {object} models.Quiz
-// @Failure 404 {object} status.StatusModel
-// @Router /quizzes/{id} [get]
 func (service *QuizService) GetQuiz(id string) (*models.Quiz, error) {
 	var quiz models.Quiz
 	if err := service.db.First(&quiz, "quiz_id = ?", id).Error; err != nil {
@@ -94,19 +74,6 @@ func (service *QuizService) GetQuiz(id string) (*models.Quiz, error) {
 	return &quiz, nil
 }
 
-// UpdateQuiz updates an existing quiz
-// @Summary Update a quiz by ID
-// @Description Update a quiz's details using its ID
-// @Tags quizzes
-// @Accept  json
-// @Produce  json
-// @Param id path string true "Quiz ID"
-// @Param quiz body models.Quiz true "Updated quiz object"
-// @Success 200 {object} models.Quiz
-// @Failure 400 {object} status.StatusModel
-// @Failure 404 {object} status.StatusModel
-// @Failure 500 {object} status.StatusModel
-// @Router /quizzes/{id} [put]
 func (service *QuizService) UpdateQuiz(id string, req *models.Quiz) (*models.Quiz, error) {
 	var quiz models.Quiz
 	if err := service.db.First(&quiz, "quiz_id = ?", id).Error; err != nil {
@@ -144,15 +111,6 @@ func (service *QuizService) UpdateQuiz(id string, req *models.Quiz) (*models.Qui
 	return &quiz, nil
 }
 
-// DeleteQuiz deletes a quiz by ID
-// @Summary Delete a quiz by ID
-// @Description Delete a quiz using its ID
-// @Tags quizzes
-// @Produce  json
-// @Param id path string true "Quiz ID"
-// @Success 204 "No Content"
-// @Failure 500 {object} status.StatusModel
-// @Router /quizzes/{id} [delete]
 func (service *QuizService) DeleteQuiz(id string) error {
 	if err := service.db.Delete(&models.Quiz{}, "quiz_id = ?", id).Error; err != nil {
 		return &CustomError{
@@ -168,16 +126,17 @@ func (service *QuizService) DeleteQuiz(id string) error {
 // Handlers
 
 // CreateQuizHandler handles the creation of a new quiz
-// @Summary Create a new quiz
-// @Description Handle the request to create a new quiz
-// @Tags quizzes
-// @Accept  json
-// @Produce  json
-// @Param quiz body models.Quiz true "Quiz object"
-// @Success 201 {object} models.Quiz
-// @Failure 400 {object} status.StatusModel
-// @Failure 500 {object} status.StatusModel
-// @Router /quizzes [post]
+//
+//	@Summary		Create a new quiz
+//	@Description	Handle the request to create a new quiz
+//	@Tags			Quiz Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			quiz	body		models.Quiz	true	"Quiz object"
+//	@Success		201		{object}	models.Quiz
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
+//	@Router			/quizzes [post]
 func (service QuizService) CreateQuizHandler(c fiber.Ctx) error {
 	var req models.Quiz
 	if err := c.Bind().JSON(&req); err != nil {
@@ -202,14 +161,15 @@ func (service QuizService) CreateQuizHandler(c fiber.Ctx) error {
 }
 
 // GetQuizHandler handles the retrieval of a quiz by ID
-// @Summary Get a quiz by ID
-// @Description Handle the request to get a quiz by ID
-// @Tags quizzes
-// @Produce  json
-// @Param id path string true "Quiz ID"
-// @Success 200 {object} models.Quiz
-// @Failure 404 {object} status.StatusModel
-// @Router /quizzes/{id} [get]
+//
+//	@Summary		Get a quiz by ID
+//	@Description	Handle the request to get a quiz by ID
+//	@Tags			Quiz Service
+//	@Produce		json
+//	@Param			id	path		string	true	"Quiz ID"
+//	@Success		200	{object}	models.Quiz
+//	@Failure		404	{object}	status.StatusModel
+//	@Router			/quizzes/{id} [get]
 func (service QuizService) GetQuizHandler(c fiber.Ctx) error {
 	id := c.Params("id")
 	quiz, err := service.GetQuiz(id)
@@ -230,18 +190,19 @@ func (service QuizService) GetQuizHandler(c fiber.Ctx) error {
 }
 
 // UpdateQuizHandler handles the update of an existing quiz
-// @Summary Update a quiz by ID
-// @Description Handle the request to update a quiz by ID
-// @Tags quizzes
-// @Accept  json
-// @Produce  json
-// @Param id path string true "Quiz ID"
-// @Param quiz body models.Quiz true "Updated quiz object"
-// @Success 200 {object} models.Quiz
-// @Failure 400 {object} status.StatusModel
-// @Failure 404 {object} status.StatusModel
-// @Failure 500 {object} status.StatusModel
-// @Router /quizzes/{id} [put]
+//
+//	@Summary		Update a quiz by ID
+//	@Description	Handle the request to update a quiz by ID
+//	@Tags			Quiz Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		string		true	"Quiz ID"
+//	@Param			quiz	body		models.Quiz	true	"Updated quiz object"
+//	@Success		200		{object}	models.Quiz
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		404		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
+//	@Router			/quizzes/{id} [put]
 func (service QuizService) UpdateQuizHandler(c fiber.Ctx) error {
 	id := c.Params("id")
 	var req models.Quiz
@@ -270,14 +231,15 @@ func (service QuizService) UpdateQuizHandler(c fiber.Ctx) error {
 }
 
 // DeleteQuizHandler handles the deletion of a quiz by ID
-// @Summary Delete a quiz by ID
-// @Description Handle the request to delete a quiz by ID
-// @Tags quizzes
-// @Produce  json
-// @Param id path string true "Quiz ID"
-// @Success 204 "No Content"
-// @Failure 500 {object} status.StatusModel
-// @Router /quizzes/{id} [delete]
+//
+//	@Summary		Delete a quiz by ID
+//	@Description	Handle the request to delete a quiz by ID
+//	@Tags			Quiz Service
+//	@Produce		json
+//	@Param			id	path	string	true	"Quiz ID"
+//	@Success		204	"No Content"
+//	@Failure		500	{object}	status.StatusModel
+//	@Router			/quizzes/{id} [delete]
 func (service QuizService) DeleteQuizHandler(c fiber.Ctx) error {
 	id := c.Params("id")
 	if err := service.DeleteQuiz(id); err != nil {

@@ -11,6 +11,7 @@ import (
 	dash_r "github.com/SymbioSix/ProgressieAPI/routers/dashboard"
 	ln_r "github.com/SymbioSix/ProgressieAPI/routers/landing"
 	lead_r "github.com/SymbioSix/ProgressieAPI/routers/leaderboard"
+	quiz_r "github.com/SymbioSix/ProgressieAPI/routers/quiz"
 	rank_r "github.com/SymbioSix/ProgressieAPI/routers/rank"
 	todo_s "github.com/SymbioSix/ProgressieAPI/services/To_do_list"
 	au_s "github.com/SymbioSix/ProgressieAPI/services/auth"
@@ -18,6 +19,7 @@ import (
 	dash_s "github.com/SymbioSix/ProgressieAPI/services/dashboard"
 	ln_s "github.com/SymbioSix/ProgressieAPI/services/landing"
 	lead_s "github.com/SymbioSix/ProgressieAPI/services/leaderboard"
+	quiz_s "github.com/SymbioSix/ProgressieAPI/services/quiz"
 	rank_s "github.com/SymbioSix/ProgressieAPI/services/rank"
 	s "github.com/SymbioSix/ProgressieAPI/setup"
 	"github.com/SymbioSix/ProgressieAPI/utils/swagger" // PROPS TO: github.com/gofiber/swagger (modified so it can runned in gofiber/fiber/v3)
@@ -65,6 +67,18 @@ var (
 
 	RankController rank_s.RankController
 	RankRouter     rank_r.RankRouter
+
+	QuizController quiz_s.QuizService
+	QuizRouter     quiz_r.GetQuizRouter
+
+	QuizQuestionController quiz_s.QuizQuestionService
+	QuizQuestionRouter     quiz_r.GetQuizQuestionRouter
+
+	QuizAnswerMultipleChoiceController quiz_s.QuizAnswerMultipleChoiceService
+	QuizAnswerMultipleChoiceRouter     quiz_r.GetQuizAMCRouter
+
+	QuizResultController quiz_s.QuizResultService
+	QuizResultRouter     quiz_r.GetQuizResultRouter
 )
 
 func init() {
@@ -114,6 +128,18 @@ func init() {
 
 	RankController = rank_s.NewRankController(s.DB, s.Client)
 	RankRouter = rank_r.NewRouteRankController(RankController)
+
+	QuizController = quiz_s.NewQuizService(s.DB)
+	QuizRouter = quiz_r.NewGetQuizRouter(QuizController)
+
+	QuizQuestionController = quiz_s.NewQuizQuestionService(s.DB)
+	QuizQuestionRouter = quiz_r.NewGetQuizQuestionRouter(QuizQuestionController)
+
+	QuizAnswerMultipleChoiceController = quiz_s.NewQuizAnswerMultipleChoiceService(s.DB)
+	QuizAnswerMultipleChoiceRouter = quiz_r.NewGetQuizAMCRouter(QuizAnswerMultipleChoiceController)
+
+	QuizResultController = quiz_s.NewQuizResultService(s.DB)
+	QuizResultRouter = quiz_r.NewGetQuizResultRouter(QuizResultController)
 
 	app = fiber.New()
 }
@@ -203,6 +229,10 @@ func main() {
 	TodoRouter.GetSetupToDoListRoutes(router)
 	LeaderboardRouter.LeaderboardRoutes(router)
 	RankRouter.RankRoutes(router)
+	QuizRouter.GetQuizRouter(router)
+	QuizAnswerMultipleChoiceRouter.GetQuizAMCRouter(router)
+	QuizQuestionRouter.GetQuizQuestionRouter(router)
+	QuizResultRouter.GetQuizResultRouter(router)
 
 	// Serve The API
 	s.StartServerWithGracefulShutdown(app, &config)

@@ -350,6 +350,14 @@ definitions:
       updated_by:
         type: string
     type: object
+  models.MultCheckBoxStatus:
+    enum:
+    - active
+    - inactive
+    type: string
+    x-enum-varnames:
+    - MultCheckBoxActive
+    - MultCheckBoxInactive
   models.ParseCustomTargetFromAchievement:
     properties:
       custom_targets:
@@ -372,6 +380,116 @@ definitions:
       token_type:
         type: string
     type: object
+  models.Quiz:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      description:
+        type: string
+      quiz_id:
+        type: string
+      status:
+        $ref: '#/definitions/models.QuizStatus'
+      subcourse_id:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.QuizAnswerMultipleChoice:
+    properties:
+      answer:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: string
+      option_a:
+        type: string
+      option_b:
+        type: string
+      option_c:
+        type: string
+      option_d:
+        type: string
+      option_e:
+        type: string
+      quizquestion_id:
+        type: string
+      status:
+        $ref: '#/definitions/models.MultCheckBoxStatus'
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.QuizQuestion:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      question_text:
+        type: string
+      quiz_id:
+        type: string
+      quizquestion_id:
+        type: string
+      status:
+        $ref: '#/definitions/models.QuizQuestionStatus'
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  models.QuizQuestionStatus:
+    enum:
+    - enabled
+    - disabled
+    type: string
+    x-enum-varnames:
+    - QuizQuestionEnabled
+    - QuizQuestionDisabled
+  models.QuizResult:
+    properties:
+      completed_at:
+        type: string
+      highest_score:
+        type: number
+      last_score:
+        type: number
+      progress:
+        type: number
+      quiz_id:
+        type: string
+      status:
+        $ref: '#/definitions/models.QuizResultStatus'
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.QuizResultStatus:
+    enum:
+    - enable
+    - disabled
+    type: string
+    x-enum-varnames:
+    - QuizResultEnable
+    - QuizResultDisabled
+  models.QuizStatus:
+    enum:
+    - active
+    - inactive
+    type: string
+    x-enum-varnames:
+    - QuizActive
+    - QuizInactive
   models.RankBadge:
     properties:
       rank_description:
@@ -2547,6 +2665,486 @@ paths:
       summary: Update a navbar component
       tags:
       - Navbar Service
+  /quiz-answer-multiple-choices:
+    post:
+      consumes:
+      - application/json
+      description: Create a new QuizAnswerMultipleChoice record in the database
+      parameters:
+      - description: QuizAnswerMultipleChoice Object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.QuizAnswerMultipleChoice'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.QuizAnswerMultipleChoice'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Create a new QuizAnswerMultipleChoice
+      tags:
+      - QuizAnswerMultipleChoice Service
+  /quiz-answer-multiple-choices/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a QuizAnswerMultipleChoice record from the database by its
+        ID
+      parameters:
+      - description: QuizQuestion ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Delete a QuizAnswerMultipleChoice by ID
+      tags:
+      - QuizAnswerMultipleChoice Service
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a QuizAnswerMultipleChoice record from the database by
+        its ID
+      parameters:
+      - description: QuizQuestion ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QuizAnswerMultipleChoice'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get a QuizAnswerMultipleChoice by ID
+      tags:
+      - QuizAnswerMultipleChoice Service
+    put:
+      consumes:
+      - application/json
+      description: Update an existing QuizAnswerMultipleChoice record in the database
+        by its ID
+      parameters:
+      - description: QuizQuestion ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: QuizAnswerMultipleChoice Object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.QuizAnswerMultipleChoice'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QuizAnswerMultipleChoice'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update a QuizAnswerMultipleChoice by ID
+      tags:
+      - QuizAnswerMultipleChoice Service
+  /quiz-questions:
+    post:
+      consumes:
+      - application/json
+      description: Create a new QuizQuestion record
+      parameters:
+      - description: QuizQuestion data
+        in: body
+        name: quizQuestion
+        required: true
+        schema:
+          $ref: '#/definitions/models.QuizQuestion'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.QuizQuestion'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Create a new QuizQuestion
+      tags:
+      - QuizQuestion Service
+  /quiz-questions/{id}:
+    delete:
+      description: Delete a QuizQuestion record by its ID
+      parameters:
+      - description: QuizQuestion ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Delete a QuizQuestion by ID
+      tags:
+      - QuizQuestion Service
+    get:
+      description: Retrieve a QuizQuestion record by its ID
+      parameters:
+      - description: QuizQuestion ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QuizQuestion'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get a QuizQuestion by ID
+      tags:
+      - QuizQuestion Service
+    put:
+      consumes:
+      - application/json
+      description: Update a QuizQuestion record by its ID
+      parameters:
+      - description: QuizQuestion ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated QuizQuestion data
+        in: body
+        name: quizQuestion
+        required: true
+        schema:
+          $ref: '#/definitions/models.QuizQuestion'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QuizQuestion'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update an existing QuizQuestion
+      tags:
+      - QuizQuestion Service
+  /quiz-results:
+    post:
+      consumes:
+      - application/json
+      description: Handles the creation of a new quiz result.
+      parameters:
+      - description: QuizResult Data
+        in: body
+        name: quizResult
+        required: true
+        schema:
+          $ref: '#/definitions/models.QuizResult'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.QuizResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Create a new QuizResult
+      tags:
+      - QuizResult Service
+  /quiz-results/{quiz_id}/{user_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Handles the deletion of a quiz result by QuizID and UserID.
+      parameters:
+      - description: Quiz ID
+        in: path
+        name: quiz_id
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Delete a QuizResult
+      tags:
+      - QuizResult Service
+    get:
+      consumes:
+      - application/json
+      description: Handles the retrieval of a quiz result by QuizID and UserID.
+      parameters:
+      - description: Quiz ID
+        in: path
+        name: quiz_id
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QuizResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get a QuizResult
+      tags:
+      - QuizResult Service
+    put:
+      consumes:
+      - application/json
+      description: Handles the update of an existing quiz result.
+      parameters:
+      - description: Quiz ID
+        in: path
+        name: quiz_id
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: Updated QuizResult Data
+        in: body
+        name: quizResult
+        required: true
+        schema:
+          $ref: '#/definitions/models.QuizResult'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QuizResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update a QuizResult
+      tags:
+      - QuizResult Service
+  /quizzes:
+    post:
+      consumes:
+      - application/json
+      description: Handle the request to create a new quiz
+      parameters:
+      - description: Quiz object
+        in: body
+        name: quiz
+        required: true
+        schema:
+          $ref: '#/definitions/models.Quiz'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Quiz'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Create a new quiz
+      tags:
+      - Quiz Service
+  /quizzes/{id}:
+    delete:
+      description: Handle the request to delete a quiz by ID
+      parameters:
+      - description: Quiz ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Delete a quiz by ID
+      tags:
+      - Quiz Service
+    get:
+      description: Handle the request to get a quiz by ID
+      parameters:
+      - description: Quiz ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Quiz'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get a quiz by ID
+      tags:
+      - Quiz Service
+    put:
+      consumes:
+      - application/json
+      description: Handle the request to update a quiz by ID
+      parameters:
+      - description: Quiz ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated quiz object
+        in: body
+        name: quiz
+        required: true
+        schema:
+          $ref: '#/definitions/models.Quiz'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Quiz'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update a quiz by ID
+      tags:
+      - Quiz Service
   /rank/:
     get:
       description: Get User Rank Badges

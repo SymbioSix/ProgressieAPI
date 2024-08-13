@@ -16,21 +16,21 @@ type QuizAnswerMultipleChoiceService struct {
 }
 
 // NewQuizAnswerMultipleChoiceService creates a new instance of QuizAnswerMultipleChoiceService
-func NewQuizAnswerMultipleChoiceService(db *gorm.DB) *QuizAnswerMultipleChoiceService {
-	return &QuizAnswerMultipleChoiceService{DB: db}
+func NewQuizAnswerMultipleChoiceService(db *gorm.DB) QuizAnswerMultipleChoiceService {
+	return QuizAnswerMultipleChoiceService{DB: db}
 }
 
 // CreateQuizAnswerMultipleChoice creates a new QuizAnswerMultipleChoice record
-// @Summary Create a new QuizAnswerMultipleChoice
-// @Description Create a new QuizAnswerMultipleChoice record in the database
-// @Tags QuizAnswerMultipleChoice
-// @Accept  json
-// @Produce  json
-// @Param body body models.QuizAnswerMultipleChoice true "QuizAnswerMultipleChoice Object"
-// @Success 201 {object} models.QuizAnswerMultipleChoice
-// @Failure 400 {object} status.StatusModel
-// @Failure 500 {object} status.StatusModel
-// @Router /quiz-answer-multiple-choices [post]
+//	@Summary		Create a new QuizAnswerMultipleChoice
+//	@Description	Create a new QuizAnswerMultipleChoice record in the database
+//	@Tags			QuizAnswerMultipleChoice Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body		models.QuizAnswerMultipleChoice	true	"QuizAnswerMultipleChoice Object"
+//	@Success		201		{object}	models.QuizAnswerMultipleChoice
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
+//	@Router			/quiz-answer-multiple-choices [post]
 func (s QuizAnswerMultipleChoiceService) CreateQuizAnswerMultipleChoice(c fiber.Ctx) error {
 	var answer models.QuizAnswerMultipleChoice
 	if err := c.Bind().JSON(&answer); err != nil {
@@ -51,16 +51,16 @@ func (s QuizAnswerMultipleChoiceService) CreateQuizAnswerMultipleChoice(c fiber.
 }
 
 // GetQuizAnswerMultipleChoiceByID retrieves a QuizAnswerMultipleChoice record by ID
-// @Summary Get a QuizAnswerMultipleChoice by ID
-// @Description Retrieve a QuizAnswerMultipleChoice record from the database by its ID
-// @Tags QuizAnswerMultipleChoice
-// @Accept  json
-// @Produce  json
-// @Param id path string true "QuizQuestion ID"
-// @Success 200 {object} models.QuizAnswerMultipleChoice
-// @Failure 404 {object} status.StatusModel
-// @Failure 500 {object} status.StatusModel
-// @Router /quiz-answer-multiple-choices/{id} [get]
+//	@Summary		Get a QuizAnswerMultipleChoice by ID
+//	@Description	Retrieve a QuizAnswerMultipleChoice record from the database by its ID
+//	@Tags			QuizAnswerMultipleChoice Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		string	true	"QuizQuestion ID"
+//	@Success		200	{object}	models.QuizAnswerMultipleChoice
+//	@Failure		404	{object}	status.StatusModel
+//	@Failure		500	{object}	status.StatusModel
+//	@Router			/quiz-answer-multiple-choices/{id} [get]
 func (s QuizAnswerMultipleChoiceService) GetQuizAnswerMultipleChoiceByID(c fiber.Ctx) error {
 	id := c.Params("id")
 	var answer models.QuizAnswerMultipleChoice
@@ -80,17 +80,17 @@ func (s QuizAnswerMultipleChoiceService) GetQuizAnswerMultipleChoiceByID(c fiber
 }
 
 // UpdateQuizAnswerMultipleChoice updates an existing QuizAnswerMultipleChoice record
-// @Summary Update a QuizAnswerMultipleChoice by ID
-// @Description Update an existing QuizAnswerMultipleChoice record in the database by its ID
-// @Tags QuizAnswerMultipleChoice
-// @Accept  json
-// @Produce  json
-// @Param id path string true "QuizQuestion ID"
-// @Param body body models.QuizAnswerMultipleChoice true "QuizAnswerMultipleChoice Object"
-// @Success 200 {object} models.QuizAnswerMultipleChoice
-// @Failure 400 {object} status.StatusModel
-// @Failure 500 {object} status.StatusModel
-// @Router /quiz-answer-multiple-choices/{id} [put]
+//	@Summary		Update a QuizAnswerMultipleChoice by ID
+//	@Description	Update an existing QuizAnswerMultipleChoice record in the database by its ID
+//	@Tags			QuizAnswerMultipleChoice Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		string							true	"QuizQuestion ID"
+//	@Param			body	body		models.QuizAnswerMultipleChoice	true	"QuizAnswerMultipleChoice Object"
+//	@Success		200		{object}	models.QuizAnswerMultipleChoice
+//	@Failure		400		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
+//	@Router			/quiz-answer-multiple-choices/{id} [put]
 func (s QuizAnswerMultipleChoiceService) UpdateQuizAnswerMultipleChoice(c fiber.Ctx) error {
 	id := c.Params("id")
 	var answer models.QuizAnswerMultipleChoice
@@ -112,15 +112,15 @@ func (s QuizAnswerMultipleChoiceService) UpdateQuizAnswerMultipleChoice(c fiber.
 }
 
 // DeleteQuizAnswerMultipleChoice deletes a QuizAnswerMultipleChoice record by ID
-// @Summary Delete a QuizAnswerMultipleChoice by ID
-// @Description Delete a QuizAnswerMultipleChoice record from the database by its ID
-// @Tags QuizAnswerMultipleChoice
-// @Accept  json
-// @Produce  json
-// @Param id path string true "QuizQuestion ID"
-// @Success 204 "No Content"
-// @Failure 500 {object} status.StatusModel
-// @Router /quiz-answer-multiple-choices/{id} [delete]
+//	@Summary		Delete a QuizAnswerMultipleChoice by ID
+//	@Description	Delete a QuizAnswerMultipleChoice record from the database by its ID
+//	@Tags			QuizAnswerMultipleChoice Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path	string	true	"QuizQuestion ID"
+//	@Success		204	"No Content"
+//	@Failure		500	{object}	status.StatusModel
+//	@Router			/quiz-answer-multiple-choices/{id} [delete]
 func (s QuizAnswerMultipleChoiceService) DeleteQuizAnswerMultipleChoice(c fiber.Ctx) error {
 	id := c.Params("id")
 	if err := s.DB.Where("quizquestion_id = ?", id).Delete(&models.QuizAnswerMultipleChoice{}).Error; err != nil {
