@@ -86,7 +86,7 @@ definitions:
       supabase_api_status:
         type: string
     type: object
-  models.Land_Aboutus_Request:
+  models.Land_Aboutus:
     properties:
       aboutus_component_id:
         description: Primary key
@@ -112,32 +112,7 @@ definitions:
       updated_by:
         type: string
     type: object
-  models.Land_Aboutus_Response:
-    properties:
-      aboutus_component_id:
-        type: integer
-      aboutus_component_jobdesc:
-        type: string
-      aboutus_component_name:
-        type: string
-      aboutus_component_photo:
-        type: string
-      created_at:
-        type: string
-      created_by:
-        type: string
-      description:
-        type: string
-      status:
-        type: string
-      tooltip:
-        type: string
-      updated_at:
-        type: string
-      updated_by:
-        type: string
-    type: object
-  models.Land_Faq_Request:
+  models.Land_Faq:
     properties:
       created_at:
         type: string
@@ -158,28 +133,7 @@ definitions:
       updated_by:
         type: string
     type: object
-  models.Land_Faq_Response:
-    properties:
-      created_at:
-        type: string
-      created_by:
-        type: string
-      faq_category:
-        type: integer
-      faq_description:
-        type: string
-      faq_id:
-        type: integer
-      faq_title:
-        type: string
-      tooltip:
-        type: string
-      updated_at:
-        type: string
-      updated_by:
-        type: string
-    type: object
-  models.Land_Faqcategory_Request:
+  models.Land_Faqcategory:
     properties:
       created_at:
         type: string
@@ -187,29 +141,18 @@ definitions:
         type: string
       faq_category_id:
         type: integer
-      faq_category_name:
+      faq_categoryname:
         type: string
+      faqs:
+        items:
+          $ref: '#/definitions/models.Land_Faq'
+        type: array
       updated_at:
         type: string
       updated_by:
         type: string
     type: object
-  models.Land_Faqcategory_Response:
-    properties:
-      created_at:
-        type: string
-      created_by:
-        type: string
-      faq_category_id:
-        type: integer
-      faq_category_name:
-        type: string
-      updated_at:
-        type: string
-      updated_by:
-        type: string
-    type: object
-  models.Land_Footer_Request:
+  models.Land_Footer:
     properties:
       created_at:
         type: string
@@ -234,30 +177,7 @@ definitions:
       updated_by:
         type: string
     type: object
-  models.Land_Footer_Response:
-    properties:
-      created_at:
-        type: string
-      created_by:
-        type: string
-      endpoint:
-        type: string
-      footer_component_group:
-        type: integer
-      footer_component_icon:
-        type: string
-      footer_component_id:
-        type: integer
-      footer_component_name:
-        type: string
-      tooltip:
-        type: string
-      updated_at:
-        type: string
-      updated_by:
-        type: string
-    type: object
-  models.Land_Hero_Request:
+  models.Land_Hero:
     properties:
       created_at:
         type: string
@@ -281,53 +201,7 @@ definitions:
       updated_by:
         type: string
     type: object
-  models.Land_Hero_Response:
-    properties:
-      created_at:
-        type: string
-      created_by:
-        type: string
-      hero_component_cover_img:
-        type: string
-      hero_component_id:
-        type: integer
-      hero_component_image:
-        type: string
-      hero_component_subtitle:
-        type: string
-      hero_component_title:
-        type: string
-      tooltip:
-        type: string
-      updated_at:
-        type: string
-      updated_by:
-        type: string
-    type: object
-  models.Land_Navbar_Request:
-    properties:
-      created_at:
-        type: string
-      created_by:
-        type: string
-      endpoint:
-        type: string
-      nav_component_group:
-        type: integer
-      nav_component_icon:
-        type: string
-      nav_component_id:
-        type: integer
-      nav_component_name:
-        type: string
-      tooltip:
-        type: string
-      updated_at:
-        type: string
-      updated_by:
-        type: string
-    type: object
-  models.Land_Navbar_Response:
+  models.Land_Navbar:
     properties:
       created_at:
         type: string
@@ -984,7 +858,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Land_Aboutus_Response'
+              $ref: '#/definitions/models.Land_Aboutus'
             type: array
         "500":
           description: Internal Server Error
@@ -1003,14 +877,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Aboutus_Request'
+          $ref: '#/definitions/models.Land_Aboutus'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.Land_Aboutus_Response'
+            $ref: '#/definitions/models.Land_Aboutus'
         "400":
           description: Bad Request
           schema:
@@ -1071,7 +945,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Land_Aboutus_Response'
+            $ref: '#/definitions/models.Land_Aboutus'
         "400":
           description: Bad Request
           schema:
@@ -1102,14 +976,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Aboutus_Request'
+          $ref: '#/definitions/models.Land_Aboutus'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Land_Aboutus_Response'
+            $ref: '#/definitions/models.Land_Aboutus'
         "400":
           description: Bad Request
           schema:
@@ -1962,9 +1836,7 @@ paths:
           description: OK
           schema:
             items:
-              items:
-                $ref: '#/definitions/models.Land_Faq_Response'
-              type: array
+              $ref: '#/definitions/models.Land_Faq'
             type: array
         "500":
           description: Internal Server Error
@@ -1983,7 +1855,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Faq_Request'
+          $ref: '#/definitions/models.Land_Faq'
       produces:
       - application/json
       responses:
@@ -2019,7 +1891,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Land_Faq_Response'
+            $ref: '#/definitions/models.Land_Faq'
         "400":
           description: Bad Request
           schema:
@@ -2050,7 +1922,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Faq_Request'
+          $ref: '#/definitions/models.Land_Faq'
       produces:
       - application/json
       responses:
@@ -2086,7 +1958,7 @@ paths:
           schema:
             items:
               items:
-                $ref: '#/definitions/models.Land_Faqcategory_Response'
+                $ref: '#/definitions/models.Land_Faqcategory'
               type: array
             type: array
         "500":
@@ -2106,7 +1978,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Faqcategory_Request'
+          $ref: '#/definitions/models.Land_Faqcategory'
       produces:
       - application/json
       responses:
@@ -2142,7 +2014,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Land_Faqcategory_Response'
+            $ref: '#/definitions/models.Land_Faqcategory'
         "400":
           description: Bad Request
           schema:
@@ -2173,7 +2045,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Faqcategory_Request'
+          $ref: '#/definitions/models.Land_Faqcategory'
       produces:
       - application/json
       responses:
@@ -2208,7 +2080,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Land_Footer_Response'
+              $ref: '#/definitions/models.Land_Footer'
             type: array
         "500":
           description: Internal Server Error
@@ -2227,14 +2099,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Footer_Request'
+          $ref: '#/definitions/models.Land_Footer'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.Land_Footer_Response'
+            $ref: '#/definitions/models.Land_Footer'
         "400":
           description: Bad Request
           schema:
@@ -2293,7 +2165,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Land_Footer_Response'
+            $ref: '#/definitions/models.Land_Footer'
         "400":
           description: Bad Request
           schema:
@@ -2324,14 +2196,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Footer_Request'
+          $ref: '#/definitions/models.Land_Footer'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Land_Footer_Response'
+            $ref: '#/definitions/models.Land_Footer'
         "400":
           description: Bad Request
           schema:
@@ -2376,7 +2248,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Land_Hero_Response'
+              $ref: '#/definitions/models.Land_Hero'
             type: array
         "500":
           description: Internal Server Error
@@ -2395,7 +2267,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Hero_Request'
+          $ref: '#/definitions/models.Land_Hero'
       produces:
       - application/json
       responses:
@@ -2431,7 +2303,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Land_Hero_Response'
+            $ref: '#/definitions/models.Land_Hero'
         "400":
           description: Bad Request
           schema:
@@ -2462,7 +2334,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Hero_Request'
+          $ref: '#/definitions/models.Land_Hero'
       produces:
       - application/json
       responses:
@@ -2556,7 +2428,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Land_Navbar_Response'
+              $ref: '#/definitions/models.Land_Navbar'
             type: array
         "500":
           description: Internal Server Error
@@ -2575,7 +2447,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Navbar_Request'
+          $ref: '#/definitions/models.Land_Navbar'
       produces:
       - application/json
       responses:
@@ -2611,7 +2483,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Land_Navbar_Response'
+            $ref: '#/definitions/models.Land_Navbar'
         "400":
           description: Bad Request
           schema:
@@ -2642,7 +2514,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Navbar_Request'
+          $ref: '#/definitions/models.Land_Navbar'
       produces:
       - application/json
       responses:
