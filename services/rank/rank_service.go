@@ -52,8 +52,8 @@ func (r *RankController) GetUserRankBadges(c fiber.Ctx) error {
 //	@Description	Set User Rank badge
 //	@Tags			RankBadge Profile Service
 //	@Produce		json
-//	@Param			type		query		string	true	"filter by badge type option: Beginner or Intermediate or Expert"
-//	@Param			category	query		string	true	"filter by category option: Financial Management or Personal Wellness or Social Etiquette"
+//	@Param			type		query		string	true	"filter by badge type option: Beginner or Growth or Mastery or Enlightened"
+//	@Param			category	query		string	true	"filter by category option: Financial or Personal or Social"
 //	@Success		200			{object}	status.StatusModel
 //	@Failure		400			{object}	status.StatusModel
 //	@Failure		401			{object}	status.StatusModel
@@ -82,7 +82,7 @@ func (r *RankController) SetUserRankBadge(c fiber.Ctx) error {
 	}
 	var courseIDs []string
 	if err := r.DB.Model(&course.CourseModel{}).
-		Where("course_category = ?", category).
+		Where("course_category LIKE ?", "%"+category+"%").
 		Pluck("course_id", &courseIDs).Error; err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusInternalServerError).JSON(stat)
