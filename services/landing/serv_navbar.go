@@ -25,13 +25,13 @@ func NewLandNavbarService(db *gorm.DB) LandNavbarService {
 //	@Tags			Navbar Service
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	[]landing.Land_Navbar_Response
+//	@Success		200	{object}	[]landing.Land_Navbar
 //	@Failure		500	{object}	status.StatusModel
 //	@Router			/navbar [get]
-func (service LandNavbarService) GetAllNavbar(c fiber.Ctx) error {
-	var navbars []landing.Land_Navbar_Response
-	if err := service.DB.Table("land_navbar").Find(&navbars); err != nil {
-		stat := status.StatusModel{Status: "fail", Message: err.Error.Error()}
+func (service *LandNavbarService) GetAllNavbar(c fiber.Ctx) error {
+	var navbars []landing.Land_Navbar
+	if err := service.DB.Find(&navbars).Error; err != nil {
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
 	return c.Status(fiber.StatusOK).JSON(navbars)
@@ -44,13 +44,13 @@ func (service LandNavbarService) GetAllNavbar(c fiber.Ctx) error {
 //	@Tags			Navbar Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			request	body		landing.Land_Navbar_Request	true	"Navbar component data"
+//	@Param			request	body		landing.Land_Navbar	true	"Navbar component data"
 //	@Success		200		{object}	status.StatusModel
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		500		{object}	status.StatusModel
 //	@Router			/navbar [post]
-func (service LandNavbarService) CreateNavbarRequest(c fiber.Ctx) error {
-	var request landing.Land_Navbar_Request
+func (service *LandNavbarService) CreateNavbarRequest(c fiber.Ctx) error {
+	var request landing.Land_Navbar
 	if err := c.Bind().JSON(&request); err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusBadRequest).JSON(stat)
@@ -59,7 +59,7 @@ func (service LandNavbarService) CreateNavbarRequest(c fiber.Ctx) error {
 	request.CreatedAt = time.Now()
 	request.UpdatedAt = time.Now()
 
-	if err := service.DB.Table("land_navbar").Create(&request).Error; err != nil {
+	if err := service.DB.Create(&request).Error; err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
@@ -75,15 +75,15 @@ func (service LandNavbarService) CreateNavbarRequest(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		int	true	"Navbar component ID"
-//	@Success		200	{object}	landing.Land_Navbar_Response
+//	@Success		200	{object}	landing.Land_Navbar
 //	@Failure		400	{object}	status.StatusModel
 //	@Failure		404	{object}	status.StatusModel
 //	@Failure		500	{object}	status.StatusModel
 //	@Router			/navbar/{id} [get]
-func (service LandNavbarService) GetNavbarRequestByID(c fiber.Ctx) error {
+func (service *LandNavbarService) GetNavbarRequestByID(c fiber.Ctx) error {
 	navComponentID := c.Params("id")
-	var request landing.Land_Navbar_Request
-	if err := service.DB.Table("land_navbar").Where("nav_component_id = ?", navComponentID).First(&request).Error; err != nil {
+	var request landing.Land_Navbar
+	if err := service.DB.Where("nav_component_id = ?", navComponentID).First(&request).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			stat := status.StatusModel{Status: "fail", Message: "Navbar component not found"}
 			return c.Status(fiber.StatusNotFound).JSON(stat)
@@ -105,23 +105,23 @@ func (service LandNavbarService) GetNavbarRequestByID(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			id		path		int							true	"Navbar component ID"
-//	@Param			request	body		landing.Land_Navbar_Request	true	"Updated navbar component data"
+//	@Param			request	body		landing.Land_Navbar	true	"Updated navbar component data"
 //	@Success		200		{object}	status.StatusModel
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		404		{object}	status.StatusModel
 //	@Failure		500		{object}	status.StatusModel
 //	@Router			/navbar/{id} [put]
-func (service LandNavbarService) UpdateNavbarRequest(c fiber.Ctx) error {
+func (service *LandNavbarService) UpdateNavbarRequest(c fiber.Ctx) error {
 	navComponentID := c.Params("id")
 
-	var updatedRequest landing.Land_Navbar_Request
+	var updatedRequest landing.Land_Navbar
 	if err := c.Bind().JSON(&updatedRequest); err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
-	var request landing.Land_Navbar_Request
-	if err := service.DB.Table("land_navbar").Where("nav_component_id = ?", navComponentID).First(&request).Error; err != nil {
+	var request landing.Land_Navbar
+	if err := service.DB.Where("nav_component_id = ?", navComponentID).First(&request).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			stat := status.StatusModel{Status: "fail", Message: "Navbar component not found"}
 			return c.Status(fiber.StatusNotFound).JSON(stat)
@@ -138,7 +138,7 @@ func (service LandNavbarService) UpdateNavbarRequest(c fiber.Ctx) error {
 	request.UpdatedBy = updatedRequest.UpdatedBy
 	request.UpdatedAt = time.Now()
 
-	if err := service.DB.Table("land_navbar").Save(&request).Error; err != nil {
+	if err := service.DB.Save(&request).Error; err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}

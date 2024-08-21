@@ -14,7 +14,7 @@ func NewLandFaqCategoryRouter(faqCategoryService services.LandFaqCategoryService
 }
 
 func (router *LandFaqCategoryRouter) LandFaqCategoryRoutes(rg fiber.Router) {
-	api := rg.Group("faq-category")
+	api := rg.Group("faqcategory")
 
 	api.Get("/", router.faqCategoryService.GetAllFaqCategory)
 	api.Post("/", router.faqCategoryService.CreateFaqCategoryRequest)

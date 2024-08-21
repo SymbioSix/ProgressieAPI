@@ -38,3 +38,7 @@ func (quiz *Quiz) BeforeUpdate(tx *gorm.DB) (err error) {
 	quiz.UpdatedAt = time.Now()
 	return
 }
+
+func (quiz *Quiz) TableName() string {
+	return "crs_quiz"
+}

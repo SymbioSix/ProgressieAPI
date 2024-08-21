@@ -19,23 +19,23 @@ func NewAboutUsService(db *gorm.DB) AboutUsService {
 	return AboutUsService{db: db}
 }
 
-func (s *AboutUsService) GetAllAboutUs() ([]models.Land_Aboutus_Response, error) {
-	var aboutUs []models.Land_Aboutus_Response
-	if err := s.db.Table("land_aboutus").Find(&aboutUs); err.Error != nil {
+func (s *AboutUsService) GetAllAboutUs() ([]models.Land_Aboutus, error) {
+	var aboutUs []models.Land_Aboutus
+	if err := s.db.Find(&aboutUs); err.Error != nil {
 		return nil, err.Error
 	}
 	return aboutUs, nil
 }
 
-func (s *AboutUsService) CreateAboutUs(request *models.Land_Aboutus_Request) (*models.Land_Aboutus_Response, error) {
+func (s *AboutUsService) CreateAboutUs(request *models.Land_Aboutus) (*models.Land_Aboutus, error) {
 	request.CreatedAt = time.Now()
 	request.UpdatedAt = time.Now()
 
-	if err := s.db.Table("land_aboutus").Create(request).Error; err != nil {
+	if err := s.db.Create(request).Error; err != nil {
 		return nil, err
 	}
 
-	response := &models.Land_Aboutus_Response{
+	response := &models.Land_Aboutus{
 		AboutUsComponentID:      request.AboutUsComponentID,
 		AboutUsComponentName:    request.AboutUsComponentName,
 		AboutUsComponentJobdesc: request.AboutUsComponentJobdesc,
@@ -52,14 +52,14 @@ func (s *AboutUsService) CreateAboutUs(request *models.Land_Aboutus_Request) (*m
 	return response, nil
 }
 
-func (s *AboutUsService) GetAboutUsByID(id int) (*models.Land_Aboutus_Response, error) {
-	var request models.Land_Aboutus_Request
+func (s *AboutUsService) GetAboutUsByID(id int) (*models.Land_Aboutus, error) {
+	var request models.Land_Aboutus
 
-	if err := s.db.Table("land_aboutus").First(&request, id).Error; err != nil {
+	if err := s.db.First(&request, id).Error; err != nil {
 		return nil, err
 	}
 
-	response := &models.Land_Aboutus_Response{
+	response := &models.Land_Aboutus{
 		AboutUsComponentID:      request.AboutUsComponentID,
 		AboutUsComponentName:    request.AboutUsComponentName,
 		AboutUsComponentJobdesc: request.AboutUsComponentJobdesc,
@@ -76,10 +76,10 @@ func (s *AboutUsService) GetAboutUsByID(id int) (*models.Land_Aboutus_Response, 
 	return response, nil
 }
 
-func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutus_Request) (*models.Land_Aboutus_Response, error) {
-	var request models.Land_Aboutus_Request
+func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutus) (*models.Land_Aboutus, error) {
+	var request models.Land_Aboutus
 
-	if err := s.db.Table("land_aboutus").First(&request, id).Error; err != nil {
+	if err := s.db.First(&request, id).Error; err != nil {
 		return nil, err
 	}
 
@@ -92,11 +92,11 @@ func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutu
 	request.UpdatedBy = updatedRequest.UpdatedBy
 	request.UpdatedAt = time.Now()
 
-	if err := s.db.Table("land_aboutus").Save(&request).Error; err != nil {
+	if err := s.db.Save(&request).Error; err != nil {
 		return nil, err
 	}
 
-	response := &models.Land_Aboutus_Response{
+	response := &models.Land_Aboutus{
 		AboutUsComponentID:      request.AboutUsComponentID,
 		AboutUsComponentName:    request.AboutUsComponentName,
 		AboutUsComponentJobdesc: request.AboutUsComponentJobdesc,
@@ -114,13 +114,13 @@ func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.Land_Aboutu
 }
 
 func (s *AboutUsService) DeleteAboutUs(id int) error {
-	var request models.Land_Aboutus_Request
+	var request models.Land_Aboutus
 
-	if err := s.db.Table("land_aboutus").First(&request, id).Error; err != nil {
+	if err := s.db.First(&request, id).Error; err != nil {
 		return err
 	}
 
-	if err := s.db.Table("land_aboutus").Delete(&request).Error; err != nil {
+	if err := s.db.Delete(&request).Error; err != nil {
 		return err
 	}
 
@@ -134,7 +134,7 @@ func (s *AboutUsService) DeleteAboutUs(id int) error {
 //	@Tags			AboutUs Service
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{array}		models.Land_Aboutus_Response
+//	@Success		200	{array}		models.Land_Aboutus
 //	@Failure		500	{object}	status.StatusModel
 //	@Router			/aboutus [get]
 func (s AboutUsService) GetAllAboutUsHandler(c fiber.Ctx) error {
@@ -153,13 +153,13 @@ func (s AboutUsService) GetAllAboutUsHandler(c fiber.Ctx) error {
 //	@Tags			AboutUs Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			request	body		models.Land_Aboutus_Request	true	"About Us component data"
-//	@Success		201		{object}	models.Land_Aboutus_Response
+//	@Param			request	body		models.Land_Aboutus	true	"About Us component data"
+//	@Success		201		{object}	models.Land_Aboutus
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		500		{object}	status.StatusModel
 //	@Router			/aboutus [post]
 func (s AboutUsService) CreateAboutUsHandler(c fiber.Ctx) error {
-	var request models.Land_Aboutus_Request
+	var request models.Land_Aboutus
 	if err := c.Bind().JSON(&request); err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusBadRequest).JSON(stat)
@@ -182,7 +182,7 @@ func (s AboutUsService) CreateAboutUsHandler(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		int	true	"About Us component ID"
-//	@Success		200	{object}	models.Land_Aboutus_Response
+//	@Success		200	{object}	models.Land_Aboutus
 //	@Failure		400	{object}	status.StatusModel
 //	@Failure		404	{object}	status.StatusModel
 //	@Failure		500	{object}	status.StatusModel
@@ -216,8 +216,8 @@ func (s AboutUsService) GetAboutUsByIDHandler(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			id		path		int							true	"About Us component ID"
-//	@Param			request	body		models.Land_Aboutus_Request	true	"Updated About Us component data"
-//	@Success		200		{object}	models.Land_Aboutus_Response
+//	@Param			request	body		models.Land_Aboutus	true	"Updated About Us component data"
+//	@Success		200		{object}	models.Land_Aboutus
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		404		{object}	status.StatusModel
 //	@Failure		500		{object}	status.StatusModel
@@ -230,7 +230,7 @@ func (s AboutUsService) UpdateAboutUsHandler(c fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
-	var request models.Land_Aboutus_Request
+	var request models.Land_Aboutus
 	if err := c.Bind().JSON(&request); err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusBadRequest).JSON(stat)

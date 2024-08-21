@@ -42,3 +42,7 @@ func (q *QuizAnswerMultipleChoice) BeforeUpdate(tx *gorm.DB) (err error) {
 	q.UpdatedAt = time.Now()
 	return
 }
+
+func (q *QuizAnswerMultipleChoice) TableName() string {
+	return "crs_quizanswermultiplechoice"
+}

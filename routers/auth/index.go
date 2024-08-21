@@ -19,6 +19,7 @@ func (ar *AuthRouter) AuthRoutes(rg fiber.Router) {
 	router.Post("/signin-email-password", ar.authRouter.SignInWithEmailPassword)
 	router.Post("/signup-email-password", ar.authRouter.SignUpWithEmailPassword)
 	router.Post("/signup-admin", ar.authRouter.SignUpForAdmin)
+	router.Post("/signup-super", ar.authRouter.SignUpForSuperUser)
 	router.Post("/signout", ar.authRouter.SignOut)
 	router.Get("/verify-signup", ar.authRouter.VerifySignUp)
 	router.Post("/send-forgot-password-email", ar.authRouter.SendForgotPasswordEmail)
