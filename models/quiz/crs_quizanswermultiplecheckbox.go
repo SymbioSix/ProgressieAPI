@@ -38,3 +38,7 @@ func (question *QuizMultCheckBox) BeforeUpdate(tx *gorm.DB) (err error) {
 	question.UpdatedAt = time.Now()
 	return
 }
+
+func (question *QuizMultCheckBox) TableName() string {
+	return "crs_quizanswermultiplecheckbox"
+}

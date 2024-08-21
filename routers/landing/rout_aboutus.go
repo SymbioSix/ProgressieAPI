@@ -14,7 +14,7 @@ func NewLandAboutUsRouter(aboutUsService services.AboutUsService) LandAboutUsRou
 }
 
 func (ab *LandAboutUsRouter) LandAboutUsRoutes(rg fiber.Router) {
-	router := rg.Group("about-us")
+	router := rg.Group("aboutus")
 
 	router.Get("/", ab.aboutUsService.GetAllAboutUsHandler)
 	router.Post("/", ab.aboutUsService.CreateAboutUsHandler)
