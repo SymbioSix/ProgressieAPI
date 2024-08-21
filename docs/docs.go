@@ -3347,14 +3347,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "filter by badge type option: Beginner or Intermediate or Expert",
+                        "description": "filter by badge type option: Beginner or Growth or Mastery or Enlightened",
                         "name": "type",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "filter by category option: Financial Management or Personal Wellness or Social Etiquette",
+                        "description": "filter by category option: Financial or Personal or Social",
                         "name": "category",
                         "in": "query",
                         "required": true
