@@ -105,7 +105,7 @@ func (service *LandFaqCategoryService) GetFaqCategoryRequestByID(c fiber.Ctx) er
 //	@Tags			FAQ Category Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			id		path		int									true	"FAQ category ID"
+//	@Param			id		path		int							true	"FAQ category ID"
 //	@Param			request	body		landing.Land_Faqcategory	true	"Updated FAQ category data"
 //	@Success		200		{object}	status.StatusModel
 //	@Failure		400		{object}	status.StatusModel

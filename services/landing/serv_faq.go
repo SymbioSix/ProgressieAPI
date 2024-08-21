@@ -25,7 +25,7 @@ func NewLandFaqService(DB *gorm.DB) LandFaqService {
 //	@Tags			FAQ Service
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}		[]landing.Land_Faq
+//	@Success		200	{object}	[]landing.Land_Faq
 //	@Failure		500	{object}	status.StatusModel
 //	@Router			/faq [get]
 func (service *LandFaqService) GetAllFaq(c fiber.Ctx) error {
@@ -104,7 +104,7 @@ func (service *LandFaqService) GetFaqRequestByID(c fiber.Ctx) error {
 //	@Tags			FAQ Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			id		path		int							true	"FAQ component ID"
+//	@Param			id		path		int					true	"FAQ component ID"
 //	@Param			request	body		landing.Land_Faq	true	"Updated FAQ component data"
 //	@Success		200		{object}	status.StatusModel
 //	@Failure		400		{object}	status.StatusModel

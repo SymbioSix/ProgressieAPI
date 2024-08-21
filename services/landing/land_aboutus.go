@@ -215,7 +215,7 @@ func (s AboutUsService) GetAboutUsByIDHandler(c fiber.Ctx) error {
 //	@Tags			AboutUs Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			id		path		int							true	"About Us component ID"
+//	@Param			id		path		int					true	"About Us component ID"
 //	@Param			request	body		models.Land_Aboutus	true	"Updated About Us component data"
 //	@Success		200		{object}	models.Land_Aboutus
 //	@Failure		400		{object}	status.StatusModel

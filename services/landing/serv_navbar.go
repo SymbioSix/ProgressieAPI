@@ -104,7 +104,7 @@ func (service *LandNavbarService) GetNavbarRequestByID(c fiber.Ctx) error {
 //	@Tags			Navbar Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			id		path		int							true	"Navbar component ID"
+//	@Param			id		path		int					true	"Navbar component ID"
 //	@Param			request	body		landing.Land_Navbar	true	"Updated navbar component data"
 //	@Success		200		{object}	status.StatusModel
 //	@Failure		400		{object}	status.StatusModel

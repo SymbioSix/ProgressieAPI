@@ -139,7 +139,7 @@ func (service *FooterService) DeleteFooter(id int) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		models.Land_Footer	true	"Footer component data"
-//	@Success		201		{object}	models.Land_Footer_Response
+//	@Success		201		{object}	models.Land_Footer
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		500		{object}	status.StatusModel
 //	@Router			/footer [post]
@@ -200,7 +200,7 @@ func (service FooterService) GetFooterHandler(c fiber.Ctx) error {
 //	@Tags			Footer Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			id		path		int							true	"Footer component ID"
+//	@Param			id		path		int					true	"Footer component ID"
 //	@Param			request	body		models.Land_Footer	true	"Updated Footer component data"
 //	@Success		200		{object}	models.Land_Footer
 //	@Failure		400		{object}	status.StatusModel
@@ -274,7 +274,7 @@ func (service FooterService) DeleteFooterHandler(c fiber.Ctx) error {
 //	@Tags			Footer Service
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{array}		models.Land_Footer_Response
+//	@Success		200	{array}		models.Land_Footer
 //	@Failure		500	{object}	status.StatusModel
 //	@Router			/footer [get]
 func (service FooterService) GetAllFooterHandler(c fiber.Ctx) error {

@@ -42,7 +42,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Land_Aboutus_Response"
+                                "$ref": "#/definitions/models.Land_Aboutus"
                             }
                         }
                     },
@@ -73,7 +73,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Aboutus_Request"
+                            "$ref": "#/definitions/models.Land_Aboutus"
                         }
                     }
                 ],
@@ -81,7 +81,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Aboutus_Response"
+                            "$ref": "#/definitions/models.Land_Aboutus"
                         }
                     },
                     "400": {
@@ -125,7 +125,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Aboutus_Response"
+                            "$ref": "#/definitions/models.Land_Aboutus"
                         }
                     },
                     "400": {
@@ -174,7 +174,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Aboutus_Request"
+                            "$ref": "#/definitions/models.Land_Aboutus"
                         }
                     }
                 ],
@@ -182,7 +182,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Aboutus_Response"
+                            "$ref": "#/definitions/models.Land_Aboutus"
                         }
                     },
                     "400": {
@@ -1514,10 +1514,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/definitions/models.Land_Faq_Response"
-                                }
+                                "$ref": "#/definitions/models.Land_Faq"
                             }
                         }
                     },
@@ -1548,7 +1545,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Faq_Request"
+                            "$ref": "#/definitions/models.Land_Faq"
                         }
                     }
                 ],
@@ -1600,7 +1597,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Faq_Response"
+                            "$ref": "#/definitions/models.Land_Faq"
                         }
                     },
                     "400": {
@@ -1649,7 +1646,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Faq_Request"
+                            "$ref": "#/definitions/models.Land_Faq"
                         }
                     }
                 ],
@@ -1702,7 +1699,7 @@
                             "items": {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "#/definitions/models.Land_Faqcategory_Response"
+                                    "$ref": "#/definitions/models.Land_Faqcategory"
                                 }
                             }
                         }
@@ -1734,7 +1731,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Faqcategory_Request"
+                            "$ref": "#/definitions/models.Land_Faqcategory"
                         }
                     }
                 ],
@@ -1786,7 +1783,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Faqcategory_Response"
+                            "$ref": "#/definitions/models.Land_Faqcategory"
                         }
                     },
                     "400": {
@@ -1835,7 +1832,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Faqcategory_Request"
+                            "$ref": "#/definitions/models.Land_Faqcategory"
                         }
                     }
                 ],
@@ -1886,7 +1883,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Land_Footer_Response"
+                                "$ref": "#/definitions/models.Land_Footer"
                             }
                         }
                     },
@@ -1917,7 +1914,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Footer_Request"
+                            "$ref": "#/definitions/models.Land_Footer"
                         }
                     }
                 ],
@@ -1925,7 +1922,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Footer_Response"
+                            "$ref": "#/definitions/models.Land_Footer"
                         }
                     },
                     "400": {
@@ -1969,7 +1966,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Footer_Response"
+                            "$ref": "#/definitions/models.Land_Footer"
                         }
                     },
                     "400": {
@@ -2018,7 +2015,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Footer_Request"
+                            "$ref": "#/definitions/models.Land_Footer"
                         }
                     }
                 ],
@@ -2026,7 +2023,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Footer_Response"
+                            "$ref": "#/definitions/models.Land_Footer"
                         }
                     },
                     "400": {
@@ -2140,7 +2137,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Land_Hero_Response"
+                                "$ref": "#/definitions/models.Land_Hero"
                             }
                         }
                     },
@@ -2171,7 +2168,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Hero_Request"
+                            "$ref": "#/definitions/models.Land_Hero"
                         }
                     }
                 ],
@@ -2223,7 +2220,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Hero_Response"
+                            "$ref": "#/definitions/models.Land_Hero"
                         }
                     },
                     "400": {
@@ -2272,7 +2269,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Hero_Request"
+                            "$ref": "#/definitions/models.Land_Hero"
                         }
                     }
                 ],
@@ -2409,7 +2406,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Land_Navbar_Response"
+                                "$ref": "#/definitions/models.Land_Navbar"
                             }
                         }
                     },
@@ -2440,7 +2437,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Navbar_Request"
+                            "$ref": "#/definitions/models.Land_Navbar"
                         }
                     }
                 ],
@@ -2492,7 +2489,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Navbar_Response"
+                            "$ref": "#/definitions/models.Land_Navbar"
                         }
                     },
                     "400": {
@@ -2541,7 +2538,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Navbar_Request"
+                            "$ref": "#/definitions/models.Land_Navbar"
                         }
                     }
                 ],
@@ -3837,7 +3834,7 @@
                 }
             }
         },
-        "models.Land_Aboutus_Request": {
+        "models.Land_Aboutus": {
             "type": "object",
             "properties": {
                 "aboutus_component_id": {
@@ -3876,45 +3873,7 @@
                 }
             }
         },
-        "models.Land_Aboutus_Response": {
-            "type": "object",
-            "properties": {
-                "aboutus_component_id": {
-                    "type": "integer"
-                },
-                "aboutus_component_jobdesc": {
-                    "type": "string"
-                },
-                "aboutus_component_name": {
-                    "type": "string"
-                },
-                "aboutus_component_photo": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "tooltip": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Land_Faq_Request": {
+        "models.Land_Faq": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -3946,39 +3905,7 @@
                 }
             }
         },
-        "models.Land_Faq_Response": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "faq_category": {
-                    "type": "integer"
-                },
-                "faq_description": {
-                    "type": "string"
-                },
-                "faq_id": {
-                    "type": "integer"
-                },
-                "faq_title": {
-                    "type": "string"
-                },
-                "tooltip": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Land_Faqcategory_Request": {
+        "models.Land_Faqcategory": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -3990,8 +3917,14 @@
                 "faq_category_id": {
                     "type": "integer"
                 },
-                "faq_category_name": {
+                "faq_categoryname": {
                     "type": "string"
+                },
+                "faqs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Land_Faq"
+                    }
                 },
                 "updated_at": {
                     "type": "string"
@@ -4001,30 +3934,7 @@
                 }
             }
         },
-        "models.Land_Faqcategory_Response": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "faq_category_id": {
-                    "type": "integer"
-                },
-                "faq_category_name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Land_Footer_Request": {
+        "models.Land_Footer": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -4061,42 +3971,7 @@
                 }
             }
         },
-        "models.Land_Footer_Response": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "endpoint": {
-                    "type": "string"
-                },
-                "footer_component_group": {
-                    "type": "integer"
-                },
-                "footer_component_icon": {
-                    "type": "string"
-                },
-                "footer_component_id": {
-                    "type": "integer"
-                },
-                "footer_component_name": {
-                    "type": "string"
-                },
-                "tooltip": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Land_Hero_Request": {
+        "models.Land_Hero": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -4132,77 +4007,7 @@
                 }
             }
         },
-        "models.Land_Hero_Response": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "hero_component_cover_img": {
-                    "type": "string"
-                },
-                "hero_component_id": {
-                    "type": "integer"
-                },
-                "hero_component_image": {
-                    "type": "string"
-                },
-                "hero_component_subtitle": {
-                    "type": "string"
-                },
-                "hero_component_title": {
-                    "type": "string"
-                },
-                "tooltip": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Land_Navbar_Request": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "created_by": {
-                    "type": "string"
-                },
-                "endpoint": {
-                    "type": "string"
-                },
-                "nav_component_group": {
-                    "type": "integer"
-                },
-                "nav_component_icon": {
-                    "type": "string"
-                },
-                "nav_component_id": {
-                    "type": "integer"
-                },
-                "nav_component_name": {
-                    "type": "string"
-                },
-                "tooltip": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "updated_by": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Land_Navbar_Response": {
+        "models.Land_Navbar": {
             "type": "object",
             "properties": {
                 "created_at": {
