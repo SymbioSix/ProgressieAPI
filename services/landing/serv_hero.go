@@ -104,7 +104,7 @@ func (service *LandHeroService) GetHeroRequestByID(c fiber.Ctx) error {
 //	@Tags			Hero Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			id		path		int							true	"Hero component ID"
+//	@Param			id		path		int					true	"Hero component ID"
 //	@Param			request	body		landing.Land_Hero	true	"Updated hero component data"
 //	@Success		200		{object}	status.StatusModel
 //	@Failure		400		{object}	status.StatusModel
