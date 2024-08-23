@@ -36,7 +36,7 @@ func NewTodoController(DB *gorm.DB, API *utils.Client) ToDoListController {
 //	@Produce		json
 //	@Success		200	{object}	[]Todoall
 //	@Failure		500	{object}	status.StatusModel
-//	@Router			/todos [get]
+//	@Router			/todo/todos [get]
 func (todall *ToDoListController) Getalltodo(c fiber.Ctx) error {
 	var tdo []Todoall
 	if res := todall.DB.Table("td_customtarget").Table("td_subcoursereminder").Preload("user_id").Preload("subcourse_id").Find(&tdo); res.Error != nil {
@@ -55,7 +55,7 @@ func (todall *ToDoListController) Getalltodo(c fiber.Ctx) error {
 //	@Produce		json
 //	@Success		200	{object}	[]todoroki.TdSubcourseReminder
 //	@Failure		500	{object}	status.StatusModel
-//	@Router			/subcourse_reminders [get]
+//	@Router			/todo/subcourse_reminders [get]
 func (td *ToDoListController) TdSubcourseReminder(c fiber.Ctx) error {
 	var tdo []todoroki.TdSubcourseReminder
 	if res := td.DB.Table("td_subcoursereminder").Preload("subcourse_id").Find(&tdo); res.Error != nil {
@@ -74,7 +74,7 @@ func (td *ToDoListController) TdSubcourseReminder(c fiber.Ctx) error {
 //	@Produce		json
 //	@Success		200	{object}	[]Todoall
 //	@Failure		401	{object}	status.StatusModel
-//	@Router			/todos/user [get]
+//	@Router			/todo/todos/user [get]
 func (td *ToDoListController) TdAllbyuserID(c fiber.Ctx) error {
 	user, err := td.API.Auth.GetUser()
 	if err != nil {
@@ -96,7 +96,7 @@ func (td *ToDoListController) TdAllbyuserID(c fiber.Ctx) error {
 //	@Produce		json
 //	@Success		200	{object}	todoroki.TdSubcourseReminder
 //	@Failure		500	{object}	status.StatusModel
-//	@Router			/subcourse_reminders/user [get]
+//	@Router			/todo/subcourse_reminders/user [get]
 func (td *ToDoListController) TdSubcourseReminderbyuserID(c fiber.Ctx) error {
 	user, err := td.API.Auth.GetUser()
 	if err != nil {
@@ -119,7 +119,7 @@ func (td *ToDoListController) TdSubcourseReminderbyuserID(c fiber.Ctx) error {
 //	@Produce		json
 //	@Success		200	{object}	status.StatusModel
 //	@Failure		500	{object}	status.StatusModel
-//	@Router			/subcourse_reminders/auto_finish [post]
+//	@Router			/todo/subcourse_reminders/auto_finish [post]
 func (td *ToDoListController) AutoFinishSubcourseReminders(c fiber.Ctx) error {
 	var reminders []todoroki.TdSubcourseReminder
 	if res := td.DB.Table("td_subcoursereminder").Find(&reminders); res.Error != nil {
@@ -155,7 +155,7 @@ func (td *ToDoListController) AutoFinishSubcourseReminders(c fiber.Ctx) error {
 //	@Success		200	{object}	[]todoroki.TdSubcourseReminder
 //	@Failure		401	{object}	status.StatusModel
 //	@Failure		500	{object}	status.StatusModel
-//	@Router			/subcourses/not_selected [get]
+//	@Router			/todo/subcourses/not_selected [get]
 func (td *ToDoListController) GetSubcoursesNotSelected(c fiber.Ctx) error {
 	user, err := td.API.Auth.GetUser()
 	if err != nil {
@@ -183,7 +183,7 @@ func (td *ToDoListController) GetSubcoursesNotSelected(c fiber.Ctx) error {
 //	@Success		200	{object}	[]todoroki.TdSubcourseReminder
 //	@Failure		401	{object}	status.StatusModel
 //	@Failure		500	{object}	status.StatusModel
-//	@Router			/subcourses/selected [get]
+//	@Router			/todo/subcourses/selected [get]
 func (td *ToDoListController) GetSelectedSubcourses(c fiber.Ctx) error {
 	user, err := td.API.Auth.GetUser()
 	if err != nil {
@@ -212,7 +212,7 @@ func (td *ToDoListController) GetSelectedSubcourses(c fiber.Ctx) error {
 //	@Success		200			{object}	status.StatusModel
 //	@Failure		401			{object}	status.StatusModel
 //	@Failure		500			{object}	status.StatusModel
-//	@Router			/subcourse_reminders/{reminderID} [delete]
+//	@Router			/todo/subcourse_reminders/{reminderID} [delete]
 func (td *ToDoListController) DeleteSelectedSubcourse(c fiber.Ctx) error {
 	user, err := td.API.Auth.GetUser()
 	if err != nil {
@@ -242,7 +242,7 @@ func (td *ToDoListController) DeleteSelectedSubcourse(c fiber.Ctx) error {
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		401		{object}	status.StatusModel
 //	@Failure		500		{object}	status.StatusModel
-//	@Router			/subcourse_reminders [post]
+//	@Router			/todo/subcourse_reminders [post]
 func (td *ToDoListController) SaveReminder(c fiber.Ctx) error {
 
 	var req todoroki.RequestTdSubcourseReminder
@@ -285,7 +285,7 @@ func (td *ToDoListController) SaveReminder(c fiber.Ctx) error {
 //	@Produce		json
 //	@Success		200	{object}	[]todoroki.TdCustomTarget
 //	@Failure		500	{object}	status.StatusModel
-//	@Router			/custom_targets [get]
+//	@Router			/todo/custom_targets [get]
 func (td *ToDoListController) TdCustomTarget(c fiber.Ctx) error {
 	var tdo []todoroki.TdCustomTarget
 	if res := td.DB.Table("td_customtarget").Find(&tdo); res.Error != nil {
@@ -305,7 +305,7 @@ func (td *ToDoListController) TdCustomTarget(c fiber.Ctx) error {
 //	@Success		200	{object}	status.ParseCustomTargetFromAchievement
 //	@Failure		401	{object}	status.StatusModel
 //	@Failure		500	{object}	status.StatusModel
-//	@Router			/custom_targets/user [get]
+//	@Router			/todo/custom_targets/user [get]
 func (td *ToDoListController) GetTdCustomTargetByuserID(c fiber.Ctx) error {
 	user, err := td.API.Auth.GetUser()
 	if err != nil {
@@ -333,7 +333,7 @@ func (td *ToDoListController) GetTdCustomTargetByuserID(c fiber.Ctx) error {
 //	@Success		200		{object}	status.StatusModel
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		500		{object}	status.StatusModel
-//	@Router			/custom_targets [post]
+//	@Router			/todo/custom_targets [post]
 func (td *ToDoListController) SaveTdCustomTarget(c fiber.Ctx) error {
 
 	var req todoroki.RequestCustomTarget
@@ -374,7 +374,7 @@ func (td *ToDoListController) SaveTdCustomTarget(c fiber.Ctx) error {
 //	@Success		200			{object}	status.StatusModel
 //	@Failure		400			{object}	status.StatusModel
 //	@Failure		500			{object}	status.StatusModel
-//	@Router			/custom_targets/{targetID}/checklist [put]
+//	@Router			/todo/custom_targets/{targetID}/checklist [put]
 func (td *ToDoListController) UpdateChecklist(c fiber.Ctx) error {
 	targetID := c.Params("targetID")
 	var req struct {
@@ -416,7 +416,7 @@ func (td *ToDoListController) UpdateChecklist(c fiber.Ctx) error {
 //	@Success		200			{object}	status.StatusModel
 //	@Failure		401			{object}	status.StatusModel
 //	@Failure		500			{object}	status.StatusModel
-//	@Router			/custom_targets/{targetID}/check_progress [put]
+//	@Router			/todo/custom_targets/{targetID}/check_progress [put]
 func (td *ToDoListController) CheckCustomTargetProgressForAchievement(c fiber.Ctx) error {
 	targetID := c.Params("targetID")
 	var ach todoroki.TdCustomTarget
