@@ -1578,145 +1578,6 @@ paths:
       summary: Get all courses and their sub-courses
       tags:
       - Courses Service
-  /custom_targets:
-    get:
-      consumes:
-      - application/json
-      description: Get all td_customtarget records
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.TdCustomTarget'
-            type: array
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-      summary: Get all custom targets
-      tags:
-      - TodoList Service
-    post:
-      consumes:
-      - application/json
-      description: Save a custom target with specified time, title, and description
-        for 30 days
-      parameters:
-      - description: Request body
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/models.RequestCustomTarget'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-      summary: Save a custom target
-      tags:
-      - TodoList Service
-  /custom_targets/{targetID}/check_progress:
-    put:
-      consumes:
-      - application/json
-      description: Check if a target has been checked for 30 consecutive days and
-        award an achievement
-      parameters:
-      - description: Target ID
-        in: path
-        name: targetID
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-      summary: Check custom target progress for achievement
-      tags:
-      - TodoList Service
-  /custom_targets/{targetID}/checklist:
-    put:
-      consumes:
-      - application/json
-      description: Update the checklist status for a custom target
-      parameters:
-      - description: Target ID
-        in: path
-        name: targetID
-        required: true
-        type: string
-      - description: Request body
-        in: body
-        name: request
-        required: true
-        schema:
-          type: object
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-      summary: Update checklist
-      tags:
-      - TodoList Service
-  /custom_targets/user:
-    get:
-      consumes:
-      - application/json
-      description: Get td_customtarget records for the authenticated user
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.ParseCustomTargetFromAchievement'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StatusModel'
-      summary: Get custom targets by user ID
-      tags:
-      - TodoList Service
   /dashboard/profile:
     get:
       consumes:
@@ -3077,7 +2938,146 @@ paths:
       summary: Set User Rank Badge
       tags:
       - RankBadge Profile Service
-  /subcourse_reminders:
+  /todo/custom_targets:
+    get:
+      consumes:
+      - application/json
+      description: Get all td_customtarget records
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.TdCustomTarget'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get all custom targets
+      tags:
+      - TodoList Service
+    post:
+      consumes:
+      - application/json
+      description: Save a custom target with specified time, title, and description
+        for 30 days
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RequestCustomTarget'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Save a custom target
+      tags:
+      - TodoList Service
+  /todo/custom_targets/{targetID}/check_progress:
+    put:
+      consumes:
+      - application/json
+      description: Check if a target has been checked for 30 consecutive days and
+        award an achievement
+      parameters:
+      - description: Target ID
+        in: path
+        name: targetID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Check custom target progress for achievement
+      tags:
+      - TodoList Service
+  /todo/custom_targets/{targetID}/checklist:
+    put:
+      consumes:
+      - application/json
+      description: Update the checklist status for a custom target
+      parameters:
+      - description: Target ID
+        in: path
+        name: targetID
+        required: true
+        type: string
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Update checklist
+      tags:
+      - TodoList Service
+  /todo/custom_targets/user:
+    get:
+      consumes:
+      - application/json
+      description: Get td_customtarget records for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ParseCustomTargetFromAchievement'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get custom targets by user ID
+      tags:
+      - TodoList Service
+  /todo/subcourse_reminders:
     get:
       consumes:
       - application/json
@@ -3131,7 +3131,7 @@ paths:
       summary: Save a subcourse reminder
       tags:
       - TodoList Service
-  /subcourse_reminders/{reminderID}:
+  /todo/subcourse_reminders/{reminderID}:
     delete:
       consumes:
       - application/json
@@ -3161,7 +3161,7 @@ paths:
       summary: Delete a selected subcourse reminder
       tags:
       - TodoList Service
-  /subcourse_reminders/auto_finish:
+  /todo/subcourse_reminders/auto_finish:
     post:
       consumes:
       - application/json
@@ -3181,7 +3181,7 @@ paths:
       summary: Auto finish subcourse reminders
       tags:
       - TodoList Service
-  /subcourse_reminders/user:
+  /todo/subcourse_reminders/user:
     get:
       consumes:
       - application/json
@@ -3200,7 +3200,7 @@ paths:
       summary: Get subcourse reminders by user ID
       tags:
       - TodoList Service
-  /subcourses/not_selected:
+  /todo/subcourses/not_selected:
     get:
       consumes:
       - application/json
@@ -3225,7 +3225,7 @@ paths:
       summary: Get subcourses not selected
       tags:
       - TodoList Service
-  /subcourses/selected:
+  /todo/subcourses/selected:
     get:
       consumes:
       - application/json
@@ -3250,7 +3250,7 @@ paths:
       summary: Get selected subcourses
       tags:
       - TodoList Service
-  /todos:
+  /todo/todos:
     get:
       consumes:
       - application/json
@@ -3271,7 +3271,7 @@ paths:
       summary: Get all custom targets and subcourse reminders
       tags:
       - TodoList Service
-  /todos/user:
+  /todo/todos/user:
     get:
       consumes:
       - application/json

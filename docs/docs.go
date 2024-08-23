@@ -1130,214 +1130,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/custom_targets": {
-            "get": {
-                "description": "Get all td_customtarget records",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "TodoList Service"
-                ],
-                "summary": "Get all custom targets",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.TdCustomTarget"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Save a custom target with specified time, title, and description for 30 days",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "TodoList Service"
-                ],
-                "summary": "Save a custom target",
-                "parameters": [
-                    {
-                        "description": "Request body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.RequestCustomTarget"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    }
-                }
-            }
-        },
-        "/custom_targets/user": {
-            "get": {
-                "description": "Get td_customtarget records for the authenticated user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "TodoList Service"
-                ],
-                "summary": "Get custom targets by user ID",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.ParseCustomTargetFromAchievement"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    }
-                }
-            }
-        },
-        "/custom_targets/{targetID}/check_progress": {
-            "put": {
-                "description": "Check if a target has been checked for 30 consecutive days and award an achievement",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "TodoList Service"
-                ],
-                "summary": "Check custom target progress for achievement",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Target ID",
-                        "name": "targetID",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    }
-                }
-            }
-        },
-        "/custom_targets/{targetID}/checklist": {
-            "put": {
-                "description": "Update the checklist status for a custom target",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "TodoList Service"
-                ],
-                "summary": "Update checklist",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Target ID",
-                        "name": "targetID",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Request body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    }
-                }
-            }
-        },
         "/dashboard/profile": {
             "get": {
                 "description": "Get the profile of the authenticated user",
@@ -3385,7 +3177,215 @@ const docTemplate = `{
                 }
             }
         },
-        "/subcourse_reminders": {
+        "/todo/custom_targets": {
+            "get": {
+                "description": "Get all td_customtarget records",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get all custom targets",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.TdCustomTarget"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Save a custom target with specified time, title, and description for 30 days",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Save a custom target",
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RequestCustomTarget"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/todo/custom_targets/user": {
+            "get": {
+                "description": "Get td_customtarget records for the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get custom targets by user ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ParseCustomTargetFromAchievement"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/todo/custom_targets/{targetID}/check_progress": {
+            "put": {
+                "description": "Check if a target has been checked for 30 consecutive days and award an achievement",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Check custom target progress for achievement",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Target ID",
+                        "name": "targetID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/todo/custom_targets/{targetID}/checklist": {
+            "put": {
+                "description": "Update the checklist status for a custom target",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Update checklist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Target ID",
+                        "name": "targetID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/todo/subcourse_reminders": {
             "get": {
                 "description": "Get all td_subcoursereminder records",
                 "consumes": [
@@ -3467,7 +3467,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/subcourse_reminders/auto_finish": {
+        "/todo/subcourse_reminders/auto_finish": {
             "post": {
                 "description": "Auto finish td_subcoursereminder records if their subcourse is finished",
                 "consumes": [
@@ -3496,7 +3496,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/subcourse_reminders/user": {
+        "/todo/subcourse_reminders/user": {
             "get": {
                 "description": "Get td_subcoursereminder records for a specific user",
                 "consumes": [
@@ -3525,7 +3525,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/subcourse_reminders/{reminderID}": {
+        "/todo/subcourse_reminders/{reminderID}": {
             "delete": {
                 "description": "Delete a subcourse reminder for the authenticated user by reminder ID",
                 "consumes": [
@@ -3569,7 +3569,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/subcourses/not_selected": {
+        "/todo/subcourses/not_selected": {
             "get": {
                 "description": "Get subcourses that have not been selected by the user",
                 "consumes": [
@@ -3607,7 +3607,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/subcourses/selected": {
+        "/todo/subcourses/selected": {
             "get": {
                 "description": "Get subcourses that have been selected by the user",
                 "consumes": [
@@ -3645,7 +3645,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/todos": {
+        "/todo/todos": {
             "get": {
                 "description": "Get all td_customtarget and td_subcoursereminder records",
                 "consumes": [
@@ -3677,7 +3677,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/todos/user": {
+        "/todo/todos/user": {
             "get": {
                 "description": "Get all td_customtarget and td_subcoursereminder records for a specific user",
                 "consumes": [
