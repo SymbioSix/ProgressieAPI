@@ -3359,7 +3359,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/models.UpdateChecklistDateRequest"
                         }
                     }
                 ],
@@ -3513,7 +3513,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.TdSubcourseReminder"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.TdSubcourseReminder"
+                            }
                         }
                     },
                     "500": {
@@ -3662,10 +3665,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/To_do_list.Todoall"
-                            }
+                            "$ref": "#/definitions/To_do_list.Todoall"
                         }
                     },
                     "500": {
@@ -3694,10 +3694,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/To_do_list.Todoall"
-                            }
+                            "$ref": "#/definitions/To_do_list.Todoall"
                         }
                     },
                     "401": {
@@ -3714,11 +3711,17 @@ const docTemplate = `{
         "To_do_list.Todoall": {
             "type": "object",
             "properties": {
-                "Customremind": {
-                    "$ref": "#/definitions/models.TdCustomTarget"
+                "custom_target": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TdCustomTargetResponse"
+                    }
                 },
-                "SubCourseremind": {
-                    "$ref": "#/definitions/models.TdSubcourseReminder"
+                "subcourse_reminder": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TdSubcourseReminderResponse"
+                    }
                 }
             }
         },
@@ -4277,13 +4280,7 @@ const docTemplate = `{
         "models.RequestCustomTarget": {
             "type": "object",
             "properties": {
-                "achievement_id": {
-                    "type": "string"
-                },
                 "daily_reminder": {
-                    "type": "string"
-                },
-                "target_icon": {
                     "type": "string"
                 },
                 "target_subtitle": {
@@ -4297,14 +4294,8 @@ const docTemplate = `{
         "models.RequestTdSubcourseReminder": {
             "type": "object",
             "properties": {
-                "icon": {
-                    "type": "string"
-                },
                 "is_finished": {
                     "type": "boolean"
-                },
-                "reminder_id": {
-                    "type": "string"
                 },
                 "reminder_time": {
                     "type": "string"
@@ -4633,9 +4624,6 @@ const docTemplate = `{
                 "due_at": {
                     "type": "string"
                 },
-                "target_icon": {
-                    "type": "string"
-                },
                 "target_id": {
                     "type": "string"
                 },
@@ -4653,6 +4641,29 @@ const docTemplate = `{
                 }
             }
         },
+        "models.TdCustomTargetResponse": {
+            "type": "object",
+            "properties": {
+                "achievement_id": {
+                    "type": "string"
+                },
+                "daily_clock_reminder": {
+                    "type": "string"
+                },
+                "due_at": {
+                    "type": "string"
+                },
+                "target_id": {
+                    "type": "string"
+                },
+                "target_subtitle": {
+                    "type": "string"
+                },
+                "target_title": {
+                    "type": "string"
+                }
+            }
+        },
         "models.TdSubcourseReminder": {
             "type": "object",
             "properties": {
@@ -4660,9 +4671,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "created_by": {
-                    "type": "string"
-                },
-                "icon": {
                     "type": "string"
                 },
                 "is_finished": {
@@ -4690,6 +4698,37 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TdSubcourseReminderResponse": {
+            "type": "object",
+            "properties": {
+                "is_finished": {
+                    "type": "boolean"
+                },
+                "reminder_id": {
+                    "type": "string"
+                },
+                "reminder_time": {
+                    "type": "string"
+                },
+                "reminder_title": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "subcourseprogress_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateChecklistDateRequest": {
+            "type": "object",
+            "properties": {
+                "date_checked": {
                     "type": "string"
                 }
             }

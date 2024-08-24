@@ -4,10 +4,14 @@ consumes:
 definitions:
   To_do_list.Todoall:
     properties:
-      Customremind:
-        $ref: '#/definitions/models.TdCustomTarget'
-      SubCourseremind:
-        $ref: '#/definitions/models.TdSubcourseReminder'
+      custom_target:
+        items:
+          $ref: '#/definitions/models.TdCustomTargetResponse'
+        type: array
+      subcourse_reminder:
+        items:
+          $ref: '#/definitions/models.TdSubcourseReminderResponse'
+        type: array
     type: object
   models.Checklist:
     properties:
@@ -377,11 +381,7 @@ definitions:
     type: object
   models.RequestCustomTarget:
     properties:
-      achievement_id:
-        type: string
       daily_reminder:
-        type: string
-      target_icon:
         type: string
       target_subtitle:
         type: string
@@ -390,12 +390,8 @@ definitions:
     type: object
   models.RequestTdSubcourseReminder:
     properties:
-      icon:
-        type: string
       is_finished:
         type: boolean
-      reminder_id:
-        type: string
       reminder_time:
         type: string
       reminder_title:
@@ -611,8 +607,6 @@ definitions:
         type: string
       due_at:
         type: string
-      target_icon:
-        type: string
       target_id:
         type: string
       target_subtitle:
@@ -624,13 +618,26 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.TdCustomTargetResponse:
+    properties:
+      achievement_id:
+        type: string
+      daily_clock_reminder:
+        type: string
+      due_at:
+        type: string
+      target_id:
+        type: string
+      target_subtitle:
+        type: string
+      target_title:
+        type: string
+    type: object
   models.TdSubcourseReminder:
     properties:
       created_at:
         type: string
       created_by:
-        type: string
-      icon:
         type: string
       is_finished:
         type: boolean
@@ -649,6 +656,26 @@ definitions:
       updated_at:
         type: string
       updated_by:
+        type: string
+    type: object
+  models.TdSubcourseReminderResponse:
+    properties:
+      is_finished:
+        type: boolean
+      reminder_id:
+        type: string
+      reminder_time:
+        type: string
+      reminder_title:
+        type: string
+      start_date:
+        type: string
+      subcourseprogress_id:
+        type: string
+    type: object
+  models.UpdateChecklistDateRequest:
+    properties:
+      date_checked:
         type: string
     type: object
   models.UpdateEnrollmentPoint:
@@ -3035,7 +3062,7 @@ paths:
         name: request
         required: true
         schema:
-          type: object
+          $ref: '#/definitions/models.UpdateChecklistDateRequest'
       produces:
       - application/json
       responses:
@@ -3192,7 +3219,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.TdSubcourseReminder'
+            items:
+              $ref: '#/definitions/models.TdSubcourseReminder'
+            type: array
         "500":
           description: Internal Server Error
           schema:
@@ -3261,9 +3290,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/To_do_list.Todoall'
-            type: array
+            $ref: '#/definitions/To_do_list.Todoall'
         "500":
           description: Internal Server Error
           schema:
@@ -3283,9 +3310,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/To_do_list.Todoall'
-            type: array
+            $ref: '#/definitions/To_do_list.Todoall'
         "401":
           description: Unauthorized
           schema:

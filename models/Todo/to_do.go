@@ -11,7 +11,6 @@ type TdCustomTarget struct {
 	AchievementID      uuid.UUID   `gorm:"column:achievement_title" json:"achievement_id"`
 	TargetTitle        string      `gorm:"column:target_title" json:"target_title"`
 	TargetSubtitle     string      `gorm:"column:target_subtitle" json:"target_subtitle"`
-	TargetIcon         string      `gorm:"column:target_icon" json:"target_icon"`
 	DailyClockReminder time.Time   `gorm:"column:daily_clock_reminder" json:"daily_clock_reminder"`
 	Type               string      `gorm:"column:type" json:"type"`
 	CreatedAt          time.Time   `gorm:"column:created_at" json:"created_at"`
@@ -28,7 +27,6 @@ type TdSubcourseReminder struct {
 	ReminderID          string    `gorm:"column:reminder_id;primaryKey" json:"reminder_id"`
 	SubcourseprogressID string    `gorm:"column:subcourseprogress_id" json:"subcourseprogress_id"`
 	ReminderTitle       string    `gorm:"column:reminder_title" json:"reminder_title"`
-	Icon                string    `gorm:"column:icon" json:"icon"`
 	ReminderTime        time.Time `gorm:"column:reminder_time" json:"reminder_time"`
 	StartDate           time.Time `gorm:"column:start_date" json:"start_date"`
 	IsFinished          bool      `gorm:"column:is_finished" json:"is_finished"`
@@ -72,19 +70,37 @@ func (td *Checklist) TableName() string {
 }
 
 type RequestCustomTarget struct {
-	AchievementID  uuid.UUID `json:"achievement_id"`
 	TargetTitle    string    `json:"target_title"`
 	TargetSubtitle string    `json:"target_subtitle"`
-	TargetIcon     string    `json:"target_icon"`
 	DailyReminder  time.Time `json:"daily_reminder"`
 }
 
 type RequestTdSubcourseReminder struct {
-	ReminderID          string    `json:"reminder_id"`
 	SubcourseprogressID string    `json:"subcourseprogress_id"`
 	ReminderTitle       string    `json:"reminder_title"`
-	Icon                string    `json:"icon"`
 	ReminderTime        time.Time `json:"reminder_time"`
 	StartDate           time.Time `json:"start_date"`
 	IsFinished          bool      `json:"is_finished"`
+}
+
+type TdCustomTargetResponse struct {
+	TargetID           uuid.UUID `json:"target_id"`
+	AchievementID      uuid.UUID `json:"achievement_id"`
+	TargetTitle        string    `json:"target_title"`
+	TargetSubtitle     string    `json:"target_subtitle"`
+	DailyClockReminder time.Time `json:"daily_clock_reminder"`
+	DueAt              time.Time `json:"due_at"`
+}
+
+type TdSubcourseReminderResponse struct {
+	ReminderID          string    `gorm:"column:reminder_id;primaryKey" json:"reminder_id"`
+	SubcourseprogressID string    `gorm:"column:subcourseprogress_id" json:"subcourseprogress_id"`
+	ReminderTitle       string    `gorm:"column:reminder_title" json:"reminder_title"`
+	ReminderTime        time.Time `gorm:"column:reminder_time" json:"reminder_time"`
+	StartDate           time.Time `gorm:"column:start_date" json:"start_date"`
+	IsFinished          bool      `gorm:"column:is_finished" json:"is_finished"`
+}
+
+type UpdateChecklistDateRequest struct {
+	DateChecked time.Time `json:"date_checked"`
 }
