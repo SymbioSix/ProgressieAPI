@@ -9,7 +9,7 @@ func RestrictUnauthenticatedUser() fiber.Handler {
 	return func(c fiber.Ctx) error {
 		_, err := s.Client.Auth.GetUser()
 		if err != nil {
-			return c.Redirect().Status(fiber.StatusUnauthorized).To("/v1/unauthorized")
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "unauthorized", "message": "Request performed unauthorized"})
 		}
 		return c.Next()
 	}
