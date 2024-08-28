@@ -1,6 +1,8 @@
 package dashboard
 
 import (
+	"time"
+
 	auth "github.com/SymbioSix/ProgressieAPI/models/auth"
 	dashb "github.com/SymbioSix/ProgressieAPI/models/dashboard"
 	profile "github.com/SymbioSix/ProgressieAPI/models/profile"
@@ -187,4 +189,40 @@ func (dash *DashboardController) CreateOrUpdateUserSkill(c fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "User Skills Updated Successfully!"})
+}
+
+// SoftDeleteUser godoc
+//
+//	@Summary		Soft Delete User
+//	@Description	Soft Delete User (Can only be performed by user with at least Administrator role)
+//	@Tags			Dashboard Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		string	true	"ID of the user who wants to be deleted"
+//	@Success		200	{object}	status.StatusModel
+//	@Failure		500	{object}	status.StatusModel
+//	@Router			/dashboard/{id}/soft [delete]
+func (dash *DashboardController) SoftDeleteUser(c fiber.Ctx) error {
+	id := c.Params("id")
+	var now time.Time = time.Now()
+	_, _, err := dash.API.Rest.From("auth.users").Update("deleted_at = "+now.String(), "", "exact").Eq("id", id).Execute()
+	if err != nil {
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
+	}
+
+	var user auth.UserModel
+	if res := dash.DB.Table("usr_user").Where("user_id = ?", id).First(&user); res.Error != nil {
+		stat := status.StatusModel{Status: "fail", Message: res.Error.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
+	}
+
+	user.Status = "Deactivated"
+
+	if res := dash.DB.Table("usr_user").Save(&user); res.Error != nil {
+		stat := status.StatusModel{Status: "fail", Message: res.Error.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "User Is Successfully Soft Deleted!"})
 }
