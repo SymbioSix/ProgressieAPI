@@ -874,7 +874,7 @@ definitions:
       user_id:
         type: string
     type: object
-host: https://selfieapi.up.railway.app
+host: selfieapi.up.railway.app
 info:
   contact:
     email: fiber@swagger.io
