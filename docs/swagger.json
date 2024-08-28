@@ -73,7 +73,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Aboutus"
+                            "$ref": "#/definitions/models.LandAboutUsRequest"
                         }
                     }
                 ],
@@ -81,7 +81,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.Land_Aboutus"
+                            "$ref": "#/definitions/models.StatusModel"
                         }
                     },
                     "400": {
@@ -1274,6 +1274,44 @@
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/{id}/soft": {
+            "delete": {
+                "description": "Soft Delete User (Can only be performed by user with at least Administrator role)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard Service"
+                ],
+                "summary": "Soft Delete User",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of the user who wants to be deleted",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.StatusModel"
                         }
@@ -3833,6 +3871,29 @@
                     "type": "string"
                 },
                 "supabase_api_status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.LandAboutUsRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "jobdesc": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "photo_link": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "tooltip": {
                     "type": "string"
                 }
             }
