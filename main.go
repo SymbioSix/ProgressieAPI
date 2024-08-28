@@ -154,7 +154,7 @@ func init() {
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host		https://selfieapi.up.railway.app
+//	@host		selfieapi.up.railway.app
 //	@BasePath	/v1
 
 //	@accept		json
