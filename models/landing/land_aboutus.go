@@ -19,3 +19,12 @@ type Land_Aboutus struct {
 func (l *Land_Aboutus) TableName() string {
 	return "land_aboutus"
 }
+
+type LandAboutUsRequest struct {
+	Name        string `json:"name"`
+	Jobdesc     string `json:"jobdesc"`
+	PhotoLink   string `json:"photo_link"`
+	Description string `json:"description"`
+	Tooltip     string `json:"tooltip"`
+	Status      string `json:"status,omitempty"`
+}

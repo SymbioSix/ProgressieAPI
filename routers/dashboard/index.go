@@ -21,4 +21,5 @@ func (dr *DashboardRouter) DashboardRoutes(rg fiber.Router) {
 	router.Get("/profile", dr.dashboardRouter.GetUserProfile, middleware.RestrictUnauthenticatedUser())
 	router.Put("/profile", dr.dashboardRouter.UpdateUserProfile, middleware.RestrictUnauthenticatedUser())
 	router.Put("/skill", dr.dashboardRouter.CreateOrUpdateUserSkill, middleware.RestrictUnauthenticatedUser())
+	router.Delete("/:id/soft", dr.dashboardRouter.SoftDeleteUser, middleware.RestrictNonAdmin())
 }

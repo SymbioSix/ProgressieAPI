@@ -228,6 +228,21 @@ definitions:
       updated_by:
         type: string
     type: object
+  models.LandAboutUsRequest:
+    properties:
+      description:
+        type: string
+      jobdesc:
+        type: string
+      name:
+        type: string
+      photo_link:
+        type: string
+      status:
+        type: string
+      tooltip:
+        type: string
+    type: object
   models.MultCheckBoxStatus:
     enum:
     - active
@@ -904,14 +919,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Aboutus'
+          $ref: '#/definitions/models.LandAboutUsRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.Land_Aboutus'
+            $ref: '#/definitions/models.StatusModel'
         "400":
           description: Bad Request
           schema:
@@ -1605,6 +1620,32 @@ paths:
       summary: Get all courses and their sub-courses
       tags:
       - Courses Service
+  /dashboard/{id}/soft:
+    delete:
+      consumes:
+      - application/json
+      description: Soft Delete User (Can only be performed by user with at least Administrator
+        role)
+      parameters:
+      - description: ID of the user who wants to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Soft Delete User
+      tags:
+      - Dashboard Service
   /dashboard/profile:
     get:
       consumes:
