@@ -4,10 +4,12 @@ import (
 	"errors"
 	"time"
 
+	todo "github.com/SymbioSix/ProgressieAPI/models/Todo"
 	models "github.com/SymbioSix/ProgressieAPI/models/courses"
 	status "github.com/SymbioSix/ProgressieAPI/models/status"
 	"github.com/SymbioSix/ProgressieAPI/utils"
 	"github.com/gofiber/fiber/v3"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -110,8 +112,8 @@ func (crs *CourseController) CheckEnrollStatus(c fiber.Ctx) error {
 
 // EnrollUserToACourse godoc
 //
-//	@Summary		Enroll a user to a course
-//	@Description	Enroll a user to a course
+//	@Summary		Enroll a user to a course. Also auto-generate new subcourse progress data. This action might take a while because of nested for loops to iterate list of data
+//	@Description	Enroll a user to a course. Also auto-generate new subcourse progress data. This action might take a while because of nested for loops to iterate list of data
 //	@Tags			Courses Service
 //	@Accept			json
 //	@Produce		json
@@ -131,19 +133,62 @@ func (crs *CourseController) EnrollUserToACourse(c fiber.Ctx) error {
 		if !errors.Is(res.Error, gorm.ErrRecordNotFound) {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 		}
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": "Already Enrolled!"})
-	}
+		enrollment = models.EnrollmentModel{
+			UserID:    user.ID,
+			CourseID:  courseId,
+			Progress:  0.0,
+			Status:    "Registered",
+			CreatedBy: "API SYSTEM",
+			CreatedAt: time.Now(),
+		}
+		crs.DB.Table("crs_enrollment").Create(&enrollment)
 
-	enrollment = models.EnrollmentModel{
-		UserID:    user.ID,
-		CourseID:  courseId,
-		Progress:  0.0,
-		Status:    "Registered",
-		CreatedBy: "API SYSTEM",
-		CreatedAt: time.Now(),
+		var subcourse []models.SubCourseModel
+		if res := crs.DB.Table("crs_subcourse").Where(&models.SubCourseModel{CourseID: courseId}).Find(&subcourse); res.Error != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+		}
+
+		for i, v := range subcourse {
+			progressId := uuid.New()
+			progress := models.SubcourseProgress{
+				SubcourseprogressID: progressId,
+				UserID:              user.ID,
+				SubcourseID:         v.SubcourseID,
+				IsVideoViewed:       false,
+				IsSubcourseFinished: false,
+				CreatedBy:           "SYSTEM",
+				CreatedAt:           time.Now(),
+			}
+			if res := crs.DB.Table("crs_subcourseprogress").Create(&progress); res.Error != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+			}
+			for _, k := range subcourse[i].ReadingContents {
+				progressReading := models.SubcourseProgressReading{
+					SubcourseprogressID: progressId,
+					SubcoursereadingID:  k.SubcoursereadingID,
+					IsReaded:            false,
+				}
+				if res := crs.DB.Table("crs_subcourseprogressreading").Create(&progressReading); res.Error != nil {
+					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+				}
+			}
+
+			reminder := todo.TdSubcourseReminder{
+				SubcourseprogressID: progressId,
+				ReminderTitle:       "SubCourse Reminder: " + v.SubcourseName,
+				VideoTitle:          v.VideoContent.VideoTitle,
+				QuizTitle:           "SubCourse Quiz: " + v.SubcourseName,
+				Type:                "SubCourse",
+				IsFinished:          false,
+			}
+			if res := crs.DB.Table("td_subcoursereminder").Create(&reminder); res.Error != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+			}
+
+		}
+		return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "You are enrolled!"})
 	}
-	crs.DB.Table("crs_enrollment").Create(&enrollment)
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "You are enrolled!"})
+	return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": "Already Enrolled!"})
 }
 
 // GetEnrolledCourseData godoc

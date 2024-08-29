@@ -24,38 +24,21 @@ func (td *TdCustomTarget) TableName() string {
 }
 
 type TdSubcourseReminder struct {
-	ReminderID          string    `gorm:"column:reminder_id;primaryKey" json:"reminder_id"`
-	SubcourseprogressID string    `gorm:"column:subcourseprogress_id" json:"subcourseprogress_id"`
+	ReminderID          uuid.UUID `gorm:"column:reminder_id;primaryKey" json:"reminder_id"`
+	SubcourseprogressID uuid.UUID `gorm:"column:subcourseprogress_id" json:"subcourseprogress_id"`
 	ReminderTitle       string    `gorm:"column:reminder_title" json:"reminder_title"`
-	ReminderTime        time.Time `gorm:"column:reminder_time" json:"reminder_time"`
-	StartDate           time.Time `gorm:"column:start_date" json:"start_date"`
+	VideoTitle          string    `gorm:"column:video_title" json:"video_title"`
+	QuizTitle           string    `gorm:"column:quiz_title" json:"quiz_title"`
+	StartTime           time.Time `gorm:"column:start_time" json:"start_time"`
+	EndTime             time.Time `gorm:"column:end_time" json:"end_time"`
 	IsFinished          bool      `gorm:"column:is_finished" json:"is_finished"`
 	Type                string    `gorm:"column:type" json:"type"`
-	CreatedBy           string    `gorm:"column:created_by" json:"created_by"`
 	CreatedAt           time.Time `gorm:"column:created_at" json:"created_at"`
-	UpdatedBy           string    `gorm:"column:updated_by" json:"updated_by"`
 	UpdatedAt           time.Time `gorm:"column:updated_at" json:"updated_at"`
 }
 
 func (td *TdSubcourseReminder) TableName() string {
 	return "td_subcoursereminder"
-}
-
-type SubcourseProgress struct {
-	SubcourseprogressID string                `gorm:"column:subcourseprogress_id;primaryKey" json:"subcourseprogress_id"`
-	UserID              uuid.UUID             `gorm:"column:user_id" json:"user_id"`
-	SubcourseID         string                `gorm:"column:subcourse_id" json:"subcourse_id"`
-	IsVideoViewed       bool                  `gorm:"column:is_video_viewed" json:"is_video_viewed"`
-	IsSubcourseFinished bool                  `gorm:"column:is_subcourse_finished" json:"is_subcourse_finished"`
-	CreatedBy           string                `gorm:"column:created_by" json:"created_by"`
-	CreatedAt           time.Time             `gorm:"column:created_at" json:"created_at"`
-	UpdatedBy           string                `gorm:"column:updated_by" json:"updated_by"`
-	UpdatedAt           time.Time             `gorm:"column:updated_at" json:"updated_at"`
-	Reminders           []TdSubcourseReminder `gorm:"foreignKey:SubcourseprogressID;references:SubcourseprogressID" json:"reminders,omitempty"`
-}
-
-func (td *SubcourseProgress) TableName() string {
-	return "crs_subcourseprogress"
 }
 
 // Checklist represents the daily checklist entries for custom targets
@@ -76,11 +59,8 @@ type RequestCustomTarget struct {
 }
 
 type RequestTdSubcourseReminder struct {
-	SubcourseprogressID string    `json:"subcourseprogress_id"`
-	ReminderTitle       string    `json:"reminder_title"`
-	ReminderTime        time.Time `json:"reminder_time"`
-	StartDate           time.Time `json:"start_date"`
-	IsFinished          bool      `json:"is_finished"`
+	ReminderID uuid.UUID `json:"reminder_id"`
+	StartTime  time.Time `json:"start_time"`
 }
 
 type TdCustomTargetResponse struct {
@@ -93,12 +73,13 @@ type TdCustomTargetResponse struct {
 }
 
 type TdSubcourseReminderResponse struct {
-	ReminderID          string    `gorm:"column:reminder_id;primaryKey" json:"reminder_id"`
-	SubcourseprogressID string    `gorm:"column:subcourseprogress_id" json:"subcourseprogress_id"`
-	ReminderTitle       string    `gorm:"column:reminder_title" json:"reminder_title"`
-	ReminderTime        time.Time `gorm:"column:reminder_time" json:"reminder_time"`
-	StartDate           time.Time `gorm:"column:start_date" json:"start_date"`
-	IsFinished          bool      `gorm:"column:is_finished" json:"is_finished"`
+	ReminderID    uuid.UUID `json:"reminder_id"`
+	ReminderTitle string    `json:"reminder_title"`
+	VideoTitle    string    `json:"video_title"`
+	QuizTitle     string    `json:"quiz_title"`
+	StartTime     time.Time `json:"start_time"`
+	EndTime       time.Time `json:"end_time"`
+	IsFinished    bool      `json:"is_finished"`
 }
 
 type UpdateChecklistDateRequest struct {

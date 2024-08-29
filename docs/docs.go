@@ -832,7 +832,7 @@ const docTemplate = `{
         },
         "/courses/{courseid}/enroll": {
             "post": {
-                "description": "Enroll a user to a course",
+                "description": "Enroll a user to a course. Also auto-generate new subcourse progress data. This action might take a while because of nested for loops to iterate list of data",
                 "consumes": [
                     "application/json"
                 ],
@@ -842,7 +842,7 @@ const docTemplate = `{
                 "tags": [
                     "Courses Service"
                 ],
-                "summary": "Enroll a user to a course",
+                "summary": "Enroll a user to a course. Also auto-generate new subcourse progress data. This action might take a while because of nested for loops to iterate list of data",
                 "parameters": [
                     {
                         "type": "string",
@@ -3507,7 +3507,7 @@ const docTemplate = `{
         },
         "/todo/subcourse_reminders/auto_finish": {
             "post": {
-                "description": "Auto finish td_subcoursereminder records if their subcourse is finished",
+                "description": "Auto finish a td_subcoursereminder records if their subcourse is finished",
                 "consumes": [
                     "application/json"
                 ],
@@ -3517,7 +3517,7 @@ const docTemplate = `{
                 "tags": [
                     "TodoList Service"
                 ],
-                "summary": "Auto finish subcourse reminders",
+                "summary": "Auto finish a subcourse reminder",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -3534,9 +3534,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/todo/subcourse_reminders/user": {
+        "/todo/subcourse_reminders/not_saved": {
             "get": {
-                "description": "Get td_subcoursereminder records for a specific user",
+                "description": "Get subcourses that have not been selected by the user",
                 "consumes": [
                     "application/json"
                 ],
@@ -3546,7 +3546,83 @@ const docTemplate = `{
                 "tags": [
                     "TodoList Service"
                 ],
-                "summary": "Get subcourse reminders by user ID",
+                "summary": "Get subcourses not selected",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.TdSubcourseReminderResponse"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/todo/subcourse_reminders/saved": {
+            "get": {
+                "description": "Get subcourses that have been selected by the user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get selected subcourses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.TdSubcourseReminderResponse"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/todo/subcourse_reminders/user": {
+            "get": {
+                "description": "Get all td_subcoursereminder records for a specific user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TodoList Service"
+                ],
+                "summary": "Get all subcourse reminders by user ID",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -3593,82 +3669,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.StatusModel"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    }
-                }
-            }
-        },
-        "/todo/subcourses/not_selected": {
-            "get": {
-                "description": "Get subcourses that have not been selected by the user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "TodoList Service"
-                ],
-                "summary": "Get subcourses not selected",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.TdSubcourseReminder"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.StatusModel"
-                        }
-                    }
-                }
-            }
-        },
-        "/todo/subcourses/selected": {
-            "get": {
-                "description": "Get subcourses that have been selected by the user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "TodoList Service"
-                ],
-                "summary": "Get selected subcourses",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.TdSubcourseReminder"
-                            }
                         }
                     },
                     "401": {
@@ -4355,19 +4355,10 @@ const docTemplate = `{
         "models.RequestTdSubcourseReminder": {
             "type": "object",
             "properties": {
-                "is_finished": {
-                    "type": "boolean"
-                },
-                "reminder_time": {
+                "reminder_id": {
                     "type": "string"
                 },
-                "reminder_title": {
-                    "type": "string"
-                },
-                "start_date": {
-                    "type": "string"
-                },
-                "subcourseprogress_id": {
+                "start_time": {
                     "type": "string"
                 }
             }
@@ -4519,6 +4510,12 @@ const docTemplate = `{
                 "progress": {
                     "$ref": "#/definitions/models.SubcourseProgress"
                 },
+                "quizzes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Quiz"
+                    }
+                },
                 "reading_contents": {
                     "type": "array",
                     "items": {
@@ -4615,6 +4612,12 @@ const docTemplate = `{
                 "earned_point": {
                     "type": "integer"
                 },
+                "platform_source": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                },
                 "status": {
                     "type": "string"
                 },
@@ -4622,6 +4625,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "video_link": {
+                    "type": "string"
+                },
+                "video_title": {
                     "type": "string"
                 }
             }
@@ -4640,6 +4646,12 @@ const docTemplate = `{
                 },
                 "is_video_viewed": {
                     "type": "boolean"
+                },
+                "reading_progress": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.SubcourseProgressReading"
+                    }
                 },
                 "reminders": {
                     "type": "array",
@@ -4660,6 +4672,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SubcourseProgressReading": {
+            "type": "object",
+            "properties": {
+                "is_readed": {
+                    "type": "boolean"
+                },
+                "subcourseprogress_id": {
+                    "type": "string"
+                },
+                "subcourseprogressreading_id": {
+                    "type": "string"
+                },
+                "subcoursereading_id": {
                     "type": "string"
                 }
             }
@@ -4731,22 +4760,22 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
-                "created_by": {
+                "end_time": {
                     "type": "string"
                 },
                 "is_finished": {
                     "type": "boolean"
                 },
-                "reminder_id": {
+                "quiz_title": {
                     "type": "string"
                 },
-                "reminder_time": {
+                "reminder_id": {
                     "type": "string"
                 },
                 "reminder_title": {
                     "type": "string"
                 },
-                "start_date": {
+                "start_time": {
                     "type": "string"
                 },
                 "subcourseprogress_id": {
@@ -4758,7 +4787,7 @@ const docTemplate = `{
                 "updated_at": {
                     "type": "string"
                 },
-                "updated_by": {
+                "video_title": {
                     "type": "string"
                 }
             }
@@ -4766,22 +4795,25 @@ const docTemplate = `{
         "models.TdSubcourseReminderResponse": {
             "type": "object",
             "properties": {
+                "end_time": {
+                    "type": "string"
+                },
                 "is_finished": {
                     "type": "boolean"
                 },
-                "reminder_id": {
+                "quiz_title": {
                     "type": "string"
                 },
-                "reminder_time": {
+                "reminder_id": {
                     "type": "string"
                 },
                 "reminder_title": {
                     "type": "string"
                 },
-                "start_date": {
+                "start_time": {
                     "type": "string"
                 },
-                "subcourseprogress_id": {
+                "video_title": {
                     "type": "string"
                 }
             }

@@ -4,12 +4,14 @@ import (
 	"time"
 
 	todoroki "github.com/SymbioSix/ProgressieAPI/models/Todo"
+	courses "github.com/SymbioSix/ProgressieAPI/models/courses"
 	profile "github.com/SymbioSix/ProgressieAPI/models/profile"
 	status "github.com/SymbioSix/ProgressieAPI/models/status"
 	"github.com/SymbioSix/ProgressieAPI/utils"
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type ToDoListController struct {
@@ -41,27 +43,32 @@ func (todall *ToDoListController) Getalltodo(c fiber.Ctx) error {
 	var tdAll Todoall
 	var tdCustom []todoroki.TdCustomTarget
 	var tdSubcourse []todoroki.TdSubcourseReminder
-	if res := todall.DB.Table("td_customtarget").Find(&tdCustom); res.Error != nil {
+	if res := todall.DB.Table("td_customtarget").Preload(clause.Associations).Find(&tdCustom); res.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 	}
 	if res := todall.DB.Table("td_subcoursereminder").Find(&tdSubcourse); res.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 	}
-	for k, v := range tdCustom {
-		tdAll.Todotg[k].AchievementID = v.AchievementID
-		tdAll.Todotg[k].TargetID = v.TargetID
-		tdAll.Todotg[k].TargetTitle = v.TargetTitle
-		tdAll.Todotg[k].TargetSubtitle = v.TargetSubtitle
-		tdAll.Todotg[k].DailyClockReminder = v.DailyClockReminder
-		tdAll.Todotg[k].DueAt = v.DueAt
+	for _, v := range tdCustom {
+		var td todoroki.TdCustomTargetResponse
+		td.AchievementID = v.AchievementID
+		td.TargetID = v.TargetID
+		td.TargetTitle = v.TargetTitle
+		td.TargetSubtitle = v.TargetSubtitle
+		td.DailyClockReminder = v.DailyClockReminder
+		td.DueAt = v.DueAt
+		tdAll.Todotg = append(tdAll.Todotg, td)
 	}
-	for k, v := range tdSubcourse {
-		tdAll.Todosubcrs[k].ReminderID = v.ReminderID
-		tdAll.Todosubcrs[k].SubcourseprogressID = v.SubcourseprogressID
-		tdAll.Todosubcrs[k].ReminderTitle = v.ReminderTitle
-		tdAll.Todosubcrs[k].ReminderTime = v.ReminderTime
-		tdAll.Todosubcrs[k].StartDate = v.StartDate
-		tdAll.Todosubcrs[k].IsFinished = v.IsFinished
+	for _, v := range tdSubcourse {
+		var td todoroki.TdSubcourseReminderResponse
+		td.ReminderID = v.ReminderID
+		td.ReminderTitle = v.ReminderTitle
+		td.StartTime = v.StartTime
+		td.IsFinished = v.IsFinished
+		td.VideoTitle = v.VideoTitle
+		td.QuizTitle = v.QuizTitle
+		td.EndTime = v.EndTime
+		tdAll.Todosubcrs = append(tdAll.Todosubcrs, td)
 	}
 	return c.Status(fiber.StatusOK).JSON(tdAll)
 }
@@ -104,35 +111,40 @@ func (td *ToDoListController) TdAllbyuserID(c fiber.Ctx) error {
 	var tdAll Todoall
 	var tdCustom []todoroki.TdCustomTarget
 	var tdSubcourse []todoroki.TdSubcourseReminder
-	if res := td.DB.Table("td_customtarget").Find(&tdCustom, "user_id = ?", user.ID); res.Error != nil {
+	if res := td.DB.Table("td_customtarget").Preload(clause.Associations).Find(&tdCustom, "user_id = ?", user.ID); res.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 	}
 	if res := td.DB.Table("td_subcoursereminder").Find(&tdSubcourse); res.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 	}
-	for k, v := range tdCustom {
-		tdAll.Todotg[k].AchievementID = v.AchievementID
-		tdAll.Todotg[k].TargetID = v.TargetID
-		tdAll.Todotg[k].TargetTitle = v.TargetTitle
-		tdAll.Todotg[k].TargetSubtitle = v.TargetSubtitle
-		tdAll.Todotg[k].DailyClockReminder = v.DailyClockReminder
-		tdAll.Todotg[k].DueAt = v.DueAt
+	for _, v := range tdCustom {
+		var td todoroki.TdCustomTargetResponse
+		td.AchievementID = v.AchievementID
+		td.TargetID = v.TargetID
+		td.TargetTitle = v.TargetTitle
+		td.TargetSubtitle = v.TargetSubtitle
+		td.DailyClockReminder = v.DailyClockReminder
+		td.DueAt = v.DueAt
+		tdAll.Todotg = append(tdAll.Todotg, td)
 	}
-	for k, v := range tdSubcourse {
-		tdAll.Todosubcrs[k].ReminderID = v.ReminderID
-		tdAll.Todosubcrs[k].SubcourseprogressID = v.SubcourseprogressID
-		tdAll.Todosubcrs[k].ReminderTitle = v.ReminderTitle
-		tdAll.Todosubcrs[k].ReminderTime = v.ReminderTime
-		tdAll.Todosubcrs[k].StartDate = v.StartDate
-		tdAll.Todosubcrs[k].IsFinished = v.IsFinished
+	for _, v := range tdSubcourse {
+		var td todoroki.TdSubcourseReminderResponse
+		td.ReminderID = v.ReminderID
+		td.ReminderTitle = v.ReminderTitle
+		td.StartTime = v.StartTime
+		td.IsFinished = v.IsFinished
+		td.VideoTitle = v.VideoTitle
+		td.QuizTitle = v.QuizTitle
+		td.EndTime = v.EndTime
+		tdAll.Todosubcrs = append(tdAll.Todosubcrs, td)
 	}
 	return c.Status(fiber.StatusOK).JSON(tdAll)
 }
 
 // TdSubcourseReminderbyuserID godoc
 //
-//	@Summary		Get subcourse reminders by user ID
-//	@Description	Get td_subcoursereminder records for a specific user
+//	@Summary		Get all subcourse reminders by user ID
+//	@Description	Get all td_subcoursereminder records for a specific user
 //	@Tags			TodoList Service
 //	@Accept			json
 //	@Produce		json
@@ -154,8 +166,8 @@ func (td *ToDoListController) TdSubcourseReminderbyuserID(c fiber.Ctx) error {
 
 // AutoFinishSubcourseReminders godoc
 //
-//	@Summary		Auto finish subcourse reminders
-//	@Description	Auto finish td_subcoursereminder records if their subcourse is finished
+//	@Summary		Auto finish a subcourse reminder
+//	@Description	Auto finish a td_subcoursereminder records if their subcourse is finished
 //	@Tags			TodoList Service
 //	@Accept			json
 //	@Produce		json
@@ -163,14 +175,13 @@ func (td *ToDoListController) TdSubcourseReminderbyuserID(c fiber.Ctx) error {
 //	@Failure		500	{object}	status.StatusModel
 //	@Router			/todo/subcourse_reminders/auto_finish [post]
 func (td *ToDoListController) AutoFinishSubcourseReminders(c fiber.Ctx) error {
-	//TODO: STILL IN DEVELOPMENT STATE
 	var reminders []todoroki.TdSubcourseReminder
 	if res := td.DB.Table("td_subcoursereminder").Find(&reminders); res.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 	}
 
 	for _, reminder := range reminders {
-		var progress todoroki.SubcourseProgress
+		var progress courses.SubcourseProgress
 		if res := td.DB.Table("crs_subcourseprogress").Where("subcourseprogress_id = ?", reminder.SubcourseprogressID).First(&progress); res.Error != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 		}
@@ -195,24 +206,44 @@ func (td *ToDoListController) AutoFinishSubcourseReminders(c fiber.Ctx) error {
 //	@Tags			TodoList Service
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	[]todoroki.TdSubcourseReminder
+//	@Success		200	{object}	[]todoroki.TdSubcourseReminderResponse
 //	@Failure		401	{object}	status.StatusModel
 //	@Failure		500	{object}	status.StatusModel
-//	@Router			/todo/subcourses/not_selected [get]
-func (td *ToDoListController) GetSubcoursesNotSelected(c fiber.Ctx) error {
+//	@Router			/todo/subcourse_reminders/not_saved [get]
+func (td *ToDoListController) GetUserNotSavedReminders(c fiber.Ctx) error {
 	user, err := td.API.Auth.GetUser()
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "message": "Unauthorized"})
 	}
-
-	var subcourses []todoroki.TdSubcourseReminder
-	var tdo *todoroki.TdSubcourseReminder
-	if res := td.DB.Table("td_subcoursereminder").First(&tdo, "user_id = ?", user.ID); res.Error != nil {
-		if res := td.DB.Table("subcourses").Where("id NOT IN (SELECT subcourse_id FROM td_subcourse_reminders)").Find(&subcourses); res.Error != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+	var enroll []courses.EnrollmentModel
+	var reminders []todoroki.TdSubcourseReminder
+	if res := td.DB.Table("crs_enrollment").Find(&enroll, "user_id = ?", user.ID); res.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+	}
+	for _, v := range enroll {
+		for _, vv := range v.TheCourse.SubCourses {
+			var reminder todoroki.TdSubcourseReminder
+			if res := td.DB.Table("td_subcoursereminder").Where("subcourseprogress_id = ?", vv.Progress.SubcourseprogressID).Where("start_time IS NULL").Or("end_time IS NULL").Where("is_finished = ?", false).First(&reminder); res.Error != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+			}
+			reminders = append(reminders, reminder)
 		}
 	}
-	return c.Status(fiber.StatusOK).JSON(subcourses)
+
+	var response []todoroki.TdSubcourseReminderResponse
+	for _, v := range reminders {
+		var remind todoroki.TdSubcourseReminderResponse
+		remind.ReminderID = v.ReminderID
+		remind.ReminderTitle = v.ReminderTitle
+		remind.VideoTitle = v.VideoTitle
+		remind.QuizTitle = v.QuizTitle
+		remind.StartTime = v.StartTime
+		remind.EndTime = v.EndTime
+		remind.IsFinished = v.IsFinished
+		response = append(response, remind)
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 // GetSelectedSubcourses retrieves subcourses that have been selected
@@ -223,25 +254,46 @@ func (td *ToDoListController) GetSubcoursesNotSelected(c fiber.Ctx) error {
 //	@Tags			TodoList Service
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	[]todoroki.TdSubcourseReminder
+//	@Success		200	{object}	[]todoroki.TdSubcourseReminderResponse
 //	@Failure		401	{object}	status.StatusModel
 //	@Failure		500	{object}	status.StatusModel
-//	@Router			/todo/subcourses/selected [get]
-func (td *ToDoListController) GetSelectedSubcourses(c fiber.Ctx) error {
+//	@Router			/todo/subcourse_reminders/saved [get]
+func (td *ToDoListController) GetUserSavedReminders(c fiber.Ctx) error {
 	user, err := td.API.Auth.GetUser()
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "message": "Unauthorized"})
 	}
 
-	userID := c.Params("userID")
-	var tdo *todoroki.TdSubcourseReminder
+	var enroll []courses.EnrollmentModel
 	var reminders []todoroki.TdSubcourseReminder
-	if res := td.DB.Table("td_subcoursereminder").First(&tdo, "user_id = ?", user.ID); res.Error != nil {
-		if res := td.DB.Table("td_subcourse_reminders").Where("user_id = ?", userID).Find(&reminders); res.Error != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+	if res := td.DB.Table("crs_enrollment").Find(&enroll, "user_id = ?", user.ID); res.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+	}
+	for _, v := range enroll {
+		for _, vv := range v.TheCourse.SubCourses {
+			var reminder todoroki.TdSubcourseReminder
+			if res := td.DB.Table("td_subcoursereminder").Where("subcourseprogress_id = ?", vv.Progress.SubcourseprogressID).Where("start_time IS NOT NULL").Or("end_time IS NOT NULL").Where("is_finished = ?", false).First(&reminder); res.Error != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+
+			}
+			reminders = append(reminders, reminder)
 		}
 	}
-	return c.Status(fiber.StatusOK).JSON(reminders)
+
+	var response []todoroki.TdSubcourseReminderResponse
+	for _, v := range reminders {
+		var remind todoroki.TdSubcourseReminderResponse
+		remind.ReminderID = v.ReminderID
+		remind.ReminderTitle = v.ReminderTitle
+		remind.VideoTitle = v.VideoTitle
+		remind.QuizTitle = v.QuizTitle
+		remind.StartTime = v.StartTime
+		remind.EndTime = v.EndTime
+		remind.IsFinished = v.IsFinished
+		response = append(response, remind)
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 // DeleteSelectedSubcourse godoc
@@ -257,17 +309,14 @@ func (td *ToDoListController) GetSelectedSubcourses(c fiber.Ctx) error {
 //	@Failure		500			{object}	status.StatusModel
 //	@Router			/todo/subcourse_reminders/{reminderID} [delete]
 func (td *ToDoListController) DeleteSelectedSubcourse(c fiber.Ctx) error {
-	user, err := td.API.Auth.GetUser()
+	_, err := td.API.Auth.GetUser()
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "message": "Unauthorized"})
 	}
 
 	reminderID := c.Params("reminderID")
-	var tdo *todoroki.TdSubcourseReminder
-	if res := td.DB.Table("td_subcoursereminder").First(&tdo, "user_id = ?", user.ID); res.Error != nil {
-		if res := td.DB.Table("td_subcoursereminder").Where("reminder_id = ?", reminderID).Delete(&todoroki.TdSubcourseReminder{}); res.Error != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
-		}
+	if res := td.DB.Table("td_subcoursereminder").Where("reminder_id = ?", reminderID).Delete(&todoroki.TdSubcourseReminder{}); res.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "Subcourse reminder deleted successfully"})
 }
@@ -287,26 +336,21 @@ func (td *ToDoListController) DeleteSelectedSubcourse(c fiber.Ctx) error {
 //	@Failure		500		{object}	status.StatusModel
 //	@Router			/todo/subcourse_reminders [post]
 func (td *ToDoListController) SaveReminder(c fiber.Ctx) error {
-	//TODO: HOW COULD THE FRONTEND GET THE SUBCOURSEPROGRESSID?
 	var req todoroki.RequestTdSubcourseReminder
 	if err := c.Bind().JSON(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
 	}
 
-	user, err := td.API.Auth.GetUser()
+	_, err := td.API.Auth.GetUser()
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "message": err.Error()})
 	}
 
 	reminder := todoroki.TdSubcourseReminder{
-		SubcourseprogressID: req.SubcourseprogressID,
-		ReminderTitle:       req.ReminderTitle,
-		ReminderTime:        req.ReminderTime,
-		StartDate:           req.StartDate,
-		Type:                "SubCourse",
-		IsFinished:          req.IsFinished,
-		CreatedBy:           user.ID.String(),
-		CreatedAt:           time.Now(),
+		ReminderID: req.ReminderID,
+		StartTime:  req.StartTime,
+		EndTime:    time.Date(req.StartTime.Year(), req.StartTime.Month(), req.StartTime.Day(), 23, 59, 59, 0, req.StartTime.Location()),
+		UpdatedAt:  time.Now(),
 	}
 
 	if res := td.DB.Save(&reminder); res.Error != nil {
@@ -329,7 +373,7 @@ func (td *ToDoListController) SaveReminder(c fiber.Ctx) error {
 //	@Router			/todo/custom_targets [get]
 func (td *ToDoListController) TdCustomTarget(c fiber.Ctx) error {
 	var tdo []todoroki.TdCustomTarget
-	if res := td.DB.Table("td_customtarget").Find(&tdo); res.Error != nil {
+	if res := td.DB.Table("td_customtarget").Preload(clause.Associations).Find(&tdo); res.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 	}
 	return c.Status(fiber.StatusOK).JSON(tdo)
