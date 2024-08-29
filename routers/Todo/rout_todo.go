@@ -33,10 +33,10 @@ func (controller *SetupToDoListRoutes) GetSetupToDoListRoutes(app fiber.Router) 
 	todo.Post("/subcourse_reminders/auto_finish", controller.gettodoController.AutoFinishSubcourseReminders)
 
 	// Route to get subcourses not selected
-	todo.Get("/subcourses/not_selected", controller.gettodoController.GetSubcoursesNotSelected)
+	todo.Get("/subcourse_reminders/not_saved", controller.gettodoController.GetUserNotSavedReminders)
 
 	// Route to get selected subcourses
-	todo.Get("/subcourses/selected", controller.gettodoController.GetSelectedSubcourses)
+	todo.Get("/subcourse_reminders/saved", controller.gettodoController.GetUserSavedReminders)
 
 	// Route to delete selected subcourse reminder
 	todo.Delete("/subcourse_reminders/:reminderID", controller.gettodoController.DeleteSelectedSubcourse)
