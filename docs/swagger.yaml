@@ -13,6 +13,13 @@ definitions:
           $ref: '#/definitions/models.TdSubcourseReminderResponse'
         type: array
     type: object
+  models.ActivityCount:
+    properties:
+      count:
+        type: integer
+      day_of_week:
+        type: string
+    type: object
   models.Checklist:
     properties:
       checklist_id:
@@ -239,6 +246,61 @@ definitions:
       photo_link:
         type: string
       status:
+        type: string
+      tooltip:
+        type: string
+    type: object
+  models.LandFaqCategoryRequest:
+    properties:
+      faq_categoryname:
+        type: string
+    type: object
+  models.LandFaqRequest:
+    properties:
+      faq_category:
+        type: integer
+      faq_description:
+        type: string
+      faq_title:
+        type: string
+      tooltip:
+        type: string
+    type: object
+  models.LandFooterRequest:
+    properties:
+      endpoint:
+        type: string
+      footer_group:
+        type: integer
+      footer_icon:
+        type: string
+      footer_name:
+        type: string
+      tooltip:
+        type: string
+    type: object
+  models.LandHeroRequest:
+    properties:
+      hero_cover_img:
+        type: string
+      hero_image:
+        type: string
+      hero_subtitle:
+        type: string
+      hero_title:
+        type: string
+      tooltip:
+        type: string
+    type: object
+  models.LandNavbarRequest:
+    properties:
+      endpoint:
+        type: string
+      nav_group:
+        type: integer
+      nav_icon:
+        type: string
+      nav_name:
         type: string
       tooltip:
         type: string
@@ -1039,7 +1101,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Aboutus'
+          $ref: '#/definitions/models.LandAboutUsRequest'
       produces:
       - application/json
       responses:
@@ -1671,6 +1733,31 @@ paths:
       summary: Soft Delete User
       tags:
       - Dashboard Service
+  /dashboard/activity-chart:
+    get:
+      consumes:
+      - application/json
+      description: Get User Activity Chart
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ActivityCount'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get User Activity Chart
+      tags:
+      - Dashboard Service
   /dashboard/profile:
     get:
       consumes:
@@ -1809,7 +1896,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Faq'
+          $ref: '#/definitions/models.LandFaqRequest'
       produces:
       - application/json
       responses:
@@ -1876,7 +1963,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Faq'
+          $ref: '#/definitions/models.LandFaqRequest'
       produces:
       - application/json
       responses:
@@ -1932,7 +2019,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Faqcategory'
+          $ref: '#/definitions/models.LandFaqCategoryRequest'
       produces:
       - application/json
       responses:
@@ -1999,7 +2086,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Faqcategory'
+          $ref: '#/definitions/models.LandFaqCategoryRequest'
       produces:
       - application/json
       responses:
@@ -2053,7 +2140,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Footer'
+          $ref: '#/definitions/models.LandFooterRequest'
       produces:
       - application/json
       responses:
@@ -2150,7 +2237,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Footer'
+          $ref: '#/definitions/models.LandFooterRequest'
       produces:
       - application/json
       responses:
@@ -2221,7 +2308,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Hero'
+          $ref: '#/definitions/models.LandHeroRequest'
       produces:
       - application/json
       responses:
@@ -2288,7 +2375,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Hero'
+          $ref: '#/definitions/models.LandHeroRequest'
       produces:
       - application/json
       responses:
@@ -2401,7 +2488,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Navbar'
+          $ref: '#/definitions/models.LandNavbarRequest'
       produces:
       - application/json
       responses:
@@ -2468,7 +2555,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.Land_Navbar'
+          $ref: '#/definitions/models.LandNavbarRequest'
       produces:
       - application/json
       responses:
