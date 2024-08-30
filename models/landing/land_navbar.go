@@ -18,3 +18,11 @@ type Land_Navbar struct {
 func (l *Land_Navbar) TableName() string {
 	return "land_navbar"
 }
+
+type LandNavbarRequest struct {
+	NavName  string `json:"nav_name"`
+	NavGroup int    `json:"nav_group"`
+	NavIcon  string `json:"nav_icon"`
+	Tooltip  string `json:"tooltip"`
+	Endpoint string `json:"endpoint"`
+}

@@ -18,3 +18,10 @@ type Land_Faq struct {
 func (l *Land_Faq) TableName() string {
 	return "land_faq"
 }
+
+type LandFaqRequest struct {
+	FaqCategory    int    `json:"faq_category"`
+	FaqTitle       string `json:"faq_title"`
+	FaqDescription string `json:"faq_description"`
+	Tooltip        string `json:"tooltip"`
+}

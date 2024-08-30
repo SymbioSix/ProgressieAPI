@@ -16,3 +16,7 @@ type Land_Faqcategory struct {
 func (l *Land_Faqcategory) TableName() string {
 	return "land_faqcategory"
 }
+
+type LandFaqCategoryRequest struct {
+	FaqCategoryName string `json:"faq_categoryname"`
+}

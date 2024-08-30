@@ -18,3 +18,11 @@ type Land_Hero struct {
 func (l *Land_Hero) TableName() string {
 	return "land_hero"
 }
+
+type LandHeroRequest struct {
+	HeroTitle    string `json:"hero_title"`
+	HeroSubtitle string `json:"hero_subtitle"`
+	HeroImage    string `json:"hero_image"`
+	HeroCoverImg string `json:"hero_cover_img"`
+	Tooltip      string `json:"tooltip"`
+}

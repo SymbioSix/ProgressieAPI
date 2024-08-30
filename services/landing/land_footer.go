@@ -32,15 +32,13 @@ func (service *FooterService) GetAllFooter() ([]models.Land_Footer, error) {
 
 // CreateFooter creates a new footer component
 
-func (service *FooterService) CreateFooter(req *models.Land_Footer) (*models.Land_Footer, error) {
+func (service *FooterService) CreateFooter(req *models.LandFooterRequest) (*models.Land_Footer, error) {
 	footer := &models.Land_Footer{
-		FooterComponentName:  req.FooterComponentName,
-		FooterComponentGroup: req.FooterComponentGroup,
-		FooterComponentIcon:  req.FooterComponentIcon,
+		FooterComponentName:  req.FooterName,
+		FooterComponentGroup: req.FooterGroup,
+		FooterComponentIcon:  req.FooterIcon,
 		Tooltip:              req.Tooltip,
 		Endpoint:             req.Endpoint,
-		CreatedBy:            req.CreatedBy,
-		CreatedAt:            time.Now(),
 	}
 
 	if err := service.db.Create(footer).Error; err != nil {
@@ -87,18 +85,18 @@ func (service *FooterService) GetFooter(id int) (*models.Land_Footer, error) {
 
 // UpdateFooter updates an existing footer component
 
-func (service *FooterService) UpdateFooter(id int, req *models.Land_Footer) (*models.Land_Footer, error) {
+func (service *FooterService) UpdateFooter(id int, req *models.LandFooterRequest) (*models.Land_Footer, error) {
 	var footer models.Land_Footer
 	if err := service.db.First(&footer, id).Error; err != nil {
 		return nil, err
 	}
 
-	footer.FooterComponentName = req.FooterComponentName
-	footer.FooterComponentGroup = req.FooterComponentGroup
-	footer.FooterComponentIcon = req.FooterComponentIcon
+	footer.FooterComponentName = req.FooterName
+	footer.FooterComponentGroup = req.FooterGroup
+	footer.FooterComponentIcon = req.FooterIcon
 	footer.Tooltip = req.Tooltip
 	footer.Endpoint = req.Endpoint
-	footer.UpdatedBy = req.UpdatedBy
+	footer.UpdatedBy = "SYSTEM"
 	footer.UpdatedAt = time.Now()
 
 	if err := service.db.Save(&footer).Error; err != nil {
@@ -138,13 +136,13 @@ func (service *FooterService) DeleteFooter(id int) error {
 //	@Tags			Footer Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			request	body		models.Land_Footer	true	"Footer component data"
+//	@Param			request	body		models.LandFooterRequest	true	"Footer component data"
 //	@Success		201		{object}	models.Land_Footer
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		500		{object}	status.StatusModel
 //	@Router			/footer [post]
 func (service FooterService) CreateFooterHandler(c fiber.Ctx) error {
-	req := new(models.Land_Footer)
+	req := new(models.LandFooterRequest)
 	if err := c.Bind().JSON(&req); err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusBadRequest).JSON(stat)
@@ -200,8 +198,8 @@ func (service FooterService) GetFooterHandler(c fiber.Ctx) error {
 //	@Tags			Footer Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			id		path		int					true	"Footer component ID"
-//	@Param			request	body		models.Land_Footer	true	"Updated Footer component data"
+//	@Param			id		path		int							true	"Footer component ID"
+//	@Param			request	body		models.LandFooterRequest	true	"Updated Footer component data"
 //	@Success		200		{object}	models.Land_Footer
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		404		{object}	status.StatusModel
@@ -215,7 +213,7 @@ func (service FooterService) UpdateFooterHandler(c fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
-	req := new(models.Land_Footer)
+	req := new(models.LandFooterRequest)
 	if err := c.Bind().JSON(&req); err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusBadRequest).JSON(stat)
