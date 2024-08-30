@@ -226,3 +226,74 @@ func (dash *DashboardController) SoftDeleteUser(c fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "User Is Successfully Soft Deleted!"})
 }
+
+// GetUserActivityChart godoc
+//
+//	@Summary		Get User Activity Chart
+//	@Description	Get User Activity Chart
+//	@Tags			Dashboard Service
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	[]dashb.ActivityCount
+//	@Failure		401	{object}	status.StatusModel
+//	@Failure		500	{object}	status.StatusModel
+//	@Router			/dashboard/activity-chart [get]
+func (dash *DashboardController) GetUserActivityChart(c fiber.Ctx) error {
+	db := dash.DB
+	user, err := dash.API.Auth.GetUser()
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "message": "Unauthorized Request"})
+	}
+	// Map to store activity count by day of the week
+	activityByDay := map[string]int{
+		"Monday":    0,
+		"Tuesday":   0,
+		"Wednesday": 0,
+		"Thursday":  0,
+		"Friday":    0,
+		"Saturday":  0,
+		"Sunday":    0,
+	}
+
+	// Loop over the last 7 days
+	for i := 0; i < 7; i++ {
+		dayTime := time.Now().AddDate(0, 0, -i)
+		day := dayTime.Weekday().String()
+
+		// Count completed TodoList items for the day
+		var todoCount int64
+		if res := db.Table("td_customtargetchecklist").
+			Joins("JOIN td_customtarget ON td_customtargetchecklist.target_id = td_customtarget.target_id").
+			Joins("JOIN usr_achievement ON td_customtarget.achievement_id = usr_achievement.achievement_id").
+			Where("usr_achievement.user_id = ? AND DATE(td_customtargetchecklist.date_checked) = ?", user.ID, dayTime.Format("2006-01-02")).
+			Count(&todoCount); res.Error != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+		}
+
+		// Count finished SubcourseReminders for the day
+		var reminderCount int64
+		if res := db.Table("td_subcoursereminder").
+			Joins("JOIN crs_subcourseprogress ON td_subcoursereminder.subcourseprogress_id = crs_subcourseprogress.subcourseprogress_id").
+			Joins("JOIN crs_subcourse ON crs_subcourseprogress.subcourse_id = crs_subcourse.subcourse_id").
+			Joins("JOIN crs_course ON crs_subcourse.course_id = crs_course.course_id").
+			Joins("JOIN crs_enrollment ON crs_course.course_id = crs_enrollment.course_id").
+			Where("crs_enrollment.user_id = ? AND DATE(td_subcoursereminder.updated_at) = ? AND td_subcoursereminder.is_finished = ?", user.ID, dayTime.Format("2006-01-02"), true).
+			Count(&reminderCount); res.Error != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+		}
+
+		// Sum the counts for the day of the week
+		activityByDay[day] += int(todoCount + reminderCount)
+	}
+
+	// Prepare the final response array
+	var results []dashb.ActivityCount
+	for day, count := range activityByDay {
+		results = append(results, dashb.ActivityCount{
+			DayOfWeek: day,
+			Count:     count,
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(results)
+}
