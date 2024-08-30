@@ -44,22 +44,28 @@ func (service *LandFaqService) GetAllFaq(c fiber.Ctx) error {
 //	@Tags			FAQ Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			request	body		landing.Land_Faq	true	"FAQ component data"
+//	@Param			request	body		landing.LandFaqRequest	true	"FAQ component data"
 //	@Success		201		{object}	status.StatusModel
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		500		{object}	status.StatusModel
 //	@Router			/faq [post]
 func (service *LandFaqService) CreateFaqRequest(c fiber.Ctx) error {
-	var request landing.Land_Faq
+	var request landing.LandFaqRequest
 	if err := c.Bind().JSON(&request); err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
-	request.CreatedAt = time.Now()
-	request.UpdatedAt = time.Now()
+	faq := landing.Land_Faq{
+		FaqCategory:    request.FaqCategory,
+		FaqTitle:       request.FaqTitle,
+		FaqDescription: request.FaqDescription,
+		Tooltip:        request.Tooltip,
+		CreatedBy:      "SYSTEM",
+		CreatedAt:      time.Now(),
+	}
 
-	if err := service.DB.Create(&request).Error; err != nil {
+	if err := service.DB.Create(&faq).Error; err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
@@ -104,8 +110,8 @@ func (service *LandFaqService) GetFaqRequestByID(c fiber.Ctx) error {
 //	@Tags			FAQ Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			id		path		int					true	"FAQ component ID"
-//	@Param			request	body		landing.Land_Faq	true	"Updated FAQ component data"
+//	@Param			id		path		int						true	"FAQ component ID"
+//	@Param			request	body		landing.LandFaqRequest	true	"Updated FAQ component data"
 //	@Success		200		{object}	status.StatusModel
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		404		{object}	status.StatusModel
@@ -114,7 +120,7 @@ func (service *LandFaqService) GetFaqRequestByID(c fiber.Ctx) error {
 func (service *LandFaqService) UpdateFaqRequest(c fiber.Ctx) error {
 	faqID := c.Params("id")
 
-	var updatedRequest landing.Land_Faq
+	var updatedRequest landing.LandFaqRequest
 	if err := c.Bind().JSON(&updatedRequest); err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusBadRequest).JSON(stat)
@@ -134,7 +140,7 @@ func (service *LandFaqService) UpdateFaqRequest(c fiber.Ctx) error {
 	request.FaqTitle = updatedRequest.FaqTitle
 	request.FaqDescription = updatedRequest.FaqDescription
 	request.Tooltip = updatedRequest.Tooltip
-	request.UpdatedBy = updatedRequest.UpdatedBy
+	request.UpdatedBy = "SYSTEM"
 	request.UpdatedAt = time.Now()
 
 	if err := service.DB.Save(&request).Error; err != nil {

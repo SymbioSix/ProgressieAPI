@@ -26,5 +26,5 @@ type LandAboutUsRequest struct {
 	PhotoLink   string `json:"photo_link"`
 	Description string `json:"description"`
 	Tooltip     string `json:"tooltip"`
-	Status      string `json:"status,omitempty"`
+	Status      string `json:"status"`
 }

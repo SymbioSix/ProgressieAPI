@@ -18,3 +18,11 @@ type Land_Footer struct {
 func (l *Land_Footer) TableName() string {
 	return "land_footer"
 }
+
+type LandFooterRequest struct {
+	FooterName  string `json:"footer_name"`
+	FooterGroup int    `json:"footer_group"`
+	FooterIcon  string `json:"footer_icon"`
+	Tooltip     string `json:"tooltip"`
+	Endpoint    string `json:"endpoint"`
+}

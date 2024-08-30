@@ -44,22 +44,29 @@ func (service *LandHeroService) GetAllHero(c fiber.Ctx) error {
 //	@Tags			Hero Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			request	body		landing.Land_Hero	true	"Hero component data"
+//	@Param			request	body		landing.LandHeroRequest	true	"Hero component data"
 //	@Success		200		{object}	status.StatusModel
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		500		{object}	status.StatusModel
 //	@Router			/hero [post]
 func (service *LandHeroService) CreateHeroRequest(c fiber.Ctx) error {
-	var request landing.Land_Hero
+	var request landing.LandHeroRequest
 	if err := c.Bind().JSON(&request); err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusBadRequest).JSON(stat)
 	}
 
-	request.CreatedAt = time.Now()
-	request.UpdatedAt = time.Now()
+	hero := landing.Land_Hero{
+		HeroComponentTitle:    request.HeroTitle,
+		HeroComponentSubtitle: request.HeroSubtitle,
+		HeroComponentImage:    request.HeroImage,
+		HeroComponentCoverImg: request.HeroCoverImg,
+		Tooltip:               request.Tooltip,
+		CreatedBy:             "SYSTEM",
+		CreatedAt:             time.Now(),
+	}
 
-	if err := service.DB.Create(&request).Error; err != nil {
+	if err := service.DB.Create(&hero).Error; err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
@@ -104,8 +111,8 @@ func (service *LandHeroService) GetHeroRequestByID(c fiber.Ctx) error {
 //	@Tags			Hero Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			id		path		int					true	"Hero component ID"
-//	@Param			request	body		landing.Land_Hero	true	"Updated hero component data"
+//	@Param			id		path		int						true	"Hero component ID"
+//	@Param			request	body		landing.LandHeroRequest	true	"Updated hero component data"
 //	@Success		200		{object}	status.StatusModel
 //	@Failure		400		{object}	status.StatusModel
 //	@Failure		404		{object}	status.StatusModel
@@ -114,7 +121,7 @@ func (service *LandHeroService) GetHeroRequestByID(c fiber.Ctx) error {
 func (service *LandHeroService) UpdateHeroRequest(c fiber.Ctx) error {
 	heroComponentID := c.Params("id")
 
-	var updatedRequest landing.Land_Hero
+	var updatedRequest landing.LandHeroRequest
 	if err := c.Bind().JSON(&updatedRequest); err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusBadRequest).JSON(stat)
@@ -130,12 +137,12 @@ func (service *LandHeroService) UpdateHeroRequest(c fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
 
-	request.HeroComponentTitle = updatedRequest.HeroComponentTitle
-	request.HeroComponentSubtitle = updatedRequest.HeroComponentSubtitle
-	request.HeroComponentImage = updatedRequest.HeroComponentImage
-	request.HeroComponentCoverImg = updatedRequest.HeroComponentCoverImg
+	request.HeroComponentTitle = updatedRequest.HeroTitle
+	request.HeroComponentSubtitle = updatedRequest.HeroSubtitle
+	request.HeroComponentImage = updatedRequest.HeroImage
+	request.HeroComponentCoverImg = updatedRequest.HeroCoverImg
 	request.Tooltip = updatedRequest.Tooltip
-	request.UpdatedBy = updatedRequest.UpdatedBy
+	request.UpdatedBy = "SYSTEM"
 	request.UpdatedAt = time.Now()
 
 	if err := service.DB.Save(&request).Error; err != nil {
