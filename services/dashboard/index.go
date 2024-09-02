@@ -48,8 +48,10 @@ func (dash *DashboardController) SidebarMapperForAuthenticatedUser(c fiber.Ctx) 
 
 	var roleSidebarResponse []dashb.RoleSidebarResponse
 	for i := 0; i < len(userRoleResponse); i++ {
-		if getRoleSidebarFromAuthenticatedUser := dash.DB.Table("usr_rolesidebar").Preload(clause.Associations).Find(&roleSidebarResponse, "role_id = ?", userRoleResponse[i].RoleData); getRoleSidebarFromAuthenticatedUser.Error != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getRoleSidebarFromAuthenticatedUser.Error.Error()})
+		for _, v := range userRoleResponse[i].RoleData {
+			if getRoleSidebarFromAuthenticatedUser := dash.DB.Table("usr_rolesidebar").Preload(clause.Associations).Find(&roleSidebarResponse, "role_id = ?", v.RoleID); getRoleSidebarFromAuthenticatedUser.Error != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getRoleSidebarFromAuthenticatedUser.Error.Error()})
+			}
 		}
 	}
 
