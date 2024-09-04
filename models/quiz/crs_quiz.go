@@ -16,14 +16,15 @@ const (
 
 // Quiz represents the quiz table
 type Quiz struct {
-	QuizID      string     `gorm:"column:quiz_id;primaryKey" json:"quiz_id"`
-	SubcourseID string     `gorm:"column:subcourse_id" json:"subcourse_id"`
-	Description string     `gorm:"column:description" json:"description"`
-	CreatedBy   string     `gorm:"column:created_by" json:"created_by"`
-	CreatedAt   time.Time  `gorm:"column:created_at" json:"created_at"`
-	UpdatedBy   string     `gorm:"column:updated_by" json:"updated_by"`
-	UpdatedAt   time.Time  `gorm:"column:updated_at" json:"updated_at"`
-	Status      QuizStatus `gorm:"column:status" json:"status"`
+	QuizID      string         `gorm:"column:quiz_id;primaryKey" json:"quiz_id"`
+	SubcourseID string         `gorm:"column:subcourse_id" json:"subcourse_id"`
+	Description string         `gorm:"column:description" json:"description"`
+	CreatedBy   string         `gorm:"column:created_by" json:"created_by"`
+	CreatedAt   time.Time      `gorm:"column:created_at" json:"created_at"`
+	UpdatedBy   string         `gorm:"column:updated_by" json:"updated_by"`
+	UpdatedAt   time.Time      `gorm:"column:updated_at" json:"updated_at"`
+	Status      QuizStatus     `gorm:"column:status" json:"status"`
+	Questions   []QuizQuestion `gorm:"foreignKey:QuizID;references:QuizID" json:"questions,omitempty"`
 }
 
 // BeforeCreate is a GORM hook that runs before a new record is inserted into the database

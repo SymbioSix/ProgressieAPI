@@ -52,7 +52,11 @@ func (crs *CourseController) GetAllCoursesOnly(c fiber.Ctx) error {
 //	@Router			/courses/all [get]
 func (crs *CourseController) GetAllCoursesAndSubCourses(c fiber.Ctx) error {
 	var courses []models.CourseModel
-	if res := crs.DB.Table("crs_course").Table("crs_subcourse").Table("crs_subcoursevideo").Table("crs_subcoursereading").Table("crs_subcoursereadingimage").Preload("ReadingImages").Preload("VideoContent").Preload("ReadingContents").Preload("SubCourses").Find(&courses); res.Error != nil {
+	if res := crs.DB.
+		Preload("SubCourses.VideoContent").
+		Preload("SubCourses.ReadingContents.ReadingImages").
+		Preload("SubCourses.Quizzes.Questions.Answers").
+		Find(&courses); res.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 	}
 	return c.Status(fiber.StatusOK).JSON(courses)
@@ -72,7 +76,11 @@ func (crs *CourseController) GetAllCoursesAndSubCourses(c fiber.Ctx) error {
 func (crs *CourseController) GetSubCoursesByCourseID(c fiber.Ctx) error {
 	courseId := c.Params("courseid")
 	var subCourses models.CourseModel
-	if res := crs.DB.Table("crs_course").Table("crs_subcourse").Table("crs_subcoursevideo").Table("crs_subcoursereading").Table("crs_subcoursereadingimage").Preload("ReadingImages").Preload("VideoContent").Preload("ReadingContents").Preload("SubCourses").First(&subCourses, "course_id = ?", courseId); res.Error != nil {
+	if res := crs.DB.
+		Preload("SubCourses.VideoContent").
+		Preload("SubCourses.ReadingContents.ReadingImages").
+		Preload("SubCourses.Quizzes.Questions.Answers").
+		First(&subCourses, "course_id = ?", courseId); res.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 	}
 
@@ -83,8 +91,8 @@ func (crs *CourseController) GetSubCoursesByCourseID(c fiber.Ctx) error {
 
 // CheckEnrollStatus godoc
 //
-//	@Summary		Check enrollment status for a course
-//	@Description	Check enrollment status for a course
+//	@Summary		Check user enrollment status for a specific course
+//	@Description	Check user enrollment status for a specific course (Will return either, Unauthorized Access, Error, User Isn't Enrolled!, or User Is Enrolled!)
 //	@Tags			Courses Service
 //	@Accept			json
 //	@Produce		json
@@ -211,7 +219,14 @@ func (crs *CourseController) GetEnrolledCourseData(c fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "message": "Unauthorized Access"})
 	}
 	var enrollment models.EnrollmentModel
-	if res := crs.DB.Table("crs_enrollment").Table("crs_course").Table("crs_subcourse").Table("crs_subcoursevideo").Table("crs_subcoursereading").Table("crs_subcoursereadingimage").Preload("ReadingImages").Preload("VideoContent").Preload("ReadingContents").Preload("SubCourses").Preload("TheCourse").Where(&models.EnrollmentModel{UserID: user.ID, CourseID: courseId}).First(&enrollment); res.Error != nil {
+	if res := crs.DB.
+		Preload("TheCourse.SubCourses.VideoContent").
+		Preload("TheCourse.SubCourses.ReadingContents.ReadingImages").
+		Preload("TheCourse.SubCourses.Quizzes.Questions.Answers").
+		Preload("TheCourse.SubCourses.Progress.ReadingProgress").
+		Preload("TheCourse.SubCourses.Progress.Reminders").
+		Where(&models.EnrollmentModel{UserID: user.ID, CourseID: courseId}).
+		First(&enrollment); res.Error != nil {
 		if errors.Is(res.Error, gorm.ErrRecordNotFound) {
 			return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"status": "unenrolled", "message": "User Isn't Enrolled!"})
 		}
