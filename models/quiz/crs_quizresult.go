@@ -18,6 +18,7 @@ const (
 // QuizResult represents the quiz_result table
 type QuizResult struct {
 	QuizID       string           `gorm:"column:quiz_id;primaryKey" json:"quiz_id"`
+	QuizData     Quiz             `gorm:"foreignKey:QuizID;references:QuizID" json:"quiz_data,omitempty"`
 	UserID       uuid.UUID        `gorm:"column:user_id" json:"user_id"`
 	Progress     float32          `gorm:"column:progress" json:"progress"`
 	HighestScore float32          `gorm:"column:highest_score" json:"highest_score"`
