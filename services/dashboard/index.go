@@ -47,12 +47,11 @@ func (dash *DashboardController) SidebarMapperForAuthenticatedUser(c fiber.Ctx) 
 	}
 
 	var roleSidebarResponse []dashb.RoleSidebarResponse
-	for i := 0; i < len(userRoleResponse); i++ {
-		for _, v := range userRoleResponse[i].RoleData {
-			if getRoleSidebarFromAuthenticatedUser := dash.DB.Table("usr_rolesidebar").Preload(clause.Associations).Find(&roleSidebarResponse, "role_id = ?", v.RoleID); getRoleSidebarFromAuthenticatedUser.Error != nil {
-				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getRoleSidebarFromAuthenticatedUser.Error.Error()})
-			}
+	for _, v := range userRoleResponse {
+		if getRoleSidebarFromAuthenticatedUser := dash.DB.Table("usr_rolesidebar").Preload(clause.Associations).Find(&roleSidebarResponse, "role_id = ?", v.RoleID); getRoleSidebarFromAuthenticatedUser.Error != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getRoleSidebarFromAuthenticatedUser.Error.Error()})
 		}
+
 	}
 
 	return c.Status(fiber.StatusOK).JSON(roleSidebarResponse)
@@ -75,7 +74,7 @@ func (dash *DashboardController) GetUserProfile(c fiber.Ctx) error {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusUnauthorized).JSON(stat)
 	}
-	var userRoleResponse *auth.UserRoleResponse
+	var userRoleResponse auth.UserRoleResponse
 	if getUserRole := dash.DB.Table("usr_roleuser").Preload(clause.Associations).Find(&userRoleResponse, "user_id = ?", getUser.ID); getUserRole.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getUserRole.Error.Error()})
 	}
