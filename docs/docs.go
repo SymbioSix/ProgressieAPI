@@ -1044,7 +1044,7 @@ const docTemplate = `{
         },
         "/courses/{courseid}/enrollment/status": {
             "get": {
-                "description": "Check enrollment status for a course",
+                "description": "Check user enrollment status for a specific course (Will return either, Unauthorized Access, Error, User Isn't Enrolled!, or User Is Enrolled!)",
                 "consumes": [
                     "application/json"
                 ],
@@ -1054,7 +1054,7 @@ const docTemplate = `{
                 "tags": [
                     "Courses Service"
                 ],
-                "summary": "Check enrollment status for a course",
+                "summary": "Check user enrollment status for a specific course",
                 "parameters": [
                     {
                         "type": "string",
@@ -4303,6 +4303,12 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.QuizQuestion"
+                    }
+                },
                 "quiz_id": {
                     "type": "string"
                 },
@@ -4364,6 +4370,9 @@ const docTemplate = `{
         "models.QuizQuestion": {
             "type": "object",
             "properties": {
+                "answers": {
+                    "$ref": "#/definitions/models.QuizAnswerMultipleChoice"
+                },
                 "created_at": {
                     "type": "string"
                 },
@@ -4415,6 +4424,9 @@ const docTemplate = `{
                 },
                 "progress": {
                     "type": "number"
+                },
+                "quiz_data": {
+                    "$ref": "#/definitions/models.Quiz"
                 },
                 "quiz_id": {
                     "type": "string"
@@ -5077,6 +5089,12 @@ const docTemplate = `{
                         "$ref": "#/definitions/models.UserAchievement"
                     }
                 },
+                "course_enrollment": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.EnrollmentModel"
+                    }
+                },
                 "created_by": {
                     "type": "string"
                 },
@@ -5110,6 +5128,12 @@ const docTemplate = `{
                 "photo_profile_link": {
                     "type": "string"
                 },
+                "quiz_results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.QuizResult"
+                    }
+                },
                 "ranks": {
                     "type": "array",
                     "items": {
@@ -5118,6 +5142,12 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "string"
+                },
+                "subcourse_progress": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.SubcourseProgress"
+                    }
                 },
                 "title_desc_profile": {
                     "type": "string"
@@ -5198,10 +5228,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "role_data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.RoleModel"
-                    }
+                    "$ref": "#/definitions/models.RoleModel"
                 },
                 "role_id": {
                     "type": "string"
