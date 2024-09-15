@@ -63,7 +63,7 @@ func (service *FooterService) CreateFooter(req *models.LandFooterRequest) (*mode
 
 func (service *FooterService) GetFooter(id int) (*models.Land_Footer, error) {
 	var footer models.Land_Footer
-	if err := service.db.First(&footer, id).Error; err != nil {
+	if err := service.db.First(&footer, "footer_component_id = ?", id).Error; err != nil {
 		return nil, err
 	}
 
@@ -87,7 +87,7 @@ func (service *FooterService) GetFooter(id int) (*models.Land_Footer, error) {
 
 func (service *FooterService) UpdateFooter(id int, req *models.LandFooterRequest) (*models.Land_Footer, error) {
 	var footer models.Land_Footer
-	if err := service.db.First(&footer, id).Error; err != nil {
+	if err := service.db.First(&footer, "footer_component_id = ?", id).Error; err != nil {
 		return nil, err
 	}
 
@@ -122,7 +122,7 @@ func (service *FooterService) UpdateFooter(id int, req *models.LandFooterRequest
 // DeleteFooter deletes a footer component by ID
 
 func (service *FooterService) DeleteFooter(id int) error {
-	if err := service.db.Delete(&models.Land_Footer{}, id).Error; err != nil {
+	if err := service.db.Delete(&models.Land_Footer{}, "footer_component_id = ?", id).Error; err != nil {
 		return err
 	}
 	return nil

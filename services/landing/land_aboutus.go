@@ -53,7 +53,7 @@ func (s *AboutUsService) CreateAboutUs(request *models.LandAboutUsRequest) (*mod
 func (s *AboutUsService) GetAboutUsByID(id int) (*models.Land_Aboutus, error) {
 	var request models.Land_Aboutus
 
-	if err := s.db.First(&request, id).Error; err != nil {
+	if err := s.db.First(&request, "aboutus_component_id = ?", id).Error; err != nil {
 		return nil, err
 	}
 
@@ -77,7 +77,7 @@ func (s *AboutUsService) GetAboutUsByID(id int) (*models.Land_Aboutus, error) {
 func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.LandAboutUsRequest) (*models.Land_Aboutus, error) {
 	var request models.Land_Aboutus
 
-	if err := s.db.First(&request, id).Error; err != nil {
+	if err := s.db.First(&request, "aboutus_component_id = ?", id).Error; err != nil {
 		return nil, err
 	}
 
@@ -114,7 +114,7 @@ func (s AboutUsService) UpdateAboutUs(id int, updatedRequest *models.LandAboutUs
 func (s *AboutUsService) DeleteAboutUs(id int) error {
 	var request models.Land_Aboutus
 
-	if err := s.db.First(&request, id).Error; err != nil {
+	if err := s.db.First(&request, "aboutus_component_id = ?", id).Error; err != nil {
 		return err
 	}
 
