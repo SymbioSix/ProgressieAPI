@@ -56,10 +56,10 @@ func (role *RoleModel) TableName() string {
 }
 
 type UserRoleResponse struct {
-	UserID   string      `gorm:"column:user_id;primaryKey" json:"user_id,omitempty"`
-	UserData UserModel   `gorm:"foreignKey:UserID;references:UserID" json:"user_data"`
-	RoleID   string      `gorm:"column:role_id;primaryKey" json:"role_id,omitempty"`
-	RoleData []RoleModel `gorm:"foreignKey:RoleID;references:RoleID" json:"role_data"`
+	UserID   string    `gorm:"column:user_id;primaryKey" json:"user_id,omitempty"`
+	UserData UserModel `gorm:"foreignKey:UserID;references:UserID" json:"user_data"`
+	RoleID   string    `gorm:"column:role_id;primaryKey" json:"role_id,omitempty"`
+	RoleData RoleModel `gorm:"foreignKey:RoleID;references:RoleID" json:"role_data"`
 }
 
 type InsertUserRole struct {

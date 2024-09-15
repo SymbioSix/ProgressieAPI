@@ -20,11 +20,11 @@ func RestrictNonAdmin() fiber.Handler {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getUserRole.Error.Error()})
 		}
 		var isAdmin bool
-		for i := 0; i < len(userRoleResponse.RoleData); i++ {
-			if strings.Contains(strings.ToLower(userRoleResponse.RoleData[i].RoleName), "admin") || strings.Contains(strings.ToLower(userRoleResponse.RoleData[i].RoleName), "super") {
-				isAdmin = true
-			}
+
+		if strings.Contains(strings.ToLower(userRoleResponse.RoleData.RoleName), "admin") || strings.Contains(strings.ToLower(userRoleResponse.RoleData.RoleName), "super") {
+			isAdmin = true
 		}
+
 		if !isAdmin {
 			return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"status": "forbidden", "message": "Request performed by forbidden user"})
 		} else {

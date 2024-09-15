@@ -343,6 +343,10 @@ definitions:
         type: string
       description:
         type: string
+      questions:
+        items:
+          $ref: '#/definitions/models.QuizQuestion'
+        type: array
       quiz_id:
         type: string
       status:
@@ -383,6 +387,8 @@ definitions:
     type: object
   models.QuizQuestion:
     properties:
+      answers:
+        $ref: '#/definitions/models.QuizAnswerMultipleChoice'
       created_at:
         type: string
       created_by:
@@ -418,6 +424,8 @@ definitions:
         type: number
       progress:
         type: number
+      quiz_data:
+        $ref: '#/definitions/models.Quiz'
       quiz_id:
         type: string
       status:
@@ -852,6 +860,10 @@ definitions:
         items:
           $ref: '#/definitions/models.UserAchievement'
         type: array
+      course_enrollment:
+        items:
+          $ref: '#/definitions/models.EnrollmentModel'
+        type: array
       created_by:
         type: string
       description:
@@ -874,12 +886,20 @@ definitions:
         type: boolean
       photo_profile_link:
         type: string
+      quiz_results:
+        items:
+          $ref: '#/definitions/models.QuizResult'
+        type: array
       ranks:
         items:
           $ref: '#/definitions/models.UserRank'
         type: array
       status:
         type: string
+      subcourse_progress:
+        items:
+          $ref: '#/definitions/models.SubcourseProgress'
+        type: array
       title_desc_profile:
         type: string
       title_skills:
@@ -932,9 +952,7 @@ definitions:
   models.UserRoleResponse:
     properties:
       role_data:
-        items:
-          $ref: '#/definitions/models.RoleModel'
-        type: array
+        $ref: '#/definitions/models.RoleModel'
       role_id:
         type: string
       user_data:
@@ -1630,7 +1648,8 @@ paths:
     get:
       consumes:
       - application/json
-      description: Check enrollment status for a course
+      description: Check user enrollment status for a specific course (Will return
+        either, Unauthorized Access, Error, User Isn't Enrolled!, or User Is Enrolled!)
       parameters:
       - description: Course ID
         in: path
@@ -1656,7 +1675,7 @@ paths:
           description: Forbidden
           schema:
             $ref: '#/definitions/models.StatusModel'
-      summary: Check enrollment status for a course
+      summary: Check user enrollment status for a specific course
       tags:
       - Courses Service
   /courses/{courseid}/subcourses:

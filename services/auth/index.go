@@ -164,20 +164,6 @@ func (au *AuthController) SignUpForAdmin(c fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": assignRole.Error.Error()})
 	}
 
-	if fetchRoleAdmin := au.DB.Table("usr_role").First(&role, "role_name = ?", "BasicUser"); fetchRoleAdmin.Error != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": fetchRoleAdmin.Error.Error()})
-	}
-
-	insertRole = models.InsertUserRole{
-		UserID:    result.User.ID,
-		RoleID:    role.RoleID,
-		CreatedBy: "SignUp System",
-	}
-
-	if assignRole := au.DB.Table("usr_roleuser").Create(&insertRole); assignRole.Error != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": assignRole.Error.Error()})
-	}
-
 	var userRoleResponse models.UserRoleResponse
 	if getUserRole := au.DB.Table("usr_roleuser").Preload(clause.Associations).Find(&userRoleResponse, "user_id = ?", result.User.ID); getUserRole.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": getUserRole.Error.Error()})
