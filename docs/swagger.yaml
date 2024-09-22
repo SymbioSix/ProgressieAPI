@@ -522,6 +522,8 @@ definitions:
         type: string
       endpoint:
         type: string
+      icon_data:
+        type: string
       sidebar_group:
         type: string
       sidebar_name:

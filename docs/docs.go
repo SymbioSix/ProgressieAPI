@@ -4573,6 +4573,9 @@ const docTemplate = `{
                 "endpoint": {
                     "type": "string"
                 },
+                "icon_data": {
+                    "type": "string"
+                },
                 "sidebar_group": {
                     "type": "string"
                 },

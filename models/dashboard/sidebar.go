@@ -10,6 +10,7 @@ type SidebarModel struct {
 	SidebarID    string    `gorm:"column:sidebarmenu_id" json:"sidebarmenu_id"`
 	SidebarName  string    `gorm:"column:sidebarmenu_name" json:"sidebar_name"`
 	SidebarGroup string    `gorm:"column:sidebarmenu_group" json:"sidebar_group,omitempty"`
+	IconData     string    `gorm:"column:icon_data" json:"icon_data"`
 	Endpoint     string    `gorm:"column:endpoint" json:"endpoint"`
 	Status       string    `gorm:"column:status" json:"status,omitempty"`
 	CreatedBy    string    `gorm:"column:created_by"`
