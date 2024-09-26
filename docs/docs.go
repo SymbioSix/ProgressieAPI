@@ -260,6 +260,76 @@ const docTemplate = `{
                 }
             }
         },
+        "/achievements": {
+            "get": {
+                "description": "Get All Achievements without credentials",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Achievements Service"
+                ],
+                "summary": "Get All Acheivements",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserAchievement"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/achievements/user": {
+            "get": {
+                "description": "Get All Achievements for logged in user with credentials",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Achievements Service"
+                ],
+                "summary": "Get All Acheivements for logged in user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserAchievement"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/failed": {
             "get": {
                 "description": "When Redirected To This Service, It Will Return JSON Response With Various Error Message",

@@ -6,6 +6,7 @@ import (
 	_ "github.com/SymbioSix/ProgressieAPI/docs"
 	status "github.com/SymbioSix/ProgressieAPI/models/status"
 	todo_r "github.com/SymbioSix/ProgressieAPI/routers/Todo"
+	achi_r "github.com/SymbioSix/ProgressieAPI/routers/achievement"
 	au_r "github.com/SymbioSix/ProgressieAPI/routers/auth"
 	crs_r "github.com/SymbioSix/ProgressieAPI/routers/courses"
 	dash_r "github.com/SymbioSix/ProgressieAPI/routers/dashboard"
@@ -14,6 +15,7 @@ import (
 	quiz_r "github.com/SymbioSix/ProgressieAPI/routers/quiz"
 	rank_r "github.com/SymbioSix/ProgressieAPI/routers/rank"
 	todo_s "github.com/SymbioSix/ProgressieAPI/services/To_do_list"
+	achi_s "github.com/SymbioSix/ProgressieAPI/services/achievement"
 	au_s "github.com/SymbioSix/ProgressieAPI/services/auth"
 	crs_s "github.com/SymbioSix/ProgressieAPI/services/courses"
 	dash_s "github.com/SymbioSix/ProgressieAPI/services/dashboard"
@@ -79,6 +81,9 @@ var (
 
 	QuizResultController quiz_s.QuizResultService
 	QuizResultRouter     quiz_r.GetQuizResultRouter
+
+	AchievementController achi_s.AchiallController
+	AchievementRouter     achi_r.AchievementRouter
 )
 
 func init() {
@@ -140,6 +145,9 @@ func init() {
 
 	QuizResultController = quiz_s.NewQuizResultService(s.DB)
 	QuizResultRouter = quiz_r.NewGetQuizResultRouter(QuizResultController)
+
+	AchievementController = achi_s.NewAchiALLController(s.DB, s.Client)
+	AchievementRouter = achi_r.NewRouteAchievementController(AchievementController)
 
 	app = fiber.New()
 }
@@ -233,6 +241,7 @@ func main() {
 	QuizAnswerMultipleChoiceRouter.GetQuizAMCRouter(router)
 	QuizQuestionRouter.GetQuizQuestionRouter(router)
 	QuizResultRouter.GetQuizResultRouter(router)
+	AchievementRouter.AchievementRoutes(router)
 
 	// Serve The API
 	s.StartServerWithGracefulShutdown(app, &config)
