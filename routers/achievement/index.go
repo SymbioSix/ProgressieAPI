@@ -14,7 +14,7 @@ func NewRouteAchievementController(achievementRouter achievement.AchiallControll
 }
 
 func (achi *AchievementRouter) AchievementRoutes(rg fiber.Router) {
-	router := rg.Group("achievement")
+	router := rg.Group("achievements")
 
 	router.Get("/", achi.achievementRouter.GetAllAchievement)
 	router.Get("/user", achi.achievementRouter.GetAllAchievementByUserID)
