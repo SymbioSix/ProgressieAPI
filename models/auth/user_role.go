@@ -17,7 +17,7 @@ type UserModel struct {
 	PhoneNumber             string                     `gorm:"column:phone_number" json:"phone_number"`
 	PhotoProfile            string                     `gorm:"column:photo_profile_link" json:"photo_profile_link"`
 	TitleProfile            string                     `gorm:"column:title_desc_profile" json:"title_desc_profile"`
-	Description             string                     `gorm:"column:description" json:"description,omitempty"`
+	Description             string                     `gorm:"column:description_profile" json:"description,omitempty"`
 	EmailVerified           bool                       `gorm:"column:email_verified" json:"email_verified,omitempty"`
 	PhoneVerified           bool                       `gorm:"column:phone_verified" json:"phone_verified,omitempty"`
 	Username                string                     `gorm:"column:username" json:"username"`
