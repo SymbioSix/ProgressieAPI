@@ -106,7 +106,7 @@ func (dash *DashboardController) UpdateUserProfile(c fiber.Ctx) error {
 	}
 
 	var updateUser auth.UserModel
-	if res := dash.DB.Where(auth.UserModel{UserID: getUser.ID}).First(&updateUser); res.Error != nil {
+	if res := dash.DB.First(&updateUser, "user_id = ?", getUser.ID); res.Error != nil {
 		stat := status.StatusModel{Status: "fail", Message: res.Error.Error()}
 		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
@@ -136,7 +136,11 @@ func (dash *DashboardController) UpdateUserProfile(c fiber.Ctx) error {
 		updateUser.Gender = request.Gender
 	}
 
-	if res := dash.DB.Save(&updateUser); res.Error != nil {
+	updateUser.Status = "Active"
+	updateUser.UpdatedAt = time.Now()
+	updateUser.UpdatedBy = updateUser.Username
+
+	if res := dash.DB.Where("user_id = ?", getUser.ID).Save(&updateUser); res.Error != nil {
 		stat := status.StatusModel{Status: "fail", Message: res.Error.Error()}
 		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
