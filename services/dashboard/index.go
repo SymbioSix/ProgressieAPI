@@ -315,7 +315,7 @@ func (dash *DashboardController) GetUserActivityChart(c fiber.Ctx) error {
 		var todoCount int64
 		if res := db.Table("td_customtargetchecklist").
 			Joins("JOIN td_customtarget ON td_customtargetchecklist.target_id = td_customtarget.target_id").
-			Joins("JOIN usr_achievement ON td_customtarget.achievement_id = usr_achievement.achievement_id").
+			Joins("JOIN usr_achievement ON td_customtarget.target_id = usr_achievement.achievement_id").
 			Where("usr_achievement.user_id = ? AND DATE(td_customtargetchecklist.date_checked) = ?", user.ID, dayTime.Format("2006-01-02")).
 			Count(&todoCount); res.Error != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
