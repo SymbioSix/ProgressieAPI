@@ -70,7 +70,7 @@ func (crs *CourseController) GetAllCoursesAndSubCourses(c fiber.Ctx) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			courseid	path		string	true	"Course ID"
-//	@Success		200			{object}	models.CourseModel
+//	@Success		200			{object}	status.ParseSubcoursesFromCourseID
 //	@Failure		500			{object}	status.StatusModel
 //	@Router			/courses/{courseid}/subcourses [get]
 func (crs *CourseController) GetSubCoursesByCourseID(c fiber.Ctx) error {

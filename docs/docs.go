@@ -1188,7 +1188,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.CourseModel"
+                            "$ref": "#/definitions/models.ParseSubcoursesFromCourseID"
                         }
                     },
                     "500": {
@@ -4415,6 +4415,17 @@ const docTemplate = `{
                 },
                 "token_type": {
                     "type": "string"
+                }
+            }
+        },
+        "models.ParseSubcoursesFromCourseID": {
+            "type": "object",
+            "properties": {
+                "subcourses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.SubCourseModel"
+                    }
                 }
             }
         },
