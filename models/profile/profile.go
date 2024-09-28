@@ -42,7 +42,7 @@ type UserAchievement struct {
 	AchievementDescription string                  `gorm:"column:achievement_description" json:"achievement_description"`
 	AchievementCategory    string                  `gorm:"column:achievement_category" json:"achievement_category"`
 	IsAchieved             bool                    `gorm:"column:is_achieved" json:"is_achieved"`
-	CustomTargets          []models.TdCustomTarget `gorm:"foreignKey:AchievementID;references:AchievementID" json:"custom_targets,omitempty"`
+	CustomTargets          []models.TdCustomTarget `gorm:"foreignKey:TargetID;references:AchievementID" json:"custom_targets,omitempty"`
 	// AchievementTotalAchieved int       `gorm:"column:achievement_total_achieved"` // New field
 }
 
@@ -50,8 +50,7 @@ func (usr *UserAchievement) TableName() string {
 	return "usr_achievement"
 }
 
-type UpdateUserTitleSkillRequest struct {
-	TitleSkill string    `json:"title_skill,omitempty"`
-	Subtitle   string    `json:"subtitle,omitempty"`
-	UpdatedAt  time.Time `json:"updated_at,omitempty"`
+type CreateOrUpdateUserTitleSkillRequest struct {
+	TitleSkill string `json:"title_skill,omitempty"`
+	Subtitle   string `json:"subtitle,omitempty"`
 }
