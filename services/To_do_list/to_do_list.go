@@ -51,7 +51,6 @@ func (todall *ToDoListController) Getalltodo(c fiber.Ctx) error {
 	}
 	for _, v := range tdCustom {
 		var td todoroki.TdCustomTargetResponse
-		td.AchievementID = v.AchievementID
 		td.TargetID = v.TargetID
 		td.TargetTitle = v.TargetTitle
 		td.TargetSubtitle = v.TargetSubtitle
@@ -119,7 +118,6 @@ func (td *ToDoListController) TdAllbyuserID(c fiber.Ctx) error {
 	}
 	for _, v := range tdCustom {
 		var td todoroki.TdCustomTargetResponse
-		td.AchievementID = v.AchievementID
 		td.TargetID = v.TargetID
 		td.TargetTitle = v.TargetTitle
 		td.TargetSubtitle = v.TargetSubtitle
@@ -446,7 +444,7 @@ func (td *ToDoListController) SaveTdCustomTarget(c fiber.Ctx) error {
 	// Calculate the due date 30 days from now
 	dueDate := time.Now().AddDate(0, 0, 30)
 	target := todoroki.TdCustomTarget{
-		AchievementID:      ach_id,
+		TargetID:           ach_id,
 		TargetTitle:        req.TargetTitle,
 		TargetSubtitle:     req.TargetSubtitle,
 		DailyClockReminder: req.DailyReminder,
@@ -491,7 +489,7 @@ func (td *ToDoListController) UpdateChecklist(c fiber.Ctx) error {
 
 	// Create a new checklist entry
 	checklist := todoroki.Checklist{
-		ChecklistID: uuid.New().String(),
+		ChecklistID: uuid.New(),
 		TargetID:    targetID,
 		DateChecked: req.DateChecked,
 	}
@@ -555,7 +553,7 @@ func (td *ToDoListController) CheckCustomTargetProgressForAchievement(c fiber.Ct
 			}
 
 			// Save the new achievement record
-			if res := td.DB.Table("usr_achievement").Where("achievement_id = ?", ach.AchievementID).Save(&achievement); res.Error != nil {
+			if res := td.DB.Table("usr_achievement").Where("achievement_id = ?", ach.TargetID).Save(&achievement); res.Error != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 			}
 
@@ -573,7 +571,7 @@ func (td *ToDoListController) CheckCustomTargetProgressForAchievement(c fiber.Ct
 	}
 
 	// Save the new achievement record for failure
-	if res := td.DB.Table("usr_achievement").Where("achievement_id = ?", ach.AchievementID).Save(&achievement); res.Error != nil {
+	if res := td.DB.Table("usr_achievement").Where("achievement_id = ?", ach.TargetID).Save(&achievement); res.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
 	}
 

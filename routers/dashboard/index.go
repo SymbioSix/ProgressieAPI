@@ -20,7 +20,8 @@ func (dr *DashboardRouter) DashboardRoutes(rg fiber.Router) {
 	router.Get("/sidebar", dr.dashboardRouter.SidebarMapperForAuthenticatedUser, middleware.RestrictUnauthenticatedUser())
 	router.Get("/profile", dr.dashboardRouter.GetUserProfile, middleware.RestrictUnauthenticatedUser())
 	router.Put("/profile", dr.dashboardRouter.UpdateUserProfile, middleware.RestrictUnauthenticatedUser())
-	router.Put("/skill", dr.dashboardRouter.CreateOrUpdateUserSkill, middleware.RestrictUnauthenticatedUser())
+	router.Put("/skill/:id", dr.dashboardRouter.UpdateUserSkill, middleware.RestrictUnauthenticatedUser())
+	router.Post("/skill", dr.dashboardRouter.CreateUserSkill, middleware.RestrictUnauthenticatedUser())
 	router.Delete("/:id/soft", dr.dashboardRouter.SoftDeleteUser, middleware.RestrictNonAdmin())
 	router.Get("/activity-chart", dr.dashboardRouter.GetUserActivityChart, middleware.RestrictUnauthenticatedUser())
 }

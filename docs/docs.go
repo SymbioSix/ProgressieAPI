@@ -1356,6 +1356,52 @@ const docTemplate = `{
             }
         },
         "/dashboard/skill": {
+            "post": {
+                "description": "Create the skill of the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard Service"
+                ],
+                "summary": "Create user skill",
+                "parameters": [
+                    {
+                        "description": "Create User Skill Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateOrUpdateUserTitleSkillRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard/skill/{id}": {
             "put": {
                 "description": "Update the skill of the authenticated user",
                 "consumes": [
@@ -1375,7 +1421,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateUserTitleSkillRequest"
+                            "$ref": "#/definitions/models.CreateOrUpdateUserTitleSkillRequest"
                         }
                     }
                 ],
@@ -3940,6 +3986,17 @@ const docTemplate = `{
                 }
             }
         },
+        "models.CreateOrUpdateUserTitleSkillRequest": {
+            "type": "object",
+            "properties": {
+                "subtitle": {
+                    "type": "string"
+                },
+                "title_skill": {
+                    "type": "string"
+                }
+            }
+        },
         "models.EnrollmentModel": {
             "type": "object",
             "properties": {
@@ -4915,9 +4972,6 @@ const docTemplate = `{
         "models.TdCustomTarget": {
             "type": "object",
             "properties": {
-                "achievement_id": {
-                    "type": "string"
-                },
                 "checklists": {
                     "type": "array",
                     "items": {
@@ -5103,20 +5157,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title_desc_profile": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.UpdateUserTitleSkillRequest": {
-            "type": "object",
-            "properties": {
-                "subtitle": {
-                    "type": "string"
-                },
-                "title_skill": {
-                    "type": "string"
-                },
-                "updated_at": {
                     "type": "string"
                 }
             }
