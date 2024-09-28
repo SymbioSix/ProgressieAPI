@@ -58,6 +58,13 @@ definitions:
       updated_by:
         type: string
     type: object
+  models.CreateOrUpdateUserTitleSkillRequest:
+    properties:
+      subtitle:
+        type: string
+      title_skill:
+        type: string
+    type: object
   models.EnrollmentModel:
     properties:
       course_id:
@@ -701,8 +708,6 @@ definitions:
     type: object
   models.TdCustomTarget:
     properties:
-      achievement_id:
-        type: string
       checklists:
         items:
           $ref: '#/definitions/models.Checklist'
@@ -824,15 +829,6 @@ definitions:
       photo_profile_link:
         type: string
       title_desc_profile:
-        type: string
-    type: object
-  models.UpdateUserTitleSkillRequest:
-    properties:
-      subtitle:
-        type: string
-      title_skill:
-        type: string
-      updated_at:
         type: string
     type: object
   models.UserAchievement:
@@ -1903,6 +1899,36 @@ paths:
       tags:
       - Dashboard Service
   /dashboard/skill:
+    post:
+      consumes:
+      - application/json
+      description: Create the skill of the authenticated user
+      parameters:
+      - description: Create User Skill Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateOrUpdateUserTitleSkillRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Create user skill
+      tags:
+      - Dashboard Service
+  /dashboard/skill/{id}:
     put:
       consumes:
       - application/json
@@ -1913,7 +1939,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.UpdateUserTitleSkillRequest'
+          $ref: '#/definitions/models.CreateOrUpdateUserTitleSkillRequest'
       produces:
       - application/json
       responses:
