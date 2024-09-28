@@ -1,6 +1,7 @@
 package dashboard
 
 import (
+	"errors"
 	"time"
 
 	auth "github.com/SymbioSix/ProgressieAPI/models/auth"
@@ -9,6 +10,7 @@ import (
 	status "github.com/SymbioSix/ProgressieAPI/models/status"
 	"github.com/SymbioSix/ProgressieAPI/utils"
 	"github.com/gofiber/fiber/v3"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -148,6 +150,45 @@ func (dash *DashboardController) UpdateUserProfile(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "User Profile Updated Successfully!"})
 }
 
+// Create UserSkill godoc
+//
+//	@Summary		Create user skill
+//	@Description	Create the skill of the authenticated user
+//	@Tags			Dashboard Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		profile.CreateOrUpdateUserTitleSkillRequest	true	"Create User Skill Request"
+//	@Success		200		{object}	status.StatusModel
+//	@Failure		401		{object}	status.StatusModel
+//	@Failure		500		{object}	status.StatusModel
+//	@Router			/dashboard/skill [post]
+func (dash *DashboardController) CreateUserSkill(c fiber.Ctx) error {
+	getUser, err := dash.API.Auth.GetUser()
+	if err != nil {
+		stat := status.StatusModel{Status: "fail", Message: err.Error()}
+		return c.Status(fiber.StatusUnauthorized).JSON(stat)
+	}
+
+	var request profile.CreateOrUpdateUserTitleSkillRequest
+	if err := c.Bind().JSON(&request); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+	}
+
+	skills := profile.UserTitleSkill{
+		UserID:     getUser.ID,
+		TitleSkill: request.TitleSkill,
+		Subtitle:   request.Subtitle,
+		CreatedAt:  time.Now(),
+	}
+
+	if res := dash.DB.Create(&skills); res.Error != nil {
+		stat := status.StatusModel{Status: "fail", Message: res.Error.Error()}
+		return c.Status(fiber.StatusInternalServerError).JSON(stat)
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": "User Skills Created Successfully!"})
+}
+
 // UpdateUserSkill godoc
 //
 //	@Summary		Update user skill
@@ -155,25 +196,33 @@ func (dash *DashboardController) UpdateUserProfile(c fiber.Ctx) error {
 //	@Tags			Dashboard Service
 //	@Accept			json
 //	@Produce		json
-//	@Param			request	body		profile.UpdateUserTitleSkillRequest	true	"Update User Skill Request"
+//	@Param			id		path		uuid.UUID									true	"Title ID"
+//	@Param			request	body		profile.CreateOrUpdateUserTitleSkillRequest	true	"Update User Skill Request"
 //	@Success		200		{object}	status.StatusModel
 //	@Failure		401		{object}	status.StatusModel
 //	@Failure		500		{object}	status.StatusModel
-//	@Router			/dashboard/skill [put]
-func (dash *DashboardController) CreateOrUpdateUserSkill(c fiber.Ctx) error {
+//	@Router			/dashboard/skill/{id} [put]
+func (dash *DashboardController) UpdateUserSkill(c fiber.Ctx) error {
+	id := c.Params("id")
 	getUser, err := dash.API.Auth.GetUser()
 	if err != nil {
 		stat := status.StatusModel{Status: "fail", Message: err.Error()}
 		return c.Status(fiber.StatusUnauthorized).JSON(stat)
 	}
 
-	var request profile.UpdateUserTitleSkillRequest
+	var request profile.CreateOrUpdateUserTitleSkillRequest
 	if err := c.Bind().JSON(&request); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
 	}
 
+	var updated time.Time
+
 	var updateUser profile.UserTitleSkill
-	if res := dash.DB.Where(auth.UserModel{UserID: getUser.ID}).First(&updateUser); res.Error != nil {
+	if res := dash.DB.Where(profile.UserTitleSkill{UserID: getUser.ID, TitleID: uuid.MustParse(id)}).First(&updateUser); res.Error != nil {
+		if errors.Is(res.Error, gorm.ErrRecordNotFound) {
+			updated = time.Now()
+			updateUser.UpdatedAt = updated
+		}
 		stat := status.StatusModel{Status: "fail", Message: res.Error.Error()}
 		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
@@ -184,11 +233,8 @@ func (dash *DashboardController) CreateOrUpdateUserSkill(c fiber.Ctx) error {
 	if request.Subtitle != "" {
 		updateUser.Subtitle = request.Subtitle
 	}
-	if request.UpdatedAt.String() != "" {
-		updateUser.UpdatedAt = request.UpdatedAt
-	}
 
-	if res := dash.DB.Save(&updateUser); res.Error != nil {
+	if res := dash.DB.Where(profile.UserTitleSkill{UserID: getUser.ID, TitleID: uuid.MustParse(id)}).Save(&updateUser); res.Error != nil {
 		stat := status.StatusModel{Status: "fail", Message: res.Error.Error()}
 		return c.Status(fiber.StatusInternalServerError).JSON(stat)
 	}
