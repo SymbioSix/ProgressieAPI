@@ -342,6 +342,13 @@ definitions:
       token_type:
         type: string
     type: object
+  models.ParseSubcoursesFromCourseID:
+    properties:
+      subcourses:
+        items:
+          $ref: '#/definitions/models.SubCourseModel'
+        type: array
+    type: object
   models.Quiz:
     properties:
       created_at:
@@ -1739,7 +1746,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.CourseModel'
+            $ref: '#/definitions/models.ParseSubcoursesFromCourseID'
         "500":
           description: Internal Server Error
           schema:
