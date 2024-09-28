@@ -8,10 +8,9 @@ import (
 
 type TdCustomTarget struct {
 	TargetID           uuid.UUID   `gorm:"column:target_id;primaryKey" json:"target_id"`
-	AchievementID      uuid.UUID   `gorm:"column:achievement_title" json:"achievement_id"`
 	TargetTitle        string      `gorm:"column:target_title" json:"target_title"`
 	TargetSubtitle     string      `gorm:"column:target_subtitle" json:"target_subtitle"`
-	DailyClockReminder time.Time   `gorm:"column:daily_clock_reminder" json:"daily_clock_reminder"`
+	DailyClockReminder string      `gorm:"column:daily_clock_reminder" json:"daily_clock_reminder"`
 	Type               string      `gorm:"column:type" json:"type"`
 	CreatedAt          time.Time   `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt          time.Time   `gorm:"column:updated_at" json:"updated_at"`
@@ -43,7 +42,7 @@ func (td *TdSubcourseReminder) TableName() string {
 
 // Checklist represents the daily checklist entries for custom targets
 type Checklist struct {
-	ChecklistID string    `gorm:"column:checklist_id;primaryKey" json:"checklist_id"`
+	ChecklistID uuid.UUID `gorm:"column:checklist_id;primaryKey" json:"checklist_id"`
 	TargetID    string    `gorm:"column:target_id" json:"target_id"`
 	DateChecked time.Time `gorm:"column:date_checked" json:"date_checked"`
 }
@@ -53,9 +52,9 @@ func (td *Checklist) TableName() string {
 }
 
 type RequestCustomTarget struct {
-	TargetTitle    string    `json:"target_title"`
-	TargetSubtitle string    `json:"target_subtitle"`
-	DailyReminder  time.Time `json:"daily_reminder"`
+	TargetTitle    string `json:"target_title"`
+	TargetSubtitle string `json:"target_subtitle"`
+	DailyReminder  string `json:"daily_reminder"`
 }
 
 type RequestTdSubcourseReminder struct {
@@ -68,7 +67,7 @@ type TdCustomTargetResponse struct {
 	AchievementID      uuid.UUID `json:"achievement_id"`
 	TargetTitle        string    `json:"target_title"`
 	TargetSubtitle     string    `json:"target_subtitle"`
-	DailyClockReminder time.Time `json:"daily_clock_reminder"`
+	DailyClockReminder string    `json:"daily_clock_reminder"`
 	DueAt              time.Time `json:"due_at"`
 }
 
