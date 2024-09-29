@@ -1194,6 +1194,44 @@
                 }
             }
         },
+        "/courses/{subcourseid}/subcourse": {
+            "get": {
+                "description": "Get sub-course by subcourse ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Courses Service"
+                ],
+                "summary": "Get sub-course by subcourse ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "SubCourse ID",
+                        "name": "subcourseid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SubCourseModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StatusModel"
+                        }
+                    }
+                }
+            }
+        },
         "/dashboard/activity-chart": {
             "get": {
                 "description": "Get User Activity Chart",

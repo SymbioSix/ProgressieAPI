@@ -1754,6 +1754,31 @@ paths:
       summary: Get sub-courses by course ID
       tags:
       - Courses Service
+  /courses/{subcourseid}/subcourse:
+    get:
+      consumes:
+      - application/json
+      description: Get sub-course by subcourse ID
+      parameters:
+      - description: SubCourse ID
+        in: path
+        name: subcourseid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SubCourseModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StatusModel'
+      summary: Get sub-course by subcourse ID
+      tags:
+      - Courses Service
   /courses/all:
     get:
       consumes:
