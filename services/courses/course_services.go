@@ -89,6 +89,31 @@ func (crs *CourseController) GetSubCoursesByCourseID(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(subcourse)
 }
 
+// GetSubCourseBySubCourseID godoc
+//
+//	@Summary		Get sub-course by subcourse ID
+//	@Description	Get sub-course by subcourse ID
+//	@Tags			Courses Service
+//	@Accept			json
+//	@Produce		json
+//	@Param			subcourseid	path		string	true	"SubCourse ID"
+//	@Success		200			{object}	models.SubCourseModel
+//	@Failure		500			{object}	status.StatusModel
+//	@Router			/courses/{subcourseid}/subcourse [get]
+func (crs *CourseController) GetSubcourseContentBySubcourseID(c fiber.Ctx) error {
+	subcourseId := c.Params("subcourseid")
+	var subCourse models.SubCourseModel
+	if res := crs.DB.
+		Preload("VideoContent").
+		Preload("ReadingContents.ReadingImages").
+		Preload("Quizzes.Questions.Answers").
+		First(&subCourse, "subcourse_id = ?", subcourseId); res.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": res.Error.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(subCourse)
+}
+
 // CheckEnrollStatus godoc
 //
 //	@Summary		Check user enrollment status for a specific course

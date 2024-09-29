@@ -20,6 +20,7 @@ func (gcrs *GetCourseRouter) GetCourseRoutes(rg fiber.Router) {
 	router.Get("/", gcrs.getCourseController.GetAllCoursesOnly)
 	router.Get("/all", gcrs.getCourseController.GetAllCoursesAndSubCourses)
 	router.Get("/:courseid/subcourses", gcrs.getCourseController.GetSubCoursesByCourseID)
+	router.Get("/:subcourseid/subcourse", gcrs.getCourseController.GetSubcourseContentBySubcourseID)
 	router.Get("/:courseid/enrollment/status", gcrs.getCourseController.CheckEnrollStatus, middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
 	router.Post("/:courseid/enroll", gcrs.getCourseController.EnrollUserToACourse, middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
 	router.Get("/:courseid/enrollment/data", gcrs.getCourseController.GetEnrolledCourseData, middleware.RestrictUnauthenticatedUser(), middleware.RestrictUserWithUnusualStatus())
